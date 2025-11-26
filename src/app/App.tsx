@@ -1,3 +1,5 @@
+import styles from './styles/app.module.css';
+
 type AppProps = {
   title?: string;
 };
@@ -5,28 +7,22 @@ type AppProps = {
 export default function App({ title = "SkillSwap" }: AppProps) {
   return (
     <div
-      className="app-root"
-      style={{ fontFamily: "system-ui, Arial, sans-serif", lineHeight: 1.4 }}
+      className={styles.app}
     >
-      <header
-        style={{ padding: "1rem 1.25rem", borderBottom: "1px solid #e6e6e6" }}
+      <header className={styles.header}
       >
-        <h1 style={{ margin: 0, fontSize: "1.25rem" }}>{title}</h1>
+        <h1 className={styles.headerTitle}>{title}</h1>
       </header>
 
-      <main style={{ padding: "1.5rem" }}>
+      <main className={styles.main}>
         <p>
           This is a minimal React application layout. Replace this with your app
           routes or components.
         </p>
 
-        <section aria-label="content" style={{ marginTop: "1rem" }}>
+        <section aria-label="content" className={styles.section}>
           <div
-            style={{
-              padding: "1rem",
-              border: "1px dashed #ddd",
-              borderRadius: 6,
-            }}
+            className={styles.sectionContent}
           >
             <strong>Getting started</strong>
             <ul>
@@ -42,11 +38,7 @@ export default function App({ title = "SkillSwap" }: AppProps) {
       </main>
 
       <footer
-        style={{
-          padding: "1rem 1.25rem",
-          borderTop: "1px solid #e6e6e6",
-          fontSize: "0.9rem",
-        }}
+        className={styles.footer}
       >
         <span>© {new Date().getFullYear()} SkillSwap</span>
       </footer>
