@@ -1,0 +1,16 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-recommended"],
+  "rules": {
+    "max-nesting-depth": [
+      4,
+      {
+        "ignoreAtRules": ["media", "supports", "custom-media", "layer"]
+      }
+    ],
+    "no-empty-source": null,
+    "no-duplicate-selectors": true,
+    "no-invalid-position-at-import-rule": true,
+    "no-unknown-animations": true,
+    "selector-max-id": 0
+  }
+}
