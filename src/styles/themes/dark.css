@@ -12,7 +12,7 @@
 
   /* --- Акценты и интерактив --- */
   --color-text-link: #abd27a; /* ссылки */
-  --color-button-pressed: #508826; /* нажатая кнопка */
+  --color-button-pressed: #abd27a; /* нажатая кнопка */
   --color-accent: #a5d67a; /* общий акцентный цвет */
   --color-button-hover: #4d5a3d; /* hover кнопок */
 
@@ -24,11 +24,11 @@
   --color-error: #ff5c3b; /* ошибка */
 
   /* --- Теги / категории --- */
-  --color-tag_business-career: #5a4c66;
-  --color-tag_creativity-art: #6a4c63;
-  --color-tag_foreign-languages: #666246;
-  --color-tag_education-development: #4b6671;
-  --color-tag_home-comfort: #6b5951;
-  --color-tag_health-lifestyle: #4b6c4f;
-  --color-tag_plus: #4a5366;
+  --color-tag_business-career: #3c3250;
+  --color-tag_creativity-art: #4c3249;
+  --color-tag_foreign-languages: #47452f;
+  --color-tag_education-development: #304954;
+  --color-tag_home-comfort: #4a3d37;
+  --color-tag_health-lifestyle: #304833;
+  --color-tag_plus: #323a4d;
 }
