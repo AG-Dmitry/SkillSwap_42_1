@@ -20,6 +20,10 @@
       {
         "ignoreAtRules": ["tailwind", "apply", "layer", "config"]
       }
-    ]
+    ],
+    "property-no-vendor-prefix": null,
+    "font-family-no-duplicate-names": null,
+    "declaration-property-value-keyword-no-deprecated": null,
+    "no-descending-specificity": null
   }
 }
