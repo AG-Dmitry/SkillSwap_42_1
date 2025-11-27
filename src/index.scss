@@ -2,5 +2,7 @@
 @use "./styles/mixins.scss" as *;
 @use "./styles/themes/dark.scss" as *;
 @use "./styles/themes/light.scss" as *;
+@use "./styles/normalize.scss" as *;
+@use "./styles/reset.scss" as *;
 
 // все импорты стилей в одном файле
