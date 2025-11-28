@@ -18,7 +18,11 @@ export const Input = (props: InputProps) => {
 
     return (
       <label className={labelClass}>
-        <input className={inputClass} type={type} {...restProps} hidden />
+        <input
+          className={`${inputClass} ${style.visuallyHidden}`}
+          type={type}
+          {...restProps}
+        />
         <span className={inputCustom}> </span>
         {children}
       </label>

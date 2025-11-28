@@ -1,3 +1,5 @@
+import type { ChangeEvent, InputHTMLAttributes, ReactNode } from "react";
+
 export type InputType =
   | "text"
   | "password"
@@ -8,16 +10,16 @@ export type InputType =
   | "checkbox"
   | "search";
 
-export type InputProps = {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type: InputType;
   placeholder?: string;
   value?: string;
-  onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onInput?: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   className?: string;
   name?: string;
   checked?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
   isOpenList?: boolean;
-};
+}
