@@ -27,6 +27,9 @@
     "no-descending-specificity": null,
     "selector-class-pattern": null,
     "scss/at-extend-no-missing-placeholder": null,
-    "scss/load-partial-extension": null
+    "scss/load-partial-extension": null,
+    "scss/double-slash-comment-whitespace-inside": null,
+    "declaration-empty-line-before": null,
+    "at-rule-empty-line-before": null
   }
 }
