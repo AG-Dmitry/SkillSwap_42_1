@@ -36,14 +36,7 @@ export default function App({ title = "SkillSwap" }: AppProps) {
       <main className={styles.main}>
         <Outlet />
       </main>
-      <footer className={styles.footer}>
-        <span>© {new Date().getFullYear()} SkillSwap</span>
-      </footer>
+      <Footer />
     </div>
   );
 }
-
-/*
-<footer className={styles.footer}>
-    <span>© {new Date().getFullYear()} SkillSwap</span>
-</footer>*/
