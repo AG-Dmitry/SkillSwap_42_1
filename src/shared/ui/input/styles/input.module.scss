@@ -1,0 +1,92 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+
+.input {
+  inline-size: 100%; // В макете инпуты везде по ширине контейнера
+  padding: 12px 20px;
+  border: 1px solid $color-border-input;
+  border-radius: $input-border-radius;
+  background-color: $color-input;
+
+  &::placeholder {
+    color: $color-border-input;
+  }
+}
+
+.inputSearchWrapper {
+  @include flex;
+  position: relative;
+
+  &::after {
+    position: absolute;
+    left: 0;
+    content: "⌕"; // Заглушка. Переделаем уже на рефакторинге, когда буду доступны все иконкив  проекте.
+    @include flex;
+    inline-size: 20px;
+    aspect-ratio: 1;
+    margin-left: 12px;
+    pointer-events: none;
+  }
+
+  .inputSearch {
+    @extend .input;
+    border: none;
+    padding-left: 44px;
+
+    &::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+      appearance: none;
+    } // Отключил кнопку очистки, т.к. на макете её не увидел. Если будет нужно - стилизуем.
+  }
+}
+
+.labelRadio {
+  inline-size: 100%;
+  padding: 2px;
+  @include flex(row, flex-start, center, 8px);
+
+  .inputRadioCustom {
+    inline-size: 20px;
+    block-size: 20px;
+    border: 1.5px solid $color-border-input-radio-checkbox;
+    border-radius: 50%;
+    cursor: pointer;
+    @include flex;
+  }
+
+  .inputRadio:checked + .inputRadioCustom {
+    border-color: $color-button-pressed;
+
+    &::after {
+      content: "";
+      @include flex;
+      inline-size: 10px;
+      aspect-ratio: 1;
+      background-color: $color-button-pressed;
+      border-radius: 50%;
+    }
+  }
+}
+
+.labelCheckbox {
+  @extend .labelRadio;
+
+  .inputCheckboxCustom {
+    @extend .inputRadioCustom;
+    border-radius: 7px;
+  }
+
+  .inputCheckbox:checked + .inputCheckboxCustom {
+    border-color: $color-accent;
+    background-color: $color-accent;
+    color: $color-input;
+
+    &.isList::after {
+      content: "✓"; //Делаю пока без картинок проекта, т.к. они ещё не добавлены. Позже на рефакторинге добавлю.
+    }
+
+    &.nonList::after {
+      content: "-"; //Делаю пока без картинок проекта, т.к. они ещё не добавлены. Позже на рефакторинге добавлю.
+    }
+  }
+}
