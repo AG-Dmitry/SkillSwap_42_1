@@ -25,6 +25,13 @@
     "property-no-vendor-prefix": null,
     "font-family-no-duplicate-names": null,
     "declaration-property-value-keyword-no-deprecated": null,
-    "no-descending-specificity": null
+    "no-descending-specificity": null,
+    "selector-class-pattern": null,
+    "scss/at-extend-no-missing-placeholder": null,
+    "scss/load-partial-extension": null,
+    "scss/double-slash-comment-whitespace-inside": null,
+    "declaration-empty-line-before": null,
+    "at-rule-empty-line-before": null,
+    "scss/dollar-variable-empty-line-before": null
   }
 }
