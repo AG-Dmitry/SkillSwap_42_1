@@ -8,15 +8,15 @@ import type { SubcategoryUIProps } from "./type";
 export const SubcategoryUI = ({ name, categoryId }: SubcategoryUIProps) => {
   const getCategoryClass = (catId: number) => {
     const categoryClassMap: Record<number, string> = {
-      1: styles["creativity-art"],
-      2: styles["foreign-languages"],
-      3: styles["business-career"],
-      4: styles["education-development"],
-      5: styles["home-comfort"],
-      6: styles["health-lifestyle"],
+      1: styles["creativityArt"],
+      2: styles["foreignLanguages"],
+      3: styles["businessCareer"],
+      4: styles["educationDevelopment"],
+      5: styles["homeComfort"],
+      6: styles["healthLifestyle"],
     };
 
-    return categoryClassMap[catId] || styles["tag-plus"];
+    return categoryClassMap[catId] || styles["tagPlus"];
   };
 
   const backgroundClass = getCategoryClass(categoryId);
