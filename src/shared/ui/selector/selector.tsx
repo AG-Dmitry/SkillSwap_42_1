@@ -1,19 +1,25 @@
 import { type FC, memo, useState } from "react";
-import type { TOption, TSelectorUIProps } from "./type";
+import type { TSelectorProps } from "./type";
 import styles from "./selector.module.scss";
-import arrow from "../../../images/icons/chevron-down.svg";
 import clsx from "clsx";
+import { Arrow } from "../arrow/arrow";
+import type { TOption } from "../options/type";
+import { Options } from "../options/options";
 
-export const SelectorUI: FC<TSelectorUIProps> = memo(
+// Данный компонент отображает раскрывающийся список чекбоксов
+
+export const Selector: FC<TSelectorProps> = memo(
   ({ selectionTitle, selectionOptions }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selected, setSelected] = useState<TOption[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<TOption[]>([]);
 
     const toggleOption = (option: TOption) => {
-      if (selected.includes(option)) {
-        setSelected(selected.filter((opt: TOption) => opt !== option));
+      if (selectedOptions.includes(option)) {
+        setSelectedOptions(
+          selectedOptions.filter((opt: TOption) => opt !== option),
+        );
       } else {
-        setSelected([...selected, option]);
+        setSelectedOptions([...selectedOptions, option]);
       }
     };
 
@@ -26,45 +32,39 @@ export const SelectorUI: FC<TSelectorUIProps> = memo(
           onClick={() => setIsOpen(!isOpen)}
         >
           {selectionTitle}
-          <img
-            src={arrow}
-            alt="иконка стрелочки"
-            className={clsx(styles.arrow, { [styles.arrow_open]: isOpen })}
-          />
+          <Arrow isOpen={isOpen} />
         </div>
-        {isOpen && (
-          <ul className={clsx(styles.list)}>
-            {selectionOptions.map((option) => (
-              <li
-                className={clsx(styles.listElement)}
-                key={option}
-                onClick={() => toggleOption(option)}
-              >
-                <input
-                  className={clsx(styles.input, {
-                    [styles.input_checked]: selected.includes(option),
-                  })}
-                  type="checkbox"
-                  checked={selected.includes(option)}
-                  readOnly
-                />
-                {option}
-              </li>
-            ))}
-          </ul>
-        )}
+        {
+          isOpen && (
+            <Options
+              selectionOptions={selectionOptions}
+              toggleOption={toggleOption}
+              selectedOptions={selectedOptions}
+            />
+          )
+          // (
+          //   <ul className={clsx(styles.list)}>
+          //     {selectionOptions.map((option) => (
+          //       <li
+          //         className={clsx(styles.listElement)}
+          //         key={option}
+          //         onClick={() => toggleOption(option)}
+          //       >
+          //         <input
+          //           className={clsx(styles.input, {
+          //             [styles.input_checked]: selectedOptions.includes(option),
+          //           })}
+          //           type="checkbox"
+          //           checked={selectedOptions.includes(option)}
+          //           readOnly
+          //         />
+          //         {option}
+          //       </li>
+          //     ))}
+          //   </ul>
+          // )
+        }
       </div>
-
-      // <form>
-      //   <fieldset className={styles.container}>
-      //     {selectOptions.map((item, index) => (
-      //       <label key={index}>
-      //         <input type="radio" value={item} />
-      //         {item}
-      //       </label>
-      //     ))}
-      //   </fieldset>
-      // </form>
     );
   },
 );

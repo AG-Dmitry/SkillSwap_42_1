@@ -1,6 +1,6 @@
-export type TSelectorUIProps = {
-  selectionTitle: string;
-  selectionOptions: string[];
-};
+type TOption = string;
 
-export type TOption = string;
+export type TSelectorProps = {
+  selectionTitle: string;
+  selectionOptions: TOption[];
+};
