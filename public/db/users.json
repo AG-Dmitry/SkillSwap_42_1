@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Евгений Симонов",
+    "name": "Евгений",
     "avatarUrl": "https://i.pravatar.cc/150?img=1",
     "cityId": 1,
     "dateOfBirth": "1995-05-23",
@@ -11,7 +11,7 @@
   },
   {
     "id": 2,
-    "name": "Анна Кузнецова",
+    "name": "Анна",
     "avatarUrl": "https://i.pravatar.cc/150?img=2",
     "cityId": 25,
     "dateOfBirth": "1998-03-14",
@@ -21,7 +21,7 @@
   },
   {
     "id": 3,
-    "name": "Сергей Иванов",
+    "name": "Сергей",
     "avatarUrl": "https://i.pravatar.cc/150?img=3",
     "cityId": 30,
     "dateOfBirth": "1990-01-14",
@@ -31,7 +31,7 @@
   },
   {
     "id": 4,
-    "name": "Екатерина Морозова",
+    "name": "Екатерина",
     "avatarUrl": "https://i.pravatar.cc/150?img=4",
     "cityId": 18,
     "dateOfBirth": "1995-08-09",
@@ -41,7 +41,7 @@
   },
   {
     "id": 5,
-    "name": "Дмитрий Смирнов",
+    "name": "Дмитрий",
     "avatarUrl": "https://i.pravatar.cc/150?img=5",
     "cityId": 3,
     "dateOfBirth": "1988-12-17",
@@ -51,7 +51,7 @@
   },
   {
     "id": 6,
-    "name": "Ольга Лебедева",
+    "name": "Ольга",
     "avatarUrl": "https://i.pravatar.cc/150?img=6",
     "cityId": 21,
     "dateOfBirth": "2000-06-12",
@@ -61,7 +61,7 @@
   },
   {
     "id": 7,
-    "name": "Алексей Ковалев",
+    "name": "Алексей",
     "avatarUrl": "https://i.pravatar.cc/150?img=7",
     "cityId": 14,
     "dateOfBirth": "1993-09-02",
@@ -71,7 +71,7 @@
   },
   {
     "id": 8,
-    "name": "Наталья Васильева",
+    "name": "Наталья",
     "avatarUrl": "https://i.pravatar.cc/150?img=8",
     "cityId": 5,
     "dateOfBirth": "1997-02-28",
@@ -81,7 +81,7 @@
   },
   {
     "id": 9,
-    "name": "Виктор Орлов",
+    "name": "Виктор",
     "avatarUrl": "https://i.pravatar.cc/150?img=9",
     "cityId": 27,
     "dateOfBirth": "1991-04-18",
@@ -91,7 +91,7 @@
   },
   {
     "id": 10,
-    "name": "Людмила Федорова",
+    "name": "Людмила",
     "avatarUrl": "https://i.pravatar.cc/150?img=10",
     "cityId": 9,
     "dateOfBirth": "1996-10-21",
@@ -101,7 +101,7 @@
   },
   {
     "id": 11,
-    "name": "Константин Громов",
+    "name": "Константин",
     "avatarUrl": "https://i.pravatar.cc/150?img=11",
     "cityId": 2,
     "dateOfBirth": "1989-03-17",
@@ -111,7 +111,7 @@
   },
   {
     "id": 12,
-    "name": "Вероника Кузьмина",
+    "name": "Вероника",
     "avatarUrl": "https://i.pravatar.cc/150?img=12",
     "cityId": 26,
     "dateOfBirth": "2001-05-30",
@@ -121,7 +121,7 @@
   },
   {
     "id": 13,
-    "name": "Андрей Волков",
+    "name": "Андрей",
     "avatarUrl": "https://i.pravatar.cc/150?img=13",
     "cityId": 14,
     "dateOfBirth": "1994-08-09",
@@ -131,7 +131,7 @@
   },
   {
     "id": 14,
-    "name": "Татьяна Николаева",
+    "name": "Татьяна",
     "avatarUrl": "https://i.pravatar.cc/150?img=14",
     "cityId": 19,
     "dateOfBirth": "1998-12-12",
@@ -141,7 +141,7 @@
   },
   {
     "id": 15,
-    "name": "Евгений Борисов",
+    "name": "Евгений",
     "avatarUrl": "https://i.pravatar.cc/150?img=15",
     "cityId": 6,
     "dateOfBirth": "1990-09-04",
@@ -151,7 +151,7 @@
   },
   {
     "id": 16,
-    "name": "Алина Романова",
+    "name": "Алина",
     "avatarUrl": "https://i.pravatar.cc/150?img=16",
     "cityId": 12,
     "dateOfBirth": "1995-07-18",
@@ -161,7 +161,7 @@
   },
   {
     "id": 17,
-    "name": "Владислав Михайлов",
+    "name": "Владислав",
     "avatarUrl": "https://i.pravatar.cc/150?img=17",
     "cityId": 29,
     "dateOfBirth": "1988-11-29",
@@ -171,7 +171,7 @@
   },
   {
     "id": 18,
-    "name": "Светлана Ермолаева",
+    "name": "Светлана",
     "avatarUrl": "https://i.pravatar.cc/150?img=18",
     "cityId": 4,
     "dateOfBirth": "2000-02-14",
@@ -181,7 +181,7 @@
   },
   {
     "id": 19,
-    "name": "Максим Крылов",
+    "name": "Максим",
     "avatarUrl": "https://i.pravatar.cc/150?img=19",
     "cityId": 8,
     "dateOfBirth": "1992-05-27",
@@ -191,7 +191,7 @@
   },
   {
     "id": 20,
-    "name": "Оксана Дмитриева",
+    "name": "Оксана",
     "avatarUrl": "https://i.pravatar.cc/150?img=20",
     "cityId": 17,
     "dateOfBirth": "1997-10-11",
@@ -201,7 +201,7 @@
   },
   {
     "id": 21,
-    "name": "Никита Павлов",
+    "name": "Никита",
     "avatarUrl": "https://i.pravatar.cc/150?img=21",
     "cityId": 25,
     "dateOfBirth": "1993-03-03",
@@ -211,7 +211,7 @@
   },
   {
     "id": 22,
-    "name": "Дарья Белова",
+    "name": "Дарья",
     "avatarUrl": "https://i.pravatar.cc/150?img=22",
     "cityId": 13,
     "dateOfBirth": "2002-06-05",
@@ -221,7 +221,7 @@
   },
   {
     "id": 23,
-    "name": "Игорь Соколов",
+    "name": "Игорь",
     "avatarUrl": "https://i.pravatar.cc/150?img=23",
     "cityId": 22,
     "dateOfBirth": "1987-08-19",
@@ -231,7 +231,7 @@
   },
   {
     "id": 24,
-    "name": "Анастасия Тимофеева",
+    "name": "Анастасия",
     "avatarUrl": "https://i.pravatar.cc/150?img=24",
     "cityId": 20,
     "dateOfBirth": "1999-12-02",
@@ -241,7 +241,7 @@
   },
   {
     "id": 25,
-    "name": "Кирилл Захаров",
+    "name": "Кирилл",
     "avatarUrl": "https://i.pravatar.cc/150?img=25",
     "cityId": 3,
     "dateOfBirth": "1991-04-17",
@@ -251,7 +251,7 @@
   },
   {
     "id": 26,
-    "name": "Марина Алексеева",
+    "name": "Марина",
     "avatarUrl": "https://i.pravatar.cc/150?img=26",
     "cityId": 11,
     "dateOfBirth": "1996-07-09",
@@ -261,7 +261,7 @@
   },
   {
     "id": 27,
-    "name": "Артём Васильев",
+    "name": "Артём",
     "avatarUrl": "https://i.pravatar.cc/150?img=27",
     "cityId": 28,
     "dateOfBirth": "1989-12-23",
@@ -271,7 +271,7 @@
   },
   {
     "id": 28,
-    "name": "Полина Миронова",
+    "name": "Полина",
     "avatarUrl": "https://i.pravatar.cc/150?img=28",
     "cityId": 16,
     "dateOfBirth": "2000-06-02",
@@ -281,7 +281,7 @@
   },
   {
     "id": 29,
-    "name": "Николай Кузьмин",
+    "name": "Николай",
     "avatarUrl": "https://i.pravatar.cc/150?img=29",
     "cityId": 7,
     "dateOfBirth": "1993-03-10",
@@ -291,7 +291,7 @@
   },
   {
     "id": 30,
-    "name": "Елена Филиппова",
+    "name": "Елена",
     "avatarUrl": "https://i.pravatar.cc/150?img=30",
     "cityId": 13,
     "dateOfBirth": "1998-08-22",
@@ -301,7 +301,7 @@
   },
   {
     "id": 31,
-    "name": "Вячеслав Орлов",
+    "name": "Вячеслав",
     "avatarUrl": "https://i.pravatar.cc/150?img=31",
     "cityId": 22,
     "dateOfBirth": "1987-05-06",
@@ -311,7 +311,7 @@
   },
   {
     "id": 32,
-    "name": "Дарина Никитина",
+    "name": "Дарина",
     "avatarUrl": "https://i.pravatar.cc/150?img=32",
     "cityId": 5,
     "dateOfBirth": "2001-09-14",
@@ -321,7 +321,7 @@
   },
   {
     "id": 33,
-    "name": "Илья Тимофеев",
+    "name": "Илья",
     "avatarUrl": "https://i.pravatar.cc/150?img=33",
     "cityId": 19,
     "dateOfBirth": "1994-11-12",
@@ -331,7 +331,7 @@
   },
   {
     "id": 34,
-    "name": "София Воронова",
+    "name": "София",
     "avatarUrl": "https://i.pravatar.cc/150?img=34",
     "cityId": 21,
     "dateOfBirth": "1999-01-25",
@@ -341,7 +341,7 @@
   },
   {
     "id": 35,
-    "name": "Александр Логинов",
+    "name": "Александр",
     "avatarUrl": "https://i.pravatar.cc/150?img=35",
     "cityId": 10,
     "dateOfBirth": "1992-06-15",
@@ -351,7 +351,7 @@
   },
   {
     "id": 36,
-    "name": "Екатерина Щербакова",
+    "name": "Екатерина",
     "avatarUrl": "https://i.pravatar.cc/150?img=36",
     "cityId": 7,
     "dateOfBirth": "1997-12-03",
@@ -361,7 +361,7 @@
   },
   {
     "id": 37,
-    "name": "Денис Гаврилов",
+    "name": "Денис",
     "avatarUrl": "https://i.pravatar.cc/150?img=37",
     "cityId": 13,
     "dateOfBirth": "1988-09-21",
@@ -371,7 +371,7 @@
   },
   {
     "id": 38,
-    "name": "Анна Григорьева",
+    "name": "Анна",
     "avatarUrl": "https://i.pravatar.cc/150?img=38",
     "cityId": 18,
     "dateOfBirth": "1995-05-17",
@@ -381,7 +381,7 @@
   },
   {
     "id": 39,
-    "name": "Михаил Серов",
+    "name": "Михаил",
     "avatarUrl": "https://i.pravatar.cc/150?img=39",
     "cityId": 5,
     "dateOfBirth": "1990-11-05",
@@ -391,7 +391,7 @@
   },
   {
     "id": 40,
-    "name": "Виктория Полякова",
+    "name": "Виктория",
     "avatarUrl": "https://i.pravatar.cc/150?img=40",
     "cityId": 23,
     "dateOfBirth": "1998-02-28",
