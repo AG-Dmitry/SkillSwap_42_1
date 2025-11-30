@@ -1,1 +1,1 @@
-export { SubcategoryUI } from "./subcategory";
+export { SubcategoryUI } from "./Subcategory";

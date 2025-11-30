@@ -1,7 +1,7 @@
 import styles from "./header.module.scss";
 import { Link } from "react-router-dom";
-import { Logo } from "../../shared/ui/logo/logo.tsx";
-import { Button } from "../../shared/ui/button";
+import { Logo } from "../../shared/ui/Logo/Logo.tsx";
+import { Button } from "../../shared/ui/Button/index.ts";
 import clsx from "clsx";
 
 export const Header = () => {

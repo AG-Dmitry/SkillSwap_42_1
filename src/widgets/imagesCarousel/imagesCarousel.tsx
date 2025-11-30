@@ -1,4 +1,4 @@
-import styles from "../imagesCarousel/imagesCarousel.module.scss";
+import styles from "./imagesCarousel.module.scss";
 import clsx from "clsx";
 import { useState } from "react";
 

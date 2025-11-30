@@ -1,4 +1,4 @@
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/Button";
 import error404 from "@images/png/error-404.png";
 import error500 from "@images/png/error-500.png";
 import styles from "./errorPage.module.scss";

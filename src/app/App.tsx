@@ -1,8 +1,8 @@
 import styles from "./styles/app.module.scss";
 import { Outlet } from "react-router-dom";
-import { Footer } from "../widgets/footer/footer.tsx";
-import { Header } from "../widgets/header/header.tsx";
-import { DecoratedButton } from "@shared/ui/decoratedButton/decoratedButton.tsx";
+import { Footer } from "../widgets/Footer/Footer.tsx";
+import { Header } from "../widgets/Header/Header.tsx";
+import { DecoratedButton } from "@/shared/ui/DecoratedButton/DecoratedButton.tsx";
 
 // type AppProps = {
 //   title?: string;

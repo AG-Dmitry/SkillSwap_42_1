@@ -1,13 +1,13 @@
 import styles from "./signupStepOne.module.scss";
-import { Button } from "../../../../shared/ui/button";
-import { Separator } from "../../../../shared/ui/separator";
-import { Input } from "../../../../shared/ui/input";
-import { Logo } from "../../../../shared/ui/logo/logo.tsx";
+import { Button } from "../../../../shared/ui/Button/index.ts";
+import { Separator } from "../../../../shared/ui/Separator/index.ts";
+import { Input } from "../../../../shared/ui/Input/index.ts";
+import { Logo } from "../../../../shared/ui/Logo/Logo.tsx";
 import lightBulb from "../../../../images/png/light-bulb.png";
-import { AppleIcon } from "../../../../shared/ui/icons/appleIcon.tsx";
-import { GoogleIcon } from "../../../../shared/ui/icons/googleIcon.tsx";
-import { SignupSteps } from "../../../../shared/ui/signupSteps";
-import { ArrowLeftIcon } from "../../../../shared/ui/icons/arrowLeftIcon.tsx";
+import { AppleIcon } from "../../../../shared/ui/icons/AppleIcon.tsx";
+import { GoogleIcon } from "../../../../shared/ui/icons/GoogleIcon.tsx";
+import { SignupSteps } from "../../../../shared/ui/SignupSteps/index.ts";
+import { ArrowLeftIcon } from "../../../../shared/ui/icons/ArrowLeftIcon.tsx";
 
 export const SignupStepOne = () => {
   return (
