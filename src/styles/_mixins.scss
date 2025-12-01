@@ -24,10 +24,10 @@
   gap: $row-gap $column-gap; // не было // не было
 }
 
-@mixin inputIcon($icon, $size: 24px) {
+@mixin input-icon($icon, $size: 24px) {
   background-image: url($icon);
   background-repeat: no-repeat;
   background-position: center;
   background-size: $size;
   cursor: pointer;
-}
+} // Lint требует kebab-case
