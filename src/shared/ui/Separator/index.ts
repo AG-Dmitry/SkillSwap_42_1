@@ -1,1 +1,1 @@
-export { Separator } from "./Separator.tsx";
+export { Separator } from "./Separator";
