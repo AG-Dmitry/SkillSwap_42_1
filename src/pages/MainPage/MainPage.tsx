@@ -1,7 +1,7 @@
 import styles from "./mainPage.module.scss";
 
-import { Footer } from "@widgets/Footer/Footer.tsx";
-import { Filter } from "@widgets/filter";
+import { Footer } from "@widgets/Footer/Footer";
+import { Filter } from "@widgets/filter/Filter";
 import { Header } from "@widgets/Header/Header";
 
 export const MainPage = () => {
