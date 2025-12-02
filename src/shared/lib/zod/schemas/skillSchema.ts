@@ -13,11 +13,13 @@ export const skillDescriptionSchema = z
   .max(500, { message: "Описание не должно превышать 500 символов" })
   .optional();
 
-//TODO: export const skillTypeSchema =
-
 export const skillCategorySchema = z
   .string()
   .min(1, { message: "Выберите категорию" });
+
+export const skillSubcategorySchema = z
+  .string()
+  .min(1, { message: "Выберите подкатегорию" });
 
 export const skillImageSchema = z
   .instanceof(File)
@@ -30,32 +32,23 @@ export const skillImageSchema = z
   )
   .refine(
     (file) => {
-      const maxSize = 2 * 1024 * 1024; // 2 MB
+      const maxSize = 2 * 1024 * 1024;
       return file.size <= maxSize;
     },
     { message: "Размер изображения не должен превышать 2MB" },
-  )
-  .optional()
-  .nullable();
+  );
 
+//Это поле взято из документации
 export const skillTagsSchema = z
   .array(z.string())
-  .max(5, { message: "Максимум 5 тегов" })
-  .refine(
-    (tags) => {
-      // Проверка длины каждого тега
-      return tags.every((tag) => tag.length >= 2 && tag.length <= 20);
-    },
-    { message: "Каждый тег должен быть от 2 до 20 символов" },
-  )
-  .default([]);
+  .max(5, { message: "Максимум 5 тегов" });
 
 // Полная схема создания навыка
 export const createSkillSchema = z.object({
   title: skillTitleSchema,
   description: skillDescriptionSchema,
-  //TODO type: skillTypeSchema,
   category: skillCategorySchema,
+  subcategore: skillSubcategorySchema,
   image: skillImageSchema,
   tags: skillTagsSchema,
 });
