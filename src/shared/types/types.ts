@@ -54,3 +54,6 @@ export type TLike = {
   userId: number; //ID пользователя, который поставил лайк
   skillId: number; //ID навыка, который лайкнули
 };
+
+// Пользователь с количеством лайков
+export type UserWithLikes = TUser & { likesCount: number };
