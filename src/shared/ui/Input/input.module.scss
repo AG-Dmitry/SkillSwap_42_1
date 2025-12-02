@@ -162,7 +162,14 @@
   .inputCheckboxCustom {
     inline-size: 24px;
     block-size: 24px;
+    flex-shrink: 0; // Чекбокс не сжимается
     @include input-icon("@images/icons/checkbox-empty.svg");
+  }
+
+  .inputText {
+    flex: 1; // Текст занимает оставшееся пространство
+    min-width: 0; // Позволяет тексту переноситься
+    overflow-wrap: break-word; // Перенос длинных слов
   }
 
   .inputCheckbox:checked + .inputCheckboxCustom {

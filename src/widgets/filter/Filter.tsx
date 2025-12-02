@@ -1,4 +1,9 @@
-import { useState, useEffect, type ChangeEvent } from "react";
+import {
+  useState,
+  useEffect,
+  type ChangeEvent,
+  type ReactElement,
+} from "react";
 import { Input } from "@shared/ui/Input";
 import styles from "./filter.module.scss";
 import { FILTER_CONFIG, type TFilterState } from "./filter.type";
@@ -12,7 +17,15 @@ import {
 } from "@store/slices/referenceDataSlice";
 import { FilterSkeleton } from "@widgets/FilterSkeleton/FilterSkeleton";
 
-export const Filter = () => {
+interface FilterProps {
+  filters: TFilterState;
+  onFiltersChange: (filters: TFilterState) => void;
+}
+
+export const Filter = ({
+  filters,
+  onFiltersChange,
+}: FilterProps): ReactElement => {
   const dispatch = useAppDispatch();
   const { categories, subcategories, cities, isLoading } =
     useAppSelector(selectReferenceData);
@@ -28,13 +41,6 @@ export const Filter = () => {
       dispatch(fetchReferenceData());
     }
   }, [dispatch, categories.length, isLoading]);
-
-  const [filters, setFilters] = useState<TFilterState>({
-    purpose: "",
-    skills: [],
-    gender: "",
-    citys: [],
-  });
 
   const [showSubcategorys, setShowSubcategorys] = useState<number[]>([]);
   const [showAllSkills, setShowAllSkills] = useState(false);
@@ -69,10 +75,10 @@ export const Filter = () => {
 
   const handlePurposeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedPurpose = event.target.value;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
+    onFiltersChange({
+      ...filters,
       purpose: selectedPurpose,
-    }));
+    });
   };
 
   const handleCategoriesChange = (categoryId: number) => {
@@ -81,36 +87,34 @@ export const Filter = () => {
 
   const handleSubcategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
     const subcategoryId = Number(event.target.value);
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      skills: prevFilters.skills.includes(subcategoryId)
-        ? prevFilters.skills.filter(
-            (subcategory) => subcategory !== subcategoryId,
-          )
-        : [...prevFilters.skills, subcategoryId],
-    }));
+    onFiltersChange({
+      ...filters,
+      skills: filters.skills.includes(subcategoryId)
+        ? filters.skills.filter((subcategory) => subcategory !== subcategoryId)
+        : [...filters.skills, subcategoryId],
+    });
   };
 
   const handleGenderChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedGender = event.target.value;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
+    onFiltersChange({
+      ...filters,
       gender: selectedGender,
-    }));
+    });
   };
 
   const handleCitysChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedCitysId = Number(event.target.value);
-    setFilters((prevFilter) => ({
-      ...prevFilter,
-      citys: prevFilter.citys.includes(selectedCitysId)
-        ? prevFilter.citys.filter((city) => city !== selectedCitysId)
-        : [...prevFilter.citys, selectedCitysId],
-    }));
+    onFiltersChange({
+      ...filters,
+      citys: filters.citys.includes(selectedCitysId)
+        ? filters.citys.filter((city) => city !== selectedCitysId)
+        : [...filters.citys, selectedCitysId],
+    });
   };
 
   const handleClearFilter = () => {
-    setFilters({
+    onFiltersChange({
       purpose: "",
       skills: [],
       gender: "",
@@ -154,7 +158,11 @@ export const Filter = () => {
         </li>
         <li className={styles.filterSkills}>
           <h3 className={styles.filterOtherTitle}>Навыки</h3>
-          <ul className={styles.filterCheckbox}>
+          <ul
+            className={`${styles.filterCheckbox} ${
+              showAllSkills ? styles.expanded : styles.collapsed
+            }`}
+          >
             {displayedSkills.map((category) => (
               <li className={styles.filterCheckboxContainer} key={category.id}>
                 <div className={styles.filterCheckboxHeader}>
@@ -194,12 +202,12 @@ export const Filter = () => {
                 )}
               </li>
             ))}
-            {categorys.length > 5 && (
+            {categorys.length >= FILTER_CONFIG.SKILLS_VISIBLE_COUNT && (
               <li>
-                {" "}
                 <button
                   className={styles.showAllButton}
                   onClick={toggleShowAllSkills}
+                  type="button"
                 >
                   {showAllSkills ? "Скрыть" : "Все категории"}
                   <img

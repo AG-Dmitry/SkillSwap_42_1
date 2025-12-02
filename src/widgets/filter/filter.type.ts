@@ -23,6 +23,6 @@ export interface TPropsFilter {
 }
 
 export const FILTER_CONFIG = {
-  SKILLS_VISIBLE_COUNT: 6,
+  SKILLS_VISIBLE_COUNT: 5,
   CITIES_VISIBLE_COUNT: 5,
 } as const;

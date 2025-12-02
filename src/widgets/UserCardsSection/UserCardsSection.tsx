@@ -9,12 +9,23 @@ import {
   fetchSkillsData,
   selectSkillsData,
 } from "@store/slices/skillsDataSlice";
+import { useFilteredUsers } from "@shared/hooks/useFilteredUsers";
+import type { TFilterState } from "@widgets/filter/filter.type";
+import { ActiveFilters } from "@widgets/ActiveFilters/ActiveFilters";
 import styles from "./userCardsSection.module.scss";
 
-export const UserCardsSection = () => {
+interface UserCardsSectionProps {
+  filters: TFilterState;
+  onFiltersChange: (filters: TFilterState) => void;
+}
+
+export const UserCardsSection = ({
+  filters,
+  onFiltersChange,
+}: UserCardsSectionProps) => {
   const dispatch = useAppDispatch();
   const { users, isLoading: usersLoading } = useAppSelector(selectUsersData);
-  const { cities } = useAppSelector(selectReferenceData);
+  const { cities, subcategories } = useAppSelector(selectReferenceData);
   const {
     skills,
     likes,
@@ -90,6 +101,13 @@ export const UserCardsSection = () => {
       .slice(0, 6);
   }, [usersWithLikes, popularUsers, newUsers]);
 
+  // Используем хук для фильтрации пользователей
+  const { filteredOffers, filteredUsers, hasActiveFilters } = useFilteredUsers({
+    filters,
+    usersWithLikes,
+    skills,
+  });
+
   const handleDetailsClick = (user: TUser) => {
     console.log("User details clicked:", user);
     // TODO: Реализовать навигацию к детальной странице пользователя
@@ -98,39 +116,91 @@ export const UserCardsSection = () => {
   if (isLoading) {
     return (
       <div className={styles.container}>
-        {/* Скелетоны для секции "Популярное" */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Популярное</h2>
-          <div className={styles.cardsGrid}>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <CardSkeleton key={index} />
-            ))}
-          </div>
-        </section>
+        {hasActiveFilters ? (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Подходящие предложения: 0</h2>
+            <div className={styles.cardsGrid}>
+              {Array.from({ length: 6 }).map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          </section>
+        ) : (
+          <>
+            {/* Скелетоны для секции "Популярное" */}
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Популярное</h2>
+              <div className={styles.cardsGrid}>
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <CardSkeleton key={index} />
+                ))}
+              </div>
+            </section>
 
-        {/* Скелетоны для секции "Новое" */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Новое</h2>
-          <div className={styles.cardsGrid}>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <CardSkeleton key={index} />
-            ))}
-          </div>
-        </section>
+            {/* Скелетоны для секции "Новое" */}
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Новое</h2>
+              <div className={styles.cardsGrid}>
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <CardSkeleton key={index} />
+                ))}
+              </div>
+            </section>
 
-        {/* Скелетоны для секции "Рекомендуем" */}
+            {/* Скелетоны для секции "Рекомендуем" */}
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Рекомендуем</h2>
+              <div className={styles.cardsGrid}>
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <CardSkeleton key={index} />
+                ))}
+              </div>
+            </section>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // Если есть активные фильтры, показываем отфильтрованные предложения
+  if (hasActiveFilters) {
+    return (
+      <div className={styles.container}>
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Рекомендуем</h2>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>
+              Подходящие предложения: {filteredOffers.length}
+            </h2>
+            <ActiveFilters
+              filters={filters}
+              subcategories={subcategories}
+              cities={cities}
+              onFiltersChange={onFiltersChange}
+            />
+          </div>
           <div className={styles.cardsGrid}>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <CardSkeleton key={index} />
-            ))}
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <Card
+                  key={user.id}
+                  user={user}
+                  cities={cities}
+                  onDetailsClick={handleDetailsClick}
+                  isLoading={isLoading}
+                />
+              ))
+            ) : (
+              <p className={styles.noResults}>
+                По выбранным фильтрам ничего не найдено
+              </p>
+            )}
           </div>
         </section>
       </div>
     );
   }
 
+  // Если фильтров нет, показываем стандартные секции
   return (
     <div className={styles.container}>
       {/* Секция "Популярное" */}
