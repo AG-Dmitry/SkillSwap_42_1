@@ -253,7 +253,7 @@ export const SignupStepThree = () => {
 
     setTimeout(() => {
       setIsSuccessModalOpen(true);
-      // Удаляем из localStorage через 3 секунды
+      // Удаление из localStorage через 3 секунды
       setTimeout(() => {
         localStorage.removeItem("signupState");
       }, 3000);
@@ -262,7 +262,6 @@ export const SignupStepThree = () => {
 
   // Функция для закрытия успешного модального окна
   const handleCloseSuccessModal = useCallback(() => {
-    // Очищаем данные перед закрытием
     dispatch(clearSignupData());
     setIsSuccessModalOpen(false);
     navigate("/");
@@ -282,6 +281,7 @@ export const SignupStepThree = () => {
       <section className={styles.section}>
         <div className={styles.formContainer}>
           <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+            {/* Для валидации: Название навыка */}
             <div className={styles.fieldGroup}>
               <label className={styles.label} htmlFor="skillName">
                 Название навыка
@@ -291,6 +291,7 @@ export const SignupStepThree = () => {
               ) : (
                 <input
                   id="skillName"
+                  name="skillName" // Для валидации
                   className={styles.skillNameInput}
                   type="text"
                   placeholder="Введите название вашего навыка"
@@ -301,14 +302,17 @@ export const SignupStepThree = () => {
               )}
             </div>
 
+            {/* Для валидации: Категория навыка */}
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Категория навыка</label>
+              <label className={styles.label} htmlFor="category-selector">
+                Категория навыка
+              </label>
               {isLoading ? (
                 <div
                   className={`${styles.skeleton} ${styles.skeletonSelect}`}
                 />
               ) : (
-                <div className={styles.selectorWrapper}>
+                <div id="category-selector" className={styles.selectorWrapper}>
                   <div
                     className={styles.selectorHeader}
                     onClick={() => setIsCategoryOpen(!isCategoryOpen)}
@@ -324,6 +328,12 @@ export const SignupStepThree = () => {
                       className={`${styles.selectorChevron} ${isCategoryOpen ? styles.open : ""}`}
                     />
                   </div>
+                  <input
+                    type="hidden"
+                    name="category"
+                    value={category}
+                    required
+                  />
                   {isCategoryOpen && (
                     <div className={styles.optionsList}>
                       {categories.map((cat) => (
@@ -334,6 +344,7 @@ export const SignupStepThree = () => {
                             setCategory(cat.id.toString());
                             setIsCategoryOpen(false);
                           }}
+                          data-value={cat.id}
                         >
                           {cat.name}
                         </div>
@@ -344,14 +355,20 @@ export const SignupStepThree = () => {
               )}
             </div>
 
+            {/* Для валидации: Подкатегория */}
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Подкатегория</label>
+              <label className={styles.label} htmlFor="subcategory-selector">
+                Подкатегория
+              </label>
               {isLoading ? (
                 <div
                   className={`${styles.skeleton} ${styles.skeletonSelect}`}
                 />
               ) : (
-                <div className={styles.selectorWrapper}>
+                <div
+                  id="subcategory-selector"
+                  className={styles.selectorWrapper}
+                >
                   <div
                     className={styles.selectorHeader}
                     onClick={() =>
@@ -377,6 +394,12 @@ export const SignupStepThree = () => {
                       />
                     )}
                   </div>
+                  <input
+                    type="hidden"
+                    name="subcategory"
+                    value={subcategory}
+                    required={!!category}
+                  />
                   {isSubcategoryOpen && category && (
                     <div className={styles.optionsList}>
                       {filteredSubcategories.map((sub) => (
@@ -387,6 +410,7 @@ export const SignupStepThree = () => {
                             setSubcategory(sub.id.toString());
                             setIsSubcategoryOpen(false);
                           }}
+                          data-value={sub.id}
                         >
                           {sub.name}
                         </div>
@@ -397,6 +421,7 @@ export const SignupStepThree = () => {
               )}
             </div>
 
+            {/* Для валидации: Описание */}
             <div className={styles.fieldGroup}>
               <label className={styles.label} htmlFor="description">
                 Описание
@@ -408,6 +433,7 @@ export const SignupStepThree = () => {
               ) : (
                 <textarea
                   id="description"
+                  name="description"
                   className={styles.descriptionTextarea}
                   placeholder="Коротко опишите, чему можете научить"
                   rows={4}
@@ -415,12 +441,16 @@ export const SignupStepThree = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   required
                   maxLength={500}
+                  minLength={10}
                 />
               )}
             </div>
 
+            {/* Для валидации: Изображения */}
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Изображения</label>
+              <label className={styles.label} htmlFor="images-upload">
+                Изображения
+              </label>
 
               {isLoading ? (
                 <div
@@ -430,6 +460,7 @@ export const SignupStepThree = () => {
                 <>
                   <div
                     ref={dragAreaRef}
+                    id="images-upload"
                     className={`${styles.uploadArea} ${isDragging ? styles.dragging : ""}`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
@@ -453,10 +484,15 @@ export const SignupStepThree = () => {
                     <input
                       ref={fileInputRef}
                       type="file"
+                      id="file-input"
+                      name="images"
                       accept="image/*"
                       multiple
                       className={styles.fileInput}
                       onChange={handleFileChange}
+                      // Для валидации файлов:
+                      // data-max-size="5242880" (5MB)
+                      // data-accepted-types="image/jpeg,image/png,image/gif"
                     />
                   </div>
 
