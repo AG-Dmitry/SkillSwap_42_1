@@ -1,19 +1,8 @@
 import React, { memo, useState, useEffect } from "react";
 import { Button } from "@shared/ui/Button";
 import type { CardProps } from "./type";
+import type { TSkill } from "@/shared/types/types";
 import styles from "./card.module.scss";
-
-// Типы для данных
-type TSkill = {
-  id: number;
-  subcategoryId: number;
-  userId: number;
-  name: string;
-  description?: string;
-  type_of_proposal: "учу" | "учусь";
-  images: string[];
-  modified_datetime: string;
-};
 
 export const Card: React.FC<CardProps> = memo(
   ({ user, cities, onDetailsClick, className = "", isLoading = false }) => {
@@ -165,6 +154,7 @@ export const Card: React.FC<CardProps> = memo(
                     <div
                       key={skill.id}
                       className={`${styles.tag} ${tagClassName}`}
+                      title={skill.name}
                     >
                       {skill.name}
                     </div>
@@ -197,6 +187,7 @@ export const Card: React.FC<CardProps> = memo(
                 <div
                   key={skill.id}
                   className={`${styles.learnTag} ${tagClassName}`}
+                  title={skill.name}
                 >
                   {skill.name}
                 </div>

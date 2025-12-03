@@ -92,4 +92,18 @@
   }
   color: $color-text-link;
   @include flex(row, center, center, 4px);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  inline-size: 100%;
+  text-align: left;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  img {
+    margin-left: auto;
+  }
 }
