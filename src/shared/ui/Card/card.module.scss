@@ -87,14 +87,10 @@
     weight: 500;
   }
   color: $color-text;
-  margin-bottom: 8px;
+  margin-block-end: 8px;
   line-height: 1.5;
   letter-spacing: 0.02em;
   text-transform: none;
-}
-
-.skillItem {
-  padding: 12px 0;
 }
 
 .skillName {
@@ -104,7 +100,7 @@
     size: 16px;
   }
   color: $color-text;
-  margin-bottom: 12px;
+  margin-block-end: 8px;
 }
 
 .tags {
