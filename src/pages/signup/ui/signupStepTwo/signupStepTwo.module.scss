@@ -1,0 +1,103 @@
+@use "../../../../styles/variables" as vars;
+@use "../../../../styles/mixins" as *;
+
+.logo {
+  @include flex(row, space-between, flex-end);
+  block-size: 60px;
+}
+
+.backButtonContainer {
+  inline-size: 147px;
+}
+
+.steps {
+  @include flex(row, center, center);
+  margin-block-end: 35px;
+}
+
+.section {
+  @include flex(row, center, stretch, 24px);
+  background-color: vars.$color-background;
+  font-family: Roboto, sans-serif;
+}
+
+.registerContainer {
+  @include flex(column, center, center, 20px);
+  inline-size: 556px;
+  padding-inline: 60px;
+  padding-block: 40px;
+  background-color: vars.$color-input;
+}
+
+.userWrapper {
+  position: relative;
+  display: block;
+}
+
+.welcomeContainer {
+  @include flex(column, center, center);
+  inline-size: 556px;
+  padding-inline: 60px;
+  padding-block: 122px;
+  background-color: vars.$color-input;
+}
+
+.form {
+  inline-size: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.containerWrapper {
+  @include grid(2, 1, normal, stretch, 0, 24px);
+}
+
+.container {
+  @include flex(column, center, start, 6px);
+}
+
+.butttonWrapper {
+  padding-block-start: 16px;
+}
+
+.errorText {
+  display: block;
+  min-block-size: 13px;
+  font-size: 12px;
+}
+
+.userCircle {
+  block-size: 72px;
+  inline-size: 72px;
+}
+
+.add {
+  block-size: 16px;
+  inline-size: 16px;
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+}
+
+.userInfo {
+  block-size: 300px;
+  inline-size: 300px;
+  object-fit: cover;
+  margin-block-end: 40px;
+}
+
+.descriptionContainer {
+  @include flex(column, center, center, 12px);
+}
+
+.title {
+  font-family: Jost, sans-serif;
+  font-size: 24px;
+}
+
+.description {
+  text-align: center;
+  padding-inline: 10px;
+  font-family: Roboto, sans-serif;
+}
