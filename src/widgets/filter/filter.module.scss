@@ -1,3 +1,25 @@
+.button {
+  font: {
+    family: "Roboto", sans-serif;
+    weight: 400;
+    size: 16px;
+  }
+  color: $color-text-link;
+  @include flex(row, center, center, 4px);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  img {
+    margin-left: auto;
+  }
+}
+
 .filterColumn {
   inline-size: 324px; // Ставлю как в макете. В дальнейшем, если что, поправим.
   background-color: $color-input;
@@ -19,12 +41,7 @@
 
     .clearButton {
       padding-top: 5px;
-      @extend .showAllButton;
-
-      &SVG {
-        inline-size: 24px;
-        aspect-ratio: 1;
-      }
+      @extend .button;
     }
   }
 
@@ -85,25 +102,7 @@
 }
 
 .showAllButton {
-  font: {
-    family: "Roboto", sans-serif;
-    weight: 400;
-    size: 16px;
-  }
-  color: $color-text-link;
-  @include flex(row, center, center, 4px);
-  background: none;
-  border: none;
-  cursor: pointer;
+  @extend .button;
   padding: 0;
   inline-size: 100%;
-  text-align: left;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  img {
-    margin-left: auto;
-  }
 }
