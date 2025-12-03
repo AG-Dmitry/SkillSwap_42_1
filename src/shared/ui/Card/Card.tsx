@@ -4,6 +4,7 @@ import type { CardProps } from "./type";
 import type { TSkill } from "@/shared/types/types";
 import styles from "./card.module.scss";
 import { calculateAge } from "../../../../public/utils/ageCalculator";
+import { Like } from "../Like";
 
 export const Card: React.FC<CardProps> = memo(
   ({ user, cities, onDetailsClick, className = "", isLoading = false }) => {
@@ -103,6 +104,12 @@ export const Card: React.FC<CardProps> = memo(
             />
           </div>
           <div className={styles.userInfo}>
+            <Like
+              currentLikeCount={user.likes}
+              className={styles.like}
+              onLikeToggle={() => {}}
+            />
+            {/* Загушка на будущее когда мы будем менять кол-во лайков через сервер и диспатч, если будем */}
             <h3 className={styles.name}>{user.name}</h3>
             <p className={styles.details}>
               {getCityName(user.cityId)}, {calculateAge(user.dateOfBirth)}

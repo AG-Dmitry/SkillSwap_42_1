@@ -83,8 +83,38 @@ export const Filter = ({
     });
   };
 
-  const handleCategoriesChange = (categoryId: number) => {
-    toggleCategory(categoryId);
+  const hasSelectedSubcategories = (categoryId: number) => {
+    const categorySubcategories = getSubcategoriesForCategory(categoryId);
+    const allSubcategoryIds = categorySubcategories.map((sub) => sub.id);
+    return allSubcategoryIds.some((id) => filters.skills.includes(id));
+  };
+
+  const handleCategoryChange = (categoryId: number) => {
+    const categorySubcategories = getSubcategoriesForCategory(categoryId);
+    const allSubcategoryIds = categorySubcategories.map((sub) => sub.id);
+
+    const hasSelected = allSubcategoryIds.some((id) =>
+      filters.skills.includes(id),
+    );
+
+    let currentSkills: number[] = [];
+
+    if (hasSelected) {
+      currentSkills = filters.skills.filter(
+        (id) => !allSubcategoryIds.includes(id),
+      );
+    } else {
+      const missingSubcategoryIds = allSubcategoryIds.filter(
+        (id) => !filters.skills.includes(id),
+      );
+
+      currentSkills = [...filters.skills, ...missingSubcategoryIds];
+    }
+
+    onFiltersChange({
+      ...filters,
+      skills: currentSkills,
+    });
   };
 
   const handleSubcategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -176,8 +206,8 @@ export const Filter = ({
                     type="checkbox"
                     children={category.name}
                     value={String(category.id)}
-                    checked={showSubcategorys.includes(category.id)}
-                    onChange={() => handleCategoriesChange(category.id)}
+                    checked={hasSelectedSubcategories(category.id)}
+                    onChange={() => handleCategoryChange(category.id)}
                   />
                   <button onClick={() => toggleCategory(category.id)}>
                     <img
