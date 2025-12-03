@@ -219,7 +219,7 @@ export const UserCardsSection = ({
         <div className={styles.sectionTitleRow}>
           <h2 className={styles.sectionTitle}>Популярное</h2>
           <ViewAllButton
-            behavior="2-way"
+            behavior="hide"
             initialCount={3}
             currentCount={popularCount}
             totalCount={allPopularUsers.length}
