@@ -21,7 +21,7 @@
 }
 
 .filterColumn {
-  inline-size: 324px; // Ставлю как в макете. В дальнейшем, если что, поправим.
+  inline-size: 324px;
   background-color: $color-input;
   padding: 20px;
   border-radius: $input-border-radius;
@@ -83,11 +83,12 @@
 
   .filterCheckboxList {
     inline-size: 100%;
-    @include flex(column, center, center, 4px);
+    @include flex(column, center, center);
     padding-left: 20px;
 
     .filterCheckboxItems {
       inline-size: 100%;
+      min-block-size: 45px;
       @include flex;
     }
   }
