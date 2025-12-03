@@ -19,7 +19,7 @@ import { selectReferenceData } from "@store/slices/referenceDataSlice";
 
 export const Header = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [isAuth, setIsAuth] = useState(true);
+  const [isAuth] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false);
