@@ -21,7 +21,7 @@ import { DropDownListCategory } from "@/shared/ui/DropDownListCategory";
 
 export const Header = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [isAuth] = useState(true);
+  const [isAuth] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false);
@@ -106,8 +106,7 @@ export const Header = () => {
 
           {/* // TODO: Заменить navigationDropDownLink на компонент DropdownMenu, когда он будет готов */}
           <li>
-            <Link
-              to="/"
+            <p
               className={clsx(
                 styles.navigationDropDownLink,
                 {
@@ -121,7 +120,7 @@ export const Header = () => {
             >
               {/* Для работы компонента DropDown компоненту контроллеру нужно указать атрибут data-trigger-dropdown */}
               Все навыки
-            </Link>
+            </p>
             {showCategory && (
               <DropDown
                 top="22px"

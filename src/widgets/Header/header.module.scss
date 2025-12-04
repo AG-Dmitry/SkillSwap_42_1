@@ -2,7 +2,9 @@
 
 .header {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns:
+    minmax(min-content, 414px) minmax(min-content, 648px)
+    min-content 308px;
   column-gap: 32px;
   align-items: center;
   inline-size: 100%;
@@ -13,7 +15,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  column-gap: 32px;
 }
 
 .navigationLink {
@@ -26,7 +27,8 @@
 
 .navigationLinkContainer {
   display: flex;
-  column-gap: 24px;
+  column-gap: 27px;
+  inline-size: 222px;
 }
 
 .navigationDropDownLink {
@@ -42,7 +44,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     position: absolute;
-    right: 0;
+    right: -6px;
   }
 
   &Open {
@@ -57,21 +59,6 @@
     }
   }
 }
-
-// Внёс свои корректировки для анимации кнопки. Сохранил оригинальный код автора для дальнейших доработок. Но есть смысл создать отдельный компонент кнопки, который будет красиво менять анимацию открытия и закрытия.
-
-// .navigationDropDownLink::after {
-//   content: "";
-//   display: block;
-//   inline-size: 24px;
-//   block-size: 24px;
-//   background-size: contain;
-//   background-repeat: no-repeat;
-//   position: absolute;
-//   inset-inline-end: 0;
-//   top: 50%;
-//   transform: translateY(-50%);
-// }
 
 .searchWrapper {
   position: relative;
@@ -135,7 +122,7 @@
 
 .authButtons {
   display: flex;
-  column-gap: 32px;
+  justify-content: space-between;
 }
 
 .themeIcon {
@@ -151,7 +138,6 @@
 
 .decorateButtonsWrapper {
   display: flex;
-  column-gap: 16px;
 }
 
 .profile {
@@ -196,16 +182,4 @@
   z-index: 1;
   background-color: white;
   max-inline-size: 300px;
-}
-
-// Стили для заглушки меню категорий
-.categoriesMenu {
-  position: absolute;
-  top: 100px;
-  left: 229px;
-  padding: 15px;
-  border-radius: 20px;
-  z-index: 1;
-  background-color: white;
-  max-inline-size: 900px;
 }
