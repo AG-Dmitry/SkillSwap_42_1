@@ -6,9 +6,9 @@
 .skeleton {
   background: linear-gradient(
     90deg,
-    $color-disabled 25%,
-    color.adjust($color-disabled, $lightness: 5%) 50%,
-    $color-disabled 75%
+    var(--color-disabled) 25%,
+    var(--color-disabled-light) 50%,
+    var(--color-disabled) 75%
   );
   background-size: 200% 100%;
   animation: loading 1.5s ease-in-out infinite;

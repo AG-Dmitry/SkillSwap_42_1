@@ -61,7 +61,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #b2b9a9;
+    background-color: var(--color-toggle);
     border-radius: 5px;
 
     &:hover {

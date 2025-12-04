@@ -14,6 +14,7 @@ import { Logo } from "../../shared/ui/Logo";
 import { Button } from "../../shared/ui/Button";
 import { Input } from "../../shared/ui/Input";
 import { DecoratedButton } from "../../shared/ui/DecoratedButton";
+import { useTheme } from "@shared/hooks/useTheme";
 import { useAppSelector } from "@store/hooks";
 import { selectReferenceData } from "@store/slices/referenceDataSlice";
 import { DropDown } from "@/shared/ui/DropDown";
@@ -31,6 +32,7 @@ export const Header = () => {
   const [searchParams] = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
   const { subcategories } = useAppSelector(selectReferenceData);
+  const { toggle } = useTheme();
 
   // Синхронизируем значение поиска с URL параметром
   useEffect(() => {
@@ -165,7 +167,7 @@ export const Header = () => {
       {isAuth ? (
         <>
           <div className={styles.decorateButtonsWrapper}>
-            <DecoratedButton variant={"moon"} />
+            <DecoratedButton variant={"moon"} onClick={() => toggle()} />
             <DecoratedButton
               variant={"bell"}
               onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
@@ -188,7 +190,7 @@ export const Header = () => {
       ) : (
         <>
           <div className={styles.decorateButtonsWrapper}>
-            <DecoratedButton variant={"moon"} />
+            <DecoratedButton variant={"moon"} onClick={() => toggle()} />
           </div>
 
           <div className={styles.authButtons}>

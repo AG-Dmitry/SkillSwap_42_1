@@ -1,7 +1,16 @@
+// все импорты стилей в одном файле
 @use "./styles/themes/dark.scss" as *;
 @use "./styles/themes/light.scss" as *;
 @use "./styles/normalize.scss" as *;
 @use "@styles/reset.scss" as *;
 @use "./styles/fonts.scss" as *;
 
-// все импорты стилей в одном файле
+// Глобальные стили
+html,
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}

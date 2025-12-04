@@ -119,7 +119,7 @@ export const ActiveFilters = ({
             >
               <path
                 d="M1 1L10 10M10 1L1 10"
-                stroke="#253017"
+                stroke="var(--color-text)"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
