@@ -5,86 +5,58 @@ import type { TSkill } from "@/shared/types/types";
 import styles from "./card.module.scss";
 import { calculateAge } from "../../../../public/utils/ageCalculator";
 import { Like } from "../Like";
+import { getUserSkillsByType } from "../../../../public/utils/skillUtils";
+import {
+  getTagClassName,
+  getCategoryIdBySubcategory,
+} from "../../../../public/utils/categoryUtils";
+import { getCityNameById } from "../../../../public/utils/cityUtils";
+import type { TSubcategory } from "@/shared/types/types";
 
 export const Card: React.FC<CardProps> = memo(
   ({ user, cities, onDetailsClick, className = "", isLoading = false }) => {
     const [skills, setSkills] = useState<TSkill[]>([]);
     const [skillsLoading, setSkillsLoading] = useState(true);
+    const [subcategories, setSubcategories] = useState<TSubcategory[]>([]);
+    const [subcategoriesLoading, setSubcategoriesLoading] = useState(true);
 
-    // Загружаем навыки при монтировании компонента
+    // Загружаем навыки и подкатегории при монтировании компонента
     useEffect(() => {
-      const loadSkills = async () => {
+      const loadData = async () => {
         try {
-          const response = await fetch("/db/skills.json");
-          const data: TSkill[] = await response.json(); // data - это массив навыков
-          setSkills(data);
+          const skillsResponse = await fetch("/db/skills.json");
+          const skillsData: TSkill[] = await skillsResponse.json();
+          setSkills(skillsData);
+
+          const subcategoriesResponse = await fetch("/db/subcategories.json");
+          //subcategoriesData - массив подкатегорий
+          const subcategoriesData: TSubcategory[] =
+            await subcategoriesResponse.json();
+          setSubcategories(subcategoriesData);
         } catch (error) {
           console.error("Error loading skills:", error);
           setSkills([]);
+          setSubcategories([]);
         } finally {
           setSkillsLoading(false);
+          setSubcategoriesLoading(false);
         }
       };
 
-      loadSkills();
+      loadData();
     }, []);
 
-    // Функция для получения цвета фона тега на основе категории
-    const getTagClassName = (categoryId: number): string => {
-      const colorMap: Record<number, string> = {
-        1: styles.business,
-        2: styles.creativity,
-        3: styles.languages,
-        4: styles.education,
-        5: styles.home,
-        6: styles.health,
-      };
-      return colorMap[categoryId] || styles.default;
-    };
-
-    // Функция для получения названия города по cityId
-    const getCityName = (cityId: number): string => {
-      const city = cities.find((c) => c.id === cityId);
-      return city ? city.name : "Город не указан";
-    };
-
-    // Функция для получения категории по subcategoryId
-    const getCategoryId = (subcategoryId: number): number => {
-      // subcategoryId от 1 до 8 -> категория 1 (Бизнес)
-      // subcategoryId от 9 до 16 -> категория 2 (Творчество)
-      // subcategoryId от 17 до 23 -> категория 3 (Языки)
-      // subcategoryId от 24 до 29 -> категория 4 (Образование)
-      // subcategoryId от 30 до 35 -> категория 5 (Дом)
-      // subcategoryId от 36 до 42 -> категория 6 (Здоровье)
-      if (subcategoryId >= 1 && subcategoryId <= 8) return 1;
-      if (subcategoryId >= 9 && subcategoryId <= 16) return 2;
-      if (subcategoryId >= 17 && subcategoryId <= 23) return 3;
-      if (subcategoryId >= 24 && subcategoryId <= 29) return 4;
-      if (subcategoryId >= 30 && subcategoryId <= 35) return 5;
-      if (subcategoryId >= 36 && subcategoryId <= 42) return 6;
-      return 0;
-    };
-
-    // Функция для получения навыков пользователя по типу
-    const getUserSkillsByType = (type: "canTeach" | "wantToLearn") => {
-      return skills.filter(
-        (skill) =>
-          skill.userId === user.id &&
-          skill.type_of_proposal === (type === "canTeach" ? "учу" : "учусь"),
-      );
-    };
-
     // Получаем навыки пользователя
-    const canTeachSkills = getUserSkillsByType("canTeach");
-    const wantToLearnSkills = getUserSkillsByType("wantToLearn");
+    const canTeachSkills = getUserSkillsByType(skills, user.id, "учу");
+    const wantToLearnSkills = getUserSkillsByType(skills, user.id, "учусь");
 
     const handleDetailsClick = React.useCallback(() => {
-      if (!isLoading && !skillsLoading) {
+      if (!isLoading && !skillsLoading && !subcategoriesLoading) {
         onDetailsClick?.(user);
       }
-    }, [isLoading, skillsLoading, onDetailsClick, user]);
+    }, [isLoading, skillsLoading, subcategoriesLoading, onDetailsClick, user]);
 
-    const isCardLoading = isLoading || skillsLoading;
+    const isCardLoading = isLoading || skillsLoading || subcategoriesLoading;
 
     return (
       <div
@@ -112,7 +84,8 @@ export const Card: React.FC<CardProps> = memo(
             {/* Загушка на будущее когда мы будем менять кол-во лайков через сервер и диспатч, если будем */}
             <h3 className={styles.name}>{user.name}</h3>
             <p className={styles.details}>
-              {getCityName(user.cityId)}, {calculateAge(user.dateOfBirth)}
+              {getCityNameById(user.cityId, cities)},{" "}
+              {calculateAge(user.dateOfBirth)}
             </p>
           </div>
         </div>
@@ -124,8 +97,11 @@ export const Card: React.FC<CardProps> = memo(
             <div className={styles.skillInfo}>
               <div className={styles.tags}>
                 {canTeachSkills.slice(0, 1).map((skill) => {
-                  const categoryId = getCategoryId(skill.subcategoryId);
-                  const tagClassName = getTagClassName(categoryId);
+                  const categoryId = getCategoryIdBySubcategory(
+                    skill.subcategoryId,
+                    subcategories,
+                  );
+                  const tagClassName = getTagClassName(categoryId, styles);
 
                   return (
                     <div
@@ -157,8 +133,11 @@ export const Card: React.FC<CardProps> = memo(
           <div className={styles.sectionTitle}>Хочет научиться:</div>
           <div className={styles.learnTags}>
             {wantToLearnSkills.slice(0, 2).map((skill) => {
-              const categoryId = getCategoryId(skill.subcategoryId);
-              const tagClassName = getTagClassName(categoryId);
+              const categoryId = getCategoryIdBySubcategory(
+                skill.subcategoryId,
+                subcategories,
+              );
+              const tagClassName = getTagClassName(categoryId, styles);
 
               return (
                 <div
