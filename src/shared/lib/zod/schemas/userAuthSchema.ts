@@ -25,7 +25,6 @@ export const passwordSchema = z
 export const loginSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
-  rememberMe: z.boolean().default(false),
 });
 
 export const signupStep1Schema = z.object({
