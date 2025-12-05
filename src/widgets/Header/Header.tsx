@@ -23,10 +23,9 @@ import NotificationPanel from "../NotificationPanel/NotificationPanel";
 
 export const Header = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [isAuth] = useState(true);
+  const [isAuth] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-  const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [notificationsCount, setNotificationsCount] = useState(1);
@@ -101,7 +100,7 @@ export const Header = () => {
           <Logo />
         </Link>
 
-        <ul className={styles.navigationLinkContainer}>
+        <ul className={styles.navigationList}>
           <li>
             <Link to="/" className={styles.navigationLink}>
               О проекте
@@ -139,7 +138,6 @@ export const Header = () => {
           </li>
         </ul>
       </nav>
-
       <div className={styles.searchWrapper} ref={searchRef}>
         <form className={styles.search} onSubmit={handleSearchSubmit}>
           <Input
@@ -165,10 +163,12 @@ export const Header = () => {
         )}
       </div>
 
+      {/* Компоненты доступные при авторизованном пользователе */}
       {isAuth ? (
-        <>
-          <div className={styles.decorateButtonsWrapper}>
+        <div className={styles.ButtonsProfileWrapper}>
+          <div className={styles.buttons}>
             <DecoratedButton variant={"moon"} onClick={() => toggle()} />
+
             <div data-trigger-dropdown="notifications">
               <DecoratedButton
                 variant="bell"
@@ -204,39 +204,38 @@ export const Header = () => {
               src="https://i.pravatar.cc/150?img=17"
               alt="Аватар пользователя"
             />
+            {isMenuOpen && (
+              <DropDown
+                top="40px"
+                left="-260px"
+                triggerGroupe="profile"
+                onClose={() => {
+                  setIsMenuOpen(false);
+                }}
+              >
+                <ul className={styles.profileMenuList}>
+                  <li className={styles.profileMenuItem}>
+                    <Link to={"/profile"}>Личный кабинет</Link>
+                  </li>
+                  <li
+                    className={clsx(
+                      styles.profileMenuItem,
+                      styles.profileMenuItemExit,
+                    )}
+                    onClick={() => console.log("Вы вышли из аккаунта")}
+                  >
+                    Выйти из аккаунта
+                  </li>
+                </ul>
+              </DropDown>
+            )}
           </div>
-          {isMenuOpen && (
-            <DropDown
-              top="20px"
-              left="1105px"
-              triggerGroupe="profile"
-              onClose={() => {
-                setIsMenuOpen(false);
-              }}
-            >
-              <ul className={styles.profileMenuList}>
-                <li className={styles.profileMenuItem}>
-                  <Link to={"/profile"}>Личный кабинет</Link>
-                </li>
-                <li
-                  className={clsx(
-                    styles.profileMenuItem,
-                    styles.profileMenuItemExit,
-                  )}
-                  onClick={() => console.log("Вы вышли из аккаунта")}
-                >
-                  Выйти из аккаунта
-                </li>
-              </ul>
-            </DropDown>
-          )}
-        </>
+        </div>
       ) : (
         <>
-          <div className={styles.decorateButtonsWrapper}>
+          <div className={styles.decorateButtons}>
             <DecoratedButton variant={"moon"} onClick={() => toggle()} />
           </div>
-
           <div className={styles.authButtons}>
             <Link to="/login" className={styles.navLink}>
               <Button children={"Войти"} variant="secondary"></Button>
@@ -247,59 +246,6 @@ export const Header = () => {
             </Link>
           </div>
         </>
-      )}
-      {/* // ToDo Заменить на меню профиля когда оно будет готово */}
-
-      {/* // ToDo Заменить на окно с уведомлениями когда оно будет готово */}
-      {/* {isNotificationsOpen && (
-        <DropDown
-          top="20px"
-          left="812px"
-          onClose={() => setIsNotificationsOpen(false)}
-        >
-          <NotificationPanel />
-        </DropDown>
-      )} */}
-      {/* // ToDo Заменить на окно с категориями когда оно будет готово */}
-      {isCategoriesMenuOpen && (
-        <div className={styles.categoriesMenu}>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
-            delectus dolorem doloribus eligendi harum illum, itaque laboriosam
-            maxime natus nostrum numquam perspiciatis, provident qui recusandae
-            repudiandae sed tempore, veniam voluptatem?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
-            delectus dolorem doloribus eligendi harum illum, itaque laboriosam
-            maxime natus nostrum numquam perspiciatis, provident qui recusandae
-            repudiandae sed tempore, veniam voluptatem?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
-            delectus dolorem doloribus eligendi harum illum, itaque laboriosam
-            maxime natus nostrum numquam perspiciatis, provident qui recusandae
-            repudiandae sed tempore, veniam voluptatem?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
-            delectus dolorem doloribus eligendi harum illum, itaque laboriosam
-            maxime natus nostrum numquam perspiciatis, provident qui recusandae
-            repudiandae sed tempore, veniam voluptatem?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
-            delectus dolorem doloribus eligendi harum illum, itaque laboriosam
-            maxime natus nostrum numquam perspiciatis, provident qui recusandae
-            repudiandae sed tempore, veniam voluptatem?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
-            delectus dolorem doloribus eligendi harum illum, itaque laboriosam
-            maxime natus nostrum numquam perspiciatis, provident qui recusandae
-            repudiandae sed tempore, veniam voluptatem?
-          </p>
-        </div>
       )}
     </header>
   );
