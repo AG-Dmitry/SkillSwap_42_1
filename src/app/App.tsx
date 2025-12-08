@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { fetchUser, selectAuth } from "@features/auth/model/slice";
 import { getCookie } from "@shared/lib/cookies";
+import { AppRoutes } from "./Routes";
+import { BrowserRouter } from "react-router-dom";
 
-export default function App() {
+export const App = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
 
@@ -18,8 +19,8 @@ export default function App() {
   }, [dispatch, user]);
 
   return (
-    <>
-      <Outlet />
-    </>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
-}
+};
