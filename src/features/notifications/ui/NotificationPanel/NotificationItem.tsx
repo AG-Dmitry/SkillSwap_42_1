@@ -2,11 +2,7 @@ import React from "react";
 import styles from "./notificationPanel.module.scss";
 import ideaIcon from "@images/icons/idea.svg?url";
 import { Button } from "@shared/ui/Button/Button";
-import type { INotification } from "./NotificationPanel";
-
-interface INotificationItemProps {
-  notification: INotification;
-}
+import type { INotificationItemProps } from "../../model/types";
 
 export const NotificationItem: React.FC<INotificationItemProps> = ({
   notification,
@@ -30,7 +26,7 @@ export const NotificationItem: React.FC<INotificationItemProps> = ({
         </div>
       </div>
 
-      {notification.action && (
+      {!notification.isRead && notification.action && (
         <div className={styles.actionButton}>
           <Button
             variant="primary"
