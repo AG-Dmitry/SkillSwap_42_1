@@ -7,9 +7,6 @@ import {
 import { Input } from "@shared/ui/Input/Input";
 import styles from "./filter.module.scss";
 import { FILTER_CONFIG, type TFilterState } from "@features/filter-users/types";
-import { ClearSVG } from "@widgets/Filter/svg/ClearSvg";
-import chevronUp from "@images/icons/chevron-up.svg";
-import chevronDown from "@images/icons/chevron-down.svg";
 import { useAppDispatch, useAppSelector } from "@app/store/hooks";
 import {
   fetchCategories,
@@ -17,6 +14,7 @@ import {
 } from "@entities/category/model/slice";
 import { selectCities, fetchCities } from "@entities/city/model/slice";
 import { FilterSkeleton } from "@widgets/FilterSkeleton/FilterSkeleton";
+import { Chevron, ClearSVG } from "./svg/FilterSvg";
 
 interface FilterProps {
   filters: TFilterState;
@@ -38,7 +36,7 @@ export const Filter = ({
   const categorys = categories;
   const subcategorys = subcategories;
   const gender = ["Не имеет значения", "Мужчины", "Женщины"];
-  const citys = cities;
+  const cityAll = cities;
 
   useEffect(() => {
     if (categories.length === 0 && !isLoading) {
@@ -57,8 +55,8 @@ export const Filter = ({
     ? categorys
     : categorys.slice(0, FILTER_CONFIG.SKILLS_VISIBLE_COUNT);
   const displayedCities = showAllCities
-    ? citys
-    : citys.slice(0, FILTER_CONFIG.CITIES_VISIBLE_COUNT);
+    ? cityAll
+    : cityAll.slice(0, FILTER_CONFIG.CITIES_VISIBLE_COUNT);
 
   const toggleCategory = (categoryId: number) => {
     setShowSubcategorys((prev) =>
@@ -74,7 +72,7 @@ export const Filter = ({
     (filters.purpose ? 1 : 0) +
     filters.skills.length +
     (filters.gender ? 1 : 0) +
-    filters.citys.length;
+    filters.cityAll.length;
 
   const getSubcategoriesForCategory = (categoryId: number) => {
     return subcategorys.filter((sub) => sub.categoryId === categoryId);
@@ -146,13 +144,13 @@ export const Filter = ({
     });
   };
 
-  const handleCitysChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedCitysId = Number(event.target.value);
+  const handleCityAllChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedCityAllId = Number(event.target.value);
     onFiltersChange({
       ...filters,
-      citys: filters.citys.includes(selectedCitysId)
-        ? filters.citys.filter((city) => city !== selectedCitysId)
-        : [...filters.citys, selectedCitysId],
+      cityAll: filters.cityAll.includes(selectedCityAllId)
+        ? filters.cityAll.filter((city) => city !== selectedCityAllId)
+        : [...filters.cityAll, selectedCityAllId],
     });
   };
 
@@ -161,7 +159,7 @@ export const Filter = ({
       purpose: "",
       skills: [],
       gender: "",
-      citys: [],
+      cityAll: [],
     });
     // Очищаем параметр q из URL
     if (onClearSearchQuery) {
@@ -180,9 +178,14 @@ export const Filter = ({
           Фильтры {selectedFilterCounts > 0 && `(${selectedFilterCounts})`}
         </h2>
         {selectedFilterCounts > 0 && (
-          <button className={styles.clearButton} onClick={handleClearFilter}>
+          <button
+            className={styles.clearButton}
+            onClick={handleClearFilter}
+            type="button"
+            aria-label="Сбросить все фильтры"
+          >
             Сбросить
-            <ClearSVG className={styles.clearButtonSVG} />
+            <ClearSVG aria-hidden="true" />
           </button>
         )}
       </div>
@@ -223,14 +226,22 @@ export const Filter = ({
                     isBlockCheckedLabel
                     openListFunction={() => toggleCategory(category.id)}
                   />
-                  <button onClick={() => toggleCategory(category.id)}>
-                    <img
-                      src={
-                        showSubcategorys.includes(category.id)
-                          ? chevronUp
-                          : chevronDown
+                  <button
+                    onClick={() => toggleCategory(category.id)}
+                    type="button"
+                    aria-label={
+                      showSubcategorys.includes(category.id)
+                        ? "Свернуть"
+                        : "Развернуть"
+                    }
+                    aria-expanded={showSubcategorys.includes(category.id)}
+                  >
+                    <Chevron
+                      color="black"
+                      directionArrow={
+                        showSubcategorys.includes(category.id) ? "up" : "down"
                       }
-                      alt={`иконка стрелочки ${showSubcategorys.includes(category.id) ? "Вверх" : "Вниз"}`}
+                      aria-hidden="true"
                     />
                   </button>
                 </div>
@@ -258,11 +269,18 @@ export const Filter = ({
                   className={styles.showAllButton}
                   onClick={toggleShowAllSkills}
                   type="button"
+                  aria-label={
+                    showAllSkills
+                      ? "Скрыть все категории навыков"
+                      : "Показать все категории навыков"
+                  }
+                  aria-expanded={showAllSkills}
                 >
                   {showAllSkills ? "Скрыть" : "Все категории"}
-                  <img
-                    src={showAllSkills ? chevronUp : chevronDown}
-                    alt={`иконка стрелочки ${showAllSkills ? "Вверх" : "Вниз"}`}
+                  <Chevron
+                    color="green"
+                    directionArrow={showAllSkills ? "up" : "down"}
+                    aria-hidden="true"
                   />
                 </button>
               </li>
@@ -286,31 +304,37 @@ export const Filter = ({
             ))}
           </ul>
         </li>
-        <li className={styles.filterCitys}>
+        <li className={styles.filterCityAll}>
           <h3 className={styles.filterOtherTitle}>Город</h3>
           <ul className={styles.filterCheckbox}>
             {displayedCities.map((city) => (
-              <li className={styles.filterCitysItems} key={city.id}>
+              <li className={styles.filterCityAllItems} key={city.id}>
                 <Input
                   type="checkbox"
                   children={city.name}
                   isOpenList
                   value={String(city.id)}
-                  checked={filters.citys.includes(city.id)}
-                  onChange={handleCitysChange}
+                  checked={filters.cityAll.includes(city.id)}
+                  onChange={handleCityAllChange}
                 />
               </li>
             ))}
-            {citys.length > 5 && (
+            {cityAll.length > 5 && (
               <li>
                 <button
                   className={styles.showAllButton}
                   onClick={toggleShowAllCities}
+                  type="button"
+                  aria-label={
+                    showAllCities ? "Скрыть все города" : "Показать все города"
+                  }
+                  aria-expanded={showAllCities}
                 >
                   {showAllCities ? "Скрыть" : "Все города"}
-                  <img
-                    src={showAllCities ? chevronUp : chevronDown}
-                    alt={`иконка стрелочки ${showAllCities ? "Вверх" : "Вниз"}`}
+                  <Chevron
+                    color="green"
+                    directionArrow={showAllCities ? "up" : "down"}
+                    aria-hidden="true"
                   />
                 </button>
               </li>

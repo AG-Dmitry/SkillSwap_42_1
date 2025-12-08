@@ -7,6 +7,8 @@ import {
 } from "@entities/user/model/slice";
 import styles from "./like.module.scss";
 import type { ILikeProps } from "./like.types";
+import { LikeEmpty, LikePaintedOver } from "./likeSvg/LikeSVG";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Like = (props: ILikeProps) => {
   const {
@@ -21,6 +23,8 @@ export const Like = (props: ILikeProps) => {
   const [isLiked, setIsLiked] = useState(initialIsLiked);
   const [isLoading, setIsLoading] = useState(false);
   const pendingRequestRef = useRef<Promise<void> | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Синхронизируем состояние с пропсами
   useEffect(() => {
@@ -33,6 +37,8 @@ export const Like = (props: ILikeProps) => {
 
     // Если пользователь не авторизован, не позволяем ставить лайки
     if (!isAuthenticated) {
+      sessionStorage.setItem("redirectPath", location.pathname);
+      navigate("/login", { state: { from: location } });
       // TODO: переадресация на страницу авторизации
       return;
     }
@@ -99,12 +105,14 @@ export const Like = (props: ILikeProps) => {
         {likeCount}
       </span>
       <button
-        className={`${styles.likeButton} ${isLiked && styles.likeActive}`}
+        className={styles.likeButton}
         onClick={toggleliked}
         disabled={isLoading}
         aria-label={isLiked ? "Убрать лайк" : "Поставить лайк"}
         aria-busy={isLoading}
-      ></button>
+      >
+        {isLiked ? <LikePaintedOver /> : <LikeEmpty />}
+      </button>
     </div>
   );
 };
