@@ -19,23 +19,42 @@ import { useAppSelector } from "@app/store/hooks";
 import { selectCategoryData } from "@entities/category/model/slice";
 import { DropDown } from "@shared/ui/DropDown/DropDown";
 import { DropDownListCategory } from "@shared/ui/DropDownListCategory/DropDownListCategory";
-import NotificationPanel from "../NotificationPanel/NotificationPanel";
+import NotificationPanel from "@features/notifications/ui/NotificationPanel/NotificationPanel";
+import type { INotification } from "@features/notifications/model/types";
+import { defaultNotifications } from "@features/notifications/model/useNotifications";
+import { selectUser } from "@/features/auth/model/slice";
+import { useAppDispatch } from "@app/store/hooks";
+import { logout } from "@/features/auth/model/slice";
 
 export const Header = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [isAuth] = useState(false);
+  //меняем состояние шапки
+  const user = useAppSelector(selectUser);
+  const isAuth = Boolean(user);
+  const dispatch = useAppDispatch();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   // TODO: закомментировать после добавления notificationsCount в state
-  const notificationsCount = 1; // TODO: заменить на state
+  // const notificationsCount = 1; // TODO: заменить на state
   // const [notificationsCount, setNotificationsCount] = useState(1);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
   const { subcategories } = useAppSelector(selectCategoryData);
   const { toggle } = useTheme();
+
+  //настроить уведомления
+  const [notificationsCount, setNotificationsCount] = useState<number>(2);
+  const [notifications, setNotifications] =
+    useState<INotification[]>(defaultNotifications);
+
+  //обработчик, который передаем в панель
+  const handleMarkAllRead = () => {
+    setNotificationsCount(0);
+  };
 
   // Синхронизируем значение поиска с URL параметром
   useEffect(() => {
@@ -175,7 +194,9 @@ export const Header = () => {
               <DecoratedButton
                 variant="bell"
                 data-trigger-dropdown="notifications"
-                notificationsCount={notificationsCount}
+                notificationsCount={
+                  notificationsCount > 0 ? notificationsCount : undefined
+                }
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsNotificationsOpen((prev) => !prev);
@@ -183,14 +204,17 @@ export const Header = () => {
               />
               {isNotificationsOpen && (
                 <DropDown
-                  top="20px"
+                  top="30px"
                   left="-137px"
                   triggerGroupe="notifications"
                   onClose={() => setIsNotificationsOpen(false)}
                   isOpen={isNotificationsOpen}
-                  role="menu"
                 >
-                  <NotificationPanel />
+                  <NotificationPanel
+                    notifications={notifications}
+                    setNotifications={setNotifications}
+                    onMarkAllRead={handleMarkAllRead}
+                  />
                 </DropDown>
               )}
             </div>
@@ -202,10 +226,10 @@ export const Header = () => {
             data-trigger-dropdown="profile"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <span className={styles.userName}>Мария</span>
+            <span className={styles.userName}>{user?.name}</span>
             <img
               className={styles.userImage}
-              src="https://i.pravatar.cc/150?img=17"
+              src={user?.avatarUrl}
               alt="Аватар пользователя"
             />
             {isMenuOpen && (
@@ -228,7 +252,10 @@ export const Header = () => {
                       styles.profileMenuItem,
                       styles.profileMenuItemExit,
                     )}
-                    onClick={() => console.log("Вы вышли из аккаунта")}
+                    onClick={() => {
+                      dispatch(logout());
+                      setIsMenuOpen(false);
+                    }}
                   >
                     Выйти из аккаунта
                   </li>
