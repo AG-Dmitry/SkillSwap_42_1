@@ -115,9 +115,7 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <nav className={styles.navigation} aria-label="main navigation">
-        <Link to="/" className={styles.navLink}>
-          <Logo />
-        </Link>
+        <Logo />
 
         <ul className={styles.navigationList}>
           <li>
