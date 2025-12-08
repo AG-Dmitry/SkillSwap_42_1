@@ -8,6 +8,7 @@ import {
 import styles from "./like.module.scss";
 import type { ILikeProps } from "./like.types";
 import { LikeEmpty, LikePaintedOver } from "./likeSvg/LikeSVG";
+import { useNavigate } from "react-router-dom";
 
 export const Like = (props: ILikeProps) => {
   const {
@@ -22,6 +23,7 @@ export const Like = (props: ILikeProps) => {
   const [isLiked, setIsLiked] = useState(initialIsLiked);
   const [isLoading, setIsLoading] = useState(false);
   const pendingRequestRef = useRef<Promise<void> | null>(null);
+  const navigate = useNavigate();
 
   // Синхронизируем состояние с пропсами
   useEffect(() => {
@@ -34,6 +36,7 @@ export const Like = (props: ILikeProps) => {
 
     // Если пользователь не авторизован, не позволяем ставить лайки
     if (!isAuthenticated) {
+      navigate("/login");
       // TODO: переадресация на страницу авторизации
       return;
     }
