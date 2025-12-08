@@ -1,4 +1,4 @@
-@use "../../styles/variables" as vars;
+@use "@styles/variables" as vars;
 
 .panelContainer {
   border-radius: 12px;
@@ -83,4 +83,13 @@
 
 .viewedCard {
   margin-top: 40px;
+}
+
+.noNotifications {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 133%;
+  letter-spacing: 0.02em;
+  color: vars.$color-caption;
 }
