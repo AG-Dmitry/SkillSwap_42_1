@@ -5,67 +5,141 @@ import clsx from "clsx";
 import { Arrow } from "@shared/ui/Arrow/Arrow";
 import type { TOption } from "@shared/ui/Options/types";
 import { Options } from "@shared/ui/Options/Options";
+import cross from "@shared/assets/images/icons/cross.svg";
 
 // Данный компонент отображает раскрывающийся список чекбоксов
 
 export const Selector: FC<TSelectorProps> = memo(
-  ({ selectionTitle, selectionOptions, selectorType }) => {
-    const [isOpen, setIsOpen] = useState(false);
+  ({
+    id,
+    isOpen,
+    onToggle,
+    selectionTitle,
+    selectionPlaceholder,
+    selectionOptions,
+    selectorType,
+    enableSearch = false,
+  }) => {
     const [selectedOptions, setSelectedOptions] = useState<TOption[]>([]);
+    const [searchValue, setSearchValue] = useState("");
+    const [subTitle, setSubTitle] = useState(selectionPlaceholder);
+
+    const listboxId = `selector-listbox-${id}`;
+    const labelId = `selector-label-${id}`;
 
     const toggleOption = (option: TOption) => {
-      if (selectedOptions.includes(option)) {
-        setSelectedOptions(
-          selectedOptions.filter((opt: TOption) => opt !== option),
+      let newSelected: TOption[] = [];
+
+      if (selectorType === "checkbox") {
+        if (selectedOptions.includes(option)) {
+          setSelectedOptions(
+            selectedOptions.filter((opt: TOption) => opt !== option),
+          );
+          newSelected = selectedOptions.filter((opt) => opt !== option);
+        } else {
+          setSelectedOptions([...selectedOptions, option]);
+          newSelected = [...selectedOptions, option];
+        }
+      } else {
+        setSelectedOptions([option]);
+        newSelected = [option];
+        if (enableSearch) {
+          setSearchValue(option);
+        }
+        onToggle(id);
+      }
+
+      // Обновление subTitle
+      if (selectorType === "checkbox") {
+        setSubTitle(
+          newSelected.length ? newSelected.join(", ") : selectionPlaceholder,
         );
       } else {
-        setSelectedOptions([...selectedOptions, option]);
+        setSubTitle(newSelected[0] || selectionPlaceholder);
       }
     };
 
+    // Очистка строки поиска
+    const clearSearch = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setSearchValue("");
+      setSelectedOptions([]);
+      onToggle(id);
+    };
+
+    // Показ знака очистки строки поиска
+    const showClear = enableSearch && searchValue.length > 0 && isOpen;
+
+    // Фильтрация списка при включённом поиске
+    const visibleOptions = enableSearch
+      ? selectionOptions.filter((option) =>
+          option.toLowerCase().includes(searchValue.toLowerCase()),
+        )
+      : selectionOptions;
+
     return (
-      <div className={clsx(styles.wrapper)}>
-        <div
-          className={clsx(styles.container, {
-            [styles.containerOpen]: isOpen,
-          })}
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {selectionTitle}
-          <Arrow isOpen={isOpen} />
-        </div>
-        {
-          isOpen && (
+      <>
+        <span>{selectionTitle}</span>
+        <div className={clsx(styles.wrapper, { [styles.wrapperOpen]: isOpen })}>
+          <div
+            className={clsx(styles.container, {
+              [styles.containerOpen]: isOpen,
+            })}
+            role="combobox"
+            aria-expanded={isOpen}
+            aria-controls={listboxId}
+            aria-labelledby={labelId}
+            tabIndex={0}
+            onClick={() => onToggle(id)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" && isOpen) {
+                onToggle(id);
+              }
+              if (e.key === "Enter" && !isOpen) {
+                e.preventDefault();
+                onToggle(id);
+              }
+            }}
+          >
+            {/* Поле ввода или просто заголовок в зависимости от значения enableSearch */}
+            {enableSearch ? (
+              <input
+                className={styles.inputField}
+                placeholder={selectionPlaceholder}
+                value={searchValue}
+                name={"input"}
+                aria-label={selectionTitle}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              />
+            ) : (
+              subTitle
+            )}
+            {/* Показ знака очистки строки поиска */}
+            {showClear ? (
+              <span onClick={clearSearch}>
+                <img src={cross} alt="иконка крестика" />
+              </span>
+            ) : (
+              <Arrow isOpen={isOpen} />
+            )}
+          </div>
+          {isOpen && (
             <Options
-              selectionOptions={selectionOptions}
+              id={listboxId}
+              selectionOptions={visibleOptions}
               toggleOption={toggleOption}
               selectedOptions={selectedOptions}
               selectorType={selectorType}
+              onClose={() => onToggle(id)}
             />
-          )
-          // (
-          //   <ul className={clsx(styles.list)}>
-          //     {selectionOptions.map((option) => (
-          //       <li
-          //         className={clsx(styles.listElement)}
-          //         key={option}
-          //         onClick={() => toggleOption(option)}
-          //       >
-          //         <input
-          //           className={clsx(styles.input, {
-          //             [styles.input_checked]: selectedOptions.includes(option),
-          //           })}
-          //           type="checkbox"
-          //           checked={selectedOptions.includes(option)}
-          //           readOnly
-          //         />
-          //         {option}
-          //       </li>
-          //     ))}
-          //   </ul>
-          // )
-        }
-      </div>
+          )}
+        </div>
+      </>
     );
   },
 );
