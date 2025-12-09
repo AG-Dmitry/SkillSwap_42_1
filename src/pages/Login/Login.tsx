@@ -5,15 +5,13 @@ import { login, selectAuth, clearError } from "@features/auth/model/slice";
 import { Button } from "@shared/ui/Button/Button";
 import { Input } from "@shared/ui/Input/Input";
 import { Logo } from "@shared/ui/Logo/Logo";
-import { Separator } from "@shared/ui/Separator/Separator";
 import { ArrowLeftIcon } from "@shared/ui/Icons/ArrowLeftIcon";
-import { GoogleIcon } from "@shared/ui/Icons/GoogleIcon";
-import { AppleIcon } from "@shared/ui/Icons/AppleIcon";
 import lightBulb from "@images/png/light-bulb.png";
 import type { z } from "zod";
 import type { SignupStep1Data } from "@shared/lib/zod/types";
 import { signupStep1Schema } from "@shared/lib/zod/schemas/userAuthSchema";
 import styles from "./login.module.scss";
+import { ExternalLogIn } from "@/widgets/ExternalLogIn/ExternalLogIn";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -121,14 +119,7 @@ export const Login = () => {
         <div className={styles.loginContainer}>
           <h2 className={styles.title}>Вход в аккаунт</h2>
 
-          <Button variant="signup" leftIcon={<GoogleIcon />}>
-            Продолжить с Google
-          </Button>
-          <Button variant="signup" leftIcon={<AppleIcon />}>
-            Продолжить с Apple
-          </Button>
-
-          <Separator />
+          <ExternalLogIn />
 
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.emailContainer}>
