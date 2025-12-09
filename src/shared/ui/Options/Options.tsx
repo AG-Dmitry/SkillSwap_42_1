@@ -11,6 +11,7 @@ export const Options: FC<TOptionsProps> = ({
   toggleOption,
   selectedOptions,
   selectorType,
+  onClose,
 }) => {
   return (
     <ul id={id} role="listbox" className={clsx(styles.list)}>
@@ -27,10 +28,20 @@ export const Options: FC<TOptionsProps> = ({
           key={option}
           role="option"
           aria-selected={selectedOptions.includes(option)}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              toggleOption(option);
+            }
+            if (e.key === "Escape") {
+              e.preventDefault();
+              onClose?.();
+            }
+          }}
           onClick={() => toggleOption(option)}
         >
           <input
-            aria-hidden="true"
             className={clsx(
               selectorType === "checkbox"
                 ? selectedOptions.includes(option)
