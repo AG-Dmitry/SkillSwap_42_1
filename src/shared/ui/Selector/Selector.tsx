@@ -98,7 +98,6 @@ export const Selector: FC<TSelectorProps> = memo(
                   e.stopPropagation();
                 }}
                 onFocus={() => {
-                  // Добавляем эту строку - открываем список при фокусе на поле ввода
                   if (!isOpen) {
                     onToggle(id);
                   }
