@@ -160,7 +160,7 @@ export const Login = () => {
             )}
 
             <Button
-              htmlType="submit"
+              type="submit"
               disabled={!isFormValid || isLoading}
               onClick={() => {
                 console.log("🖱️ [Login] Button clicked!", {
