@@ -3,18 +3,17 @@ import { updateStep1, selectSignup } from "@features/signup/model/slice";
 import { useNavigate } from "react-router-dom";
 import styles from "./signupStepOne.module.scss";
 import { Button } from "@shared/ui/Button/Button";
-import { Separator } from "@shared/ui/Separator/Separator";
 import { Input } from "@shared/ui/Input/Input";
 import { Logo } from "@shared/ui/Logo/Logo";
 import lightBulb from "@images/png/light-bulb.png";
-import { AppleIcon } from "@shared/ui/Icons/AppleIcon";
 import { SignupSteps } from "@shared/ui/SignupSteps/SignupSteps";
 import { ArrowLeftIcon } from "@shared/ui/Icons/ArrowLeftIcon";
-import { GoogleIcon } from "@shared/ui/Icons/GoogleIcon";
 import { useEffect, useState } from "react";
 import type { z } from "zod";
 import type { SignupStep1Data } from "@shared/lib/zod/types";
 import { signupStep1Schema } from "@shared/lib/zod/schemas/userAuthSchema";
+import { ExternalLogIn } from "@/widgets/ExternalLogIn/ExternalLogIn";
+import { WelcomeSection } from "@shared/ui/WelcomeSection/WelcomeSection.tsx";
 
 export const SignupStepOne = () => {
   const navigate = useNavigate();
@@ -104,15 +103,7 @@ export const SignupStepOne = () => {
       </div>
       <section className={styles.section}>
         <div className={styles.registerContainer}>
-          <Button variant="signup" leftIcon={<GoogleIcon />}>
-            Продолжить с Google
-          </Button>
-          <Button variant="signup" leftIcon={<AppleIcon />}>
-            Продолжить с Apple
-          </Button>
-
-          <Separator />
-
+          <ExternalLogIn />
           <form
             className={styles.form}
             onSubmit={(e) => {
@@ -154,23 +145,14 @@ export const SignupStepOne = () => {
             </Button>
           </form>
         </div>
-        <div className={styles.welcomeContainer}>
-          <img
-            className={styles.lightBulb}
-            src={lightBulb}
-            alt="Картинка с нарисованной лампочкой"
-            width="300"
-            height="300"
-            loading="lazy"
-          />
-          <div className={styles.descriptionContainer}>
-            <h3 className={styles.title}>Добро пожаловать в SkillSwap!</h3>
-            <p className={styles.description}>
-              Присоединяйтесь к SkillSwap и обменивайтесь знаниями и навыками с
-              другими людьми
-            </p>
-          </div>
-        </div>
+        <WelcomeSection
+          src={lightBulb}
+          alt={"Картинка с нарисованной лампочкой"}
+          title={"Добро пожаловать в SkillSwap!"}
+          description={
+            "Присоединяйтесь к SkillSwap и обменивайтесь знаниями и навыками с другими людьми"
+          }
+        />
       </section>
     </>
   );

@@ -36,6 +36,7 @@ import {
 import { fetchCities, selectCities } from "@entities/city/model/slice";
 import { CategorySelector } from "@pages/signup/ui/SignupStepThree/CategorySelector";
 import { SkeletonField } from "@pages/signup/ui/SignupStepThree/SkeletonField";
+import { WelcomeSection } from "@shared/ui/WelcomeSection/WelcomeSection";
 
 export const SignupStepTwo = () => {
   const dispatch = useAppDispatch();
@@ -487,21 +488,14 @@ export const SignupStepTwo = () => {
             </div>
           </form>
         </div>
-        <div className={clsx(styles.welcomeContainer)}>
-          <img
-            className={styles.userInfo}
-            src={userInfo}
-            alt="картинка с говорящим человеком"
-            loading="lazy"
-          />
-          <div className={clsx(styles.descriptionContainer)}>
-            <h3 className={clsx(styles.title)}>Расскажите немного о себе</h3>
-            <p className={clsx(styles.description)}>
-              Это поможет другим людям лучше вас узнать, чтобы выбрать для
-              обмена
-            </p>
-          </div>
-        </div>
+        <WelcomeSection
+          src={userInfo}
+          alt={"Картинка с говорящим человеком"}
+          title={"Расскажите немного о себе"}
+          description={
+            "Это поможет другим людям лучше вас узнать, чтобы выбрать для обмена"
+          }
+        />
       </section>
     </>
   );

@@ -24,6 +24,9 @@ export const Selector: FC<TSelectorProps> = memo(
     const [searchValue, setSearchValue] = useState("");
     const [subTitle, setSubTitle] = useState(selectionPlaceholder);
 
+    const listboxId = `selector-listbox-${id}`;
+    const labelId = `selector-label-${id}`;
+
     const toggleOption = (option: TOption) => {
       let newSelected: TOption[] = [];
 
@@ -82,7 +85,21 @@ export const Selector: FC<TSelectorProps> = memo(
             className={clsx(styles.container, {
               [styles.containerOpen]: isOpen,
             })}
+            role="combobox"
+            aria-expanded={isOpen}
+            aria-controls={listboxId}
+            aria-labelledby={labelId}
+            tabIndex={0}
             onClick={() => onToggle(id)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" && isOpen) {
+                onToggle(id);
+              }
+              if (e.key === "Enter" && !isOpen) {
+                e.preventDefault();
+                onToggle(id);
+              }
+            }}
           >
             {/* Поле ввода или просто заголовок в зависимости от значения enableSearch */}
             {enableSearch ? (
@@ -91,6 +108,7 @@ export const Selector: FC<TSelectorProps> = memo(
                 placeholder={selectionPlaceholder}
                 value={searchValue}
                 name={"input"}
+                aria-label={selectionTitle}
                 onChange={(e) => {
                   setSearchValue(e.target.value);
                 }}
@@ -117,10 +135,12 @@ export const Selector: FC<TSelectorProps> = memo(
           </div>
           {isOpen && (
             <Options
+              id={listboxId}
               selectionOptions={visibleOptions}
               toggleOption={toggleOption}
               selectedOptions={selectedOptions}
               selectorType={selectorType}
+              onClose={() => onToggle(id)}
             />
           )}
         </div>

@@ -7,21 +7,14 @@ import { SignupStepTwo } from "@pages/signup/ui/SignupStepTwo/SignupStepTwo";
 import { Login } from "@/pages/Login/Login";
 import { Layout } from "@/widgets/Layout/Layout";
 import { ErrorPage } from "@/pages/ErrorPage/ErrorPage";
+import { ProfilePage } from "@/pages/ProfilePage/ProfilePage";
+import { Favorites } from "@/pages/Favorites/Favorites";
 
 function CreateOffer() {
   return (
     <section>
       <h2>Предложить обмен</h2>
       <p>Форма создания нового предложения обмена</p>
-    </section>
-  );
-}
-
-function Favorites() {
-  return (
-    <section>
-      <h2>Избранное</h2>
-      <p>Сохраненные предложения</p>
     </section>
   );
 }
@@ -43,7 +36,7 @@ export const AppRoutes = () => (
         path="profile"
         element={
           <ProtectedRoute>
-            <Profile />
+            <ProfilePage />
           </ProtectedRoute>
         }
       />
