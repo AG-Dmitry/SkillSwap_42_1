@@ -16,7 +16,6 @@ import { Input } from "@shared/ui/Input/Input";
 import { DecoratedButton } from "@shared/ui/DecoratedButton/DecoratedButton";
 import { useTheme } from "@shared/hooks/useTheme";
 import { useAppSelector } from "@app/store/hooks";
-import { selectCategoryData } from "@entities/category/model/slice";
 import { DropDown } from "@shared/ui/DropDown/DropDown";
 import { DropDownListCategory } from "@shared/ui/DropDownListCategory/DropDownListCategory";
 import NotificationPanel from "@features/notifications/ui/NotificationPanel/NotificationPanel";
@@ -32,7 +31,15 @@ import {
 import { Arrow } from "@/shared/ui/Arrow/Arrow";
 import { LogOutSvg } from "./svg/LogoutSvg";
 
-export const Header = () => {
+import type { TFilterState } from "@/features/filter-users/types";
+import type { TSubcategory } from "@/entities/category/types";
+
+interface HeaderProps {
+  onFiltersChange: (filters: TFilterState) => void;
+  subcategories: TSubcategory[];
+}
+
+export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
   const [searchValue, setSearchValue] = useState("");
   //меняем состояние шапки
   const user = useAppSelector(selectUser);
@@ -46,7 +53,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
-  const { subcategories } = useAppSelector(selectCategoryData);
+  // const { subcategories } = useAppSelector(selectCategoryData);
   const { toggle } = useTheme();
 
   // Получаем уведомления из Redux
@@ -168,13 +175,33 @@ export const Header = () => {
                 top="22px"
                 left="-293px"
                 triggerGroupe="category"
-                onClose={() => {
-                  setShowCategory(false);
-                }}
+                onClose={() => setShowCategory(false)}
                 isOpen={showCategory}
                 role="listbox"
               >
-                <DropDownListCategory />
+                <DropDownListCategory
+                  subcategories={subcategories}
+                  onSubcategoryClick={(subcategoryId) => {
+                    //устанавливаем фильтр только по выбранной подкатегории
+                    onFiltersChange({
+                      purpose: "",
+                      skills: [subcategoryId],
+                      gender: "",
+                      cityAll: [],
+                    });
+
+                    //закрываем дропдаун
+                    setShowCategory(false);
+
+                    //обновляем url
+                    const subcategory = subcategories.find(
+                      (sub) => sub.id === subcategoryId,
+                    );
+                    if (subcategory) {
+                      navigate(`/?q=${encodeURIComponent(subcategory.name)}`);
+                    }
+                  }}
+                />
               </DropDown>
             )}
           </li>
