@@ -15,6 +15,7 @@ import { ViewAllButton } from "@shared/ui/ViewAllButton/ViewAllButton";
 import styles from "./userCardsSection.module.scss";
 import { Button } from "@/shared/ui/Button/Button";
 import { useInfinityScroll } from "@/shared/hooks/useInfinityScroll";
+import { Arrow } from "@/shared/ui/Arrow/Arrow";
 
 interface UserCardsSectionProps {
   filters: TFilterState;
@@ -350,6 +351,7 @@ export const UserCardsSection = ({
         {recommendationsCount >= users.length && (
           <Button variant="secondary" onClick={() => hideAllSection(3)}>
             К началу страницы
+            <Arrow isOpen={true} />
           </Button>
         )}
       </section>

@@ -1,17 +1,16 @@
-import clsx from "clsx";
-import arrow from "@shared/assets/images/icons/chevron-down.svg";
 import type { FC } from "react";
 import type { TArrowProps } from "@shared/ui/Arrow/types";
-import styles from "./arrow.module.scss";
-
+import { ArrowButtonSvg } from "./svg/ArrowButtonSvg";
 // Данный компонент отображает стрелку для раскрывающегося списка
 
-export const Arrow: FC<TArrowProps> = ({ isOpen }) => {
+export const Arrow: FC<TArrowProps> = (props) => {
+  const { isOpen } = props;
+
   return (
-    <img
-      src={arrow}
-      alt="иконка стрелочки"
-      className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
+    <ArrowButtonSvg
+      isOpen={isOpen}
+      aria-label={isOpen ? "Стелочка наверх" : "Стелочка вниз"}
+      aria-hidden="true"
     />
   );
 };
