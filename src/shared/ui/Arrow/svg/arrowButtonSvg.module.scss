@@ -1,8 +1,12 @@
-.arrowSvg {
+.chevron {
   inline-size: 24px;
   block-size: 24px;
 
-  &Path {
+  &Black {
     fill: $color-text;
+  }
+
+  &Green {
+    fill: $color-text-link;
   }
 }
