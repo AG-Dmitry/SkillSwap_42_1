@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@app/store/hooks";
 import { login, selectAuth, clearError } from "@features/auth/model/slice";
 import { Button } from "@shared/ui/Button/Button";
@@ -115,10 +115,10 @@ export const Login = () => {
         </div>
       </div>
 
+      <h1 className={styles.title}>Вход</h1>
+
       <section className={styles.section}>
         <div className={styles.loginContainer}>
-          <h2 className={styles.title}>Вход в аккаунт</h2>
-
           <ExternalLogIn />
 
           <form className={styles.form} onSubmit={handleSubmit}>
@@ -142,7 +142,7 @@ export const Login = () => {
               <Input
                 type="password"
                 id="password"
-                placeholder="Введите пароль"
+                placeholder="Введите ваш пароль"
                 value={formData.password}
                 onChange={handleInputChange}
                 disabled={isLoading}
@@ -173,12 +173,7 @@ export const Login = () => {
             </Button>
 
             <div className={styles.registerLink}>
-              <p>
-                Нет аккаунта?{" "}
-                <Button to="/registration/step1" variant="tertiary">
-                  Зарегистрироваться
-                </Button>
-              </p>
+              <Link to="/registration/step1">Зарегистрироваться</Link>
             </div>
           </form>
         </div>
@@ -193,10 +188,9 @@ export const Login = () => {
             loading="lazy"
           />
           <div className={styles.descriptionContainer}>
-            <h3 className={styles.welcomeTitle}>Добро пожаловать обратно!</h3>
+            <h3 className={styles.welcomeTitle}>С возвращением в SkillSwap!</h3>
             <p className={styles.description}>
-              Войдите в свой аккаунт, чтобы продолжить обмен навыками с другими
-              пользователями
+              Обменивайтесь знаниями и навыками с другими людьми
             </p>
           </div>
         </div>
