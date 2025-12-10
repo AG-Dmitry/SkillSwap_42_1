@@ -21,13 +21,13 @@ export const CalendarContainer = (props: TCalendarContainer) => {
           <Button
             variant="secondary"
             onClick={onCancel}
-            aria-label="Подтвердить выбор даты"
+            aria-label="Отменить выбор даты"
           >
             Отменить
           </Button>
         </div>
         <div className={styles.confirmButton}>
-          <Button onClick={onConfirm} aria-label="Отменить выбор даты">
+          <Button onClick={onConfirm} aria-label="Подтвердить выбор даты">
             Выбрать
           </Button>
         </div>
