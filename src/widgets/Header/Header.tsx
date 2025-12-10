@@ -29,8 +29,6 @@ import {
   fetchNotifications,
   markAllNotificationsAsRead,
 } from "@entities/notification/model/slice";
-import { Arrow } from "@/shared/ui/Arrow/Arrow";
-import { LogOutSvg } from "./svg/LogoutSvg";
 
 export const Header = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -131,12 +129,8 @@ export const Header = () => {
   };
 
   return (
-    <header role="banner" className={styles.header}>
-      <nav
-        className={styles.navigation}
-        aria-label="main navigation"
-        role="navigation"
-      >
+    <header className={styles.header}>
+      <nav className={styles.navigation} aria-label="Основная навигация">
         <Logo />
 
         <ul className={styles.navigationList}>
@@ -147,7 +141,7 @@ export const Header = () => {
           </li>
 
           <li>
-            <p
+            <button
               className={clsx(
                 styles.navigationDropDownLink,
                 {
@@ -158,11 +152,12 @@ export const Header = () => {
               )}
               data-trigger-dropdown="category"
               onClick={() => setShowCategory(!showCategory)}
+              aria-expanded={showCategory}
+              aria-haspopup="menu"
             >
               {/* Для работы компонента DropDown компоненту контроллеру нужно указать атрибут data-trigger-dropdown */}
               Все навыки
-              <Arrow isOpen={showCategory} />
-            </p>
+            </button>
             {showCategory && (
               <DropDown
                 top="22px"
@@ -172,7 +167,6 @@ export const Header = () => {
                   setShowCategory(false);
                 }}
                 isOpen={showCategory}
-                role="listbox"
               >
                 <DropDownListCategory />
               </DropDown>
@@ -188,6 +182,9 @@ export const Header = () => {
             value={searchValue}
             onChange={handleSearchChange}
             onFocus={() => setShowSuggestions(true)}
+            id="search-input"
+            aria-autocomplete="list"
+            aria-expanded={showSuggestions}
           />
         </form>
         {showSuggestions && suggestions.length > 0 && (
@@ -211,10 +208,7 @@ export const Header = () => {
           <div className={styles.buttons}>
             <DecoratedButton variant={"moon"} onClick={() => toggle()} />
 
-            <div
-              data-trigger-dropdown="notifications"
-              className={styles.buttonNotifications}
-            >
+            <div data-trigger-dropdown="notifications">
               <DecoratedButton
                 variant="bell"
                 data-trigger-dropdown="notifications"
@@ -236,6 +230,7 @@ export const Header = () => {
                     notifications={notifications}
                     onMarkAllRead={handleMarkAllRead}
                     isOpen={isNotificationsOpen}
+                    aria-expanded={isNotificationsOpen}
                   />
                 </DropDown>
               )}
@@ -282,7 +277,6 @@ export const Header = () => {
                     }}
                   >
                     Выйти из аккаунта
-                    <LogOutSvg />
                   </li>
                 </ul>
               </DropDown>
