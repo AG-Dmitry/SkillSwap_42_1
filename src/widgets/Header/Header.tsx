@@ -257,6 +257,7 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
                     notifications={notifications}
                     onMarkAllRead={handleMarkAllRead}
                     isOpen={isNotificationsOpen}
+                    onClose={() => setIsNotificationsOpen(false)}
                     aria-expanded={isNotificationsOpen}
                   />
                 </DropDown>
