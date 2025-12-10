@@ -28,6 +28,8 @@ import {
   fetchNotifications,
   markAllNotificationsAsRead,
 } from "@entities/notification/model/slice";
+import { Arrow } from "@/shared/ui/Arrow/Arrow";
+import { LogOutSvg } from "./svg/LogoutSvg";
 
 import type { TFilterState } from "@/features/filter-users/types";
 import type { TSubcategory } from "@/entities/category/types";
@@ -136,8 +138,12 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
   };
 
   return (
-    <header className={styles.header}>
-      <nav className={styles.navigation} aria-label="main navigation">
+    <header role="banner" className={styles.header}>
+      <nav
+        className={styles.navigation}
+        aria-label="main navigation"
+        role="navigation"
+      >
         <Logo />
 
         <ul className={styles.navigationList}>
@@ -162,6 +168,7 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
             >
               {/* Для работы компонента DropDown компоненту контроллеру нужно указать атрибут data-trigger-dropdown */}
               Все навыки
+              <Arrow isOpen={showCategory} />
             </p>
             {showCategory && (
               <DropDown
@@ -231,7 +238,10 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
           <div className={styles.buttons}>
             <DecoratedButton variant={"moon"} onClick={() => toggle()} />
 
-            <div data-trigger-dropdown="notifications">
+            <div
+              data-trigger-dropdown="notifications"
+              className={styles.buttonNotifications}
+            >
               <DecoratedButton
                 variant="bell"
                 data-trigger-dropdown="notifications"
@@ -299,6 +309,7 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
                     }}
                   >
                     Выйти из аккаунта
+                    <LogOutSvg />
                   </li>
                 </ul>
               </DropDown>

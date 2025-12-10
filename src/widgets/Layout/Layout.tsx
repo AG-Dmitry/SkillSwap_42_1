@@ -21,7 +21,7 @@ export const Layout = () => {
   return (
     <div className={styles.pageContainer}>
       <Header subcategories={subcategories} onFiltersChange={setFilters} />
-      <main className={styles.main}>
+      <main id="main-content" role="main" className={styles.main}>
         <Outlet context={{ filters, setFilters }} />
       </main>
       <Footer />
