@@ -1,6 +1,9 @@
 import { useSelector } from "react-redux";
 import styles from "./dropDownListCategory.module.scss";
-import { selectCategoryData } from "@entities/category/model/slice";
+import {
+  fetchCategories,
+  selectCategoryData,
+} from "@entities/category/model/slice";
 import bussinessCareerImg from "@images/png/Business-career.png";
 import creativeAndArtImg from "@images/png/Creativity-and-Art.png";
 import educationAndDevelopmentImg from "@images/png/Education-and-Development.png";
@@ -8,10 +11,30 @@ import foreignLanguagesImg from "@images/png/Foreig-languages.png";
 import healthAndLifestyleImg from "@images/png/Health-and-Lifestyle.png";
 import homeAndComfortImg from "@images/png/Home-and-comfort.png";
 import DropDownListCategorySkeleton from "./DropDownListCategorySkeleton";
+import { useEffect } from "react";
+import { useAppDispatch } from "@/app/store/hooks";
+// import type { Subcategory } from "@/pages/signup/ui/SignupStepThree/types";
 
-export const DropDownListCategory = () => {
+import type { TSubcategory } from "@/entities/category/types";
+
+interface DropDownListCategoryProps {
+  subcategories: TSubcategory[];
+  onSubcategoryClick: (subcategoryId: number) => void;
+}
+
+export const DropDownListCategory = ({
+  onSubcategoryClick,
+}: DropDownListCategoryProps) => {
   const { categories, subcategories, isLoading } =
     useSelector(selectCategoryData);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (categories.length === 0 && !isLoading) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch]);
 
   //Простая функция заглушка, пока нет api с подтягиванием изображений. В дальнейшем нужно изображение будет тянуть прям из json
   const setImagesCategory = (categoriesId: number) => {
@@ -62,13 +85,12 @@ export const DropDownListCategory = () => {
                     key={subcategory.id}
                     className={styles.subcategoriesTitle}
                   >
-                    <a
-                      href="#"
-                      aria-label={`Подкатегория: ${subcategory.name}`}
+                    <button
+                      type="button"
+                      onClick={() => onSubcategoryClick?.(subcategory.id)}
                     >
                       {subcategory.name}
-                    </a>
-                    {/* т.к. это заглушка, то и ссылки никуда не ведут */}
+                    </button>
                   </li>
                 ))}
             </ul>

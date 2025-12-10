@@ -16,26 +16,68 @@ import { Input } from "@shared/ui/Input/Input";
 import { DecoratedButton } from "@shared/ui/DecoratedButton/DecoratedButton";
 import { useTheme } from "@shared/hooks/useTheme";
 import { useAppSelector } from "@app/store/hooks";
-import { selectCategoryData } from "@entities/category/model/slice";
 import { DropDown } from "@shared/ui/DropDown/DropDown";
 import { DropDownListCategory } from "@shared/ui/DropDownListCategory/DropDownListCategory";
-import NotificationPanel from "../NotificationPanel/NotificationPanel";
+import NotificationPanel from "@features/notifications/ui/NotificationPanel/NotificationPanel";
+import { selectUser } from "@/features/auth/model/slice";
+import { useAppDispatch } from "@app/store/hooks";
+import { logout } from "@/features/auth/model/slice";
+import {
+  selectNotifications,
+  selectUnreadNotificationsCount,
+  fetchNotifications,
+  markAllNotificationsAsRead,
+} from "@entities/notification/model/slice";
+import { Arrow } from "@/shared/ui/Arrow/Arrow";
+import { LogOutSvg } from "./svg/LogoutSvg";
 
-export const Header = () => {
+import type { TFilterState } from "@/features/filter-users/types";
+import type { TSubcategory } from "@/entities/category/types";
+
+interface HeaderProps {
+  onFiltersChange: (filters: TFilterState) => void;
+  subcategories: TSubcategory[];
+}
+
+export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
   const [searchValue, setSearchValue] = useState("");
-  const [isAuth] = useState(false);
+  //меняем состояние шапки
+  const user = useAppSelector(selectUser);
+  const isAuth = Boolean(user);
+  const dispatch = useAppDispatch();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
-  // TODO: закомментировать после добавления notificationsCount в state
-  const notificationsCount = 1; // TODO: заменить на state
-  // const [notificationsCount, setNotificationsCount] = useState(1);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
-  const { subcategories } = useAppSelector(selectCategoryData);
+  // const { subcategories } = useAppSelector(selectCategoryData);
   const { toggle } = useTheme();
+
+  // Получаем уведомления из Redux
+  const notifications = useAppSelector(selectNotifications);
+  const notificationsCount = useAppSelector(selectUnreadNotificationsCount);
+
+  // Загружаем уведомления при открытии панели (если авторизован)
+  useEffect(() => {
+    if (isAuth && isNotificationsOpen) {
+      dispatch(fetchNotifications());
+
+      // Обновляем уведомления каждые 10 секунд, пока панель открыта
+      const interval = setInterval(() => {
+        dispatch(fetchNotifications());
+      }, 10000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isAuth, isNotificationsOpen, dispatch]);
+
+  // Обработчик, который передаем в панель
+  const handleMarkAllRead = async () => {
+    await dispatch(markAllNotificationsAsRead());
+  };
 
   // Синхронизируем значение поиска с URL параметром
   useEffect(() => {
@@ -96,11 +138,13 @@ export const Header = () => {
   };
 
   return (
-    <header className={styles.header}>
-      <nav className={styles.navigation} aria-label="main navigation">
-        <Link to="/" className={styles.navLink}>
-          <Logo />
-        </Link>
+    <header role="banner" className={styles.header}>
+      <nav
+        className={styles.navigation}
+        aria-label="main navigation"
+        role="navigation"
+      >
+        <Logo />
 
         <ul className={styles.navigationList}>
           <li>
@@ -124,19 +168,40 @@ export const Header = () => {
             >
               {/* Для работы компонента DropDown компоненту контроллеру нужно указать атрибут data-trigger-dropdown */}
               Все навыки
+              <Arrow isOpen={showCategory} />
             </p>
             {showCategory && (
               <DropDown
                 top="22px"
                 left="-293px"
                 triggerGroupe="category"
-                onClose={() => {
-                  setShowCategory(false);
-                }}
+                onClose={() => setShowCategory(false)}
                 isOpen={showCategory}
                 role="listbox"
               >
-                <DropDownListCategory />
+                <DropDownListCategory
+                  subcategories={subcategories}
+                  onSubcategoryClick={(subcategoryId) => {
+                    //устанавливаем фильтр только по выбранной подкатегории
+                    onFiltersChange({
+                      purpose: "",
+                      skills: [subcategoryId],
+                      gender: "",
+                      cityAll: [],
+                    });
+
+                    //закрываем дропдаун
+                    setShowCategory(false);
+
+                    //обновляем url
+                    const subcategory = subcategories.find(
+                      (sub) => sub.id === subcategoryId,
+                    );
+                    if (subcategory) {
+                      navigate(`/?q=${encodeURIComponent(subcategory.name)}`);
+                    }
+                  }}
+                />
               </DropDown>
             )}
           </li>
@@ -173,11 +238,16 @@ export const Header = () => {
           <div className={styles.buttons}>
             <DecoratedButton variant={"moon"} onClick={() => toggle()} />
 
-            <div data-trigger-dropdown="notifications">
+            <div
+              data-trigger-dropdown="notifications"
+              className={styles.buttonNotifications}
+            >
               <DecoratedButton
                 variant="bell"
                 data-trigger-dropdown="notifications"
-                notificationsCount={notificationsCount}
+                notificationsCount={
+                  notificationsCount > 0 ? notificationsCount : undefined
+                }
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsNotificationsOpen((prev) => !prev);
@@ -185,18 +255,21 @@ export const Header = () => {
               />
               {isNotificationsOpen && (
                 <DropDown
-                  top="20px"
-                  left="-137px"
                   triggerGroupe="notifications"
                   onClose={() => setIsNotificationsOpen(false)}
                   isOpen={isNotificationsOpen}
-                  role="menu"
                 >
-                  <NotificationPanel />
+                  <NotificationPanel
+                    notifications={notifications}
+                    onMarkAllRead={handleMarkAllRead}
+                    isOpen={isNotificationsOpen}
+                  />
                 </DropDown>
               )}
             </div>
-            <DecoratedButton variant={"heart"} />
+            <Link to="/favorites" className={styles.favoritesLink}>
+              <DecoratedButton variant={"heart"} />
+            </Link>
           </div>
 
           <div
@@ -204,10 +277,10 @@ export const Header = () => {
             data-trigger-dropdown="profile"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <span className={styles.userName}>Мария</span>
+            <span className={styles.userName}>{user?.name}</span>
             <img
               className={styles.userImage}
-              src="https://i.pravatar.cc/150?img=17"
+              src={user?.avatarUrl}
               alt="Аватар пользователя"
             />
             {isMenuOpen && (
@@ -230,9 +303,13 @@ export const Header = () => {
                       styles.profileMenuItem,
                       styles.profileMenuItemExit,
                     )}
-                    onClick={() => console.log("Вы вышли из аккаунта")}
+                    onClick={() => {
+                      dispatch(logout());
+                      setIsMenuOpen(false);
+                    }}
                   >
                     Выйти из аккаунта
+                    <LogOutSvg />
                   </li>
                 </ul>
               </DropDown>

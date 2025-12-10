@@ -1,22 +1,30 @@
+import { useAppDispatch, useAppSelector } from "@app/store/hooks";
+import { updateStep1, selectSignup } from "@features/signup/model/slice";
+import { useNavigate } from "react-router-dom";
 import styles from "./signupStepOne.module.scss";
 import { Button } from "@shared/ui/Button/Button";
-import { Separator } from "@shared/ui/Separator/Separator";
 import { Input } from "@shared/ui/Input/Input";
 import { Logo } from "@shared/ui/Logo/Logo";
 import lightBulb from "@images/png/light-bulb.png";
-import { AppleIcon } from "@shared/ui/Icons/AppleIcon";
 import { SignupSteps } from "@shared/ui/SignupSteps/SignupSteps";
 import { ArrowLeftIcon } from "@shared/ui/Icons/ArrowLeftIcon";
-import { GoogleIcon } from "@shared/ui/Icons/GoogleIcon";
 import { useEffect, useState } from "react";
 import type { z } from "zod";
 import type { SignupStep1Data } from "@shared/lib/zod/types";
 import { signupStep1Schema } from "@shared/lib/zod/schemas/userAuthSchema";
+import { ExternalLogIn } from "@/widgets/ExternalLogIn/ExternalLogIn";
+import { WelcomeSection } from "@shared/ui/WelcomeSection/WelcomeSection.tsx";
 
 export const SignupStepOne = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  // Получаем сохраненные данные из Redux
+  const { step1 } = useAppSelector(selectSignup);
+
+  // Инициализируем форму данными из Redux
   const [formData, setFormData] = useState<SignupStep1Data>({
-    email: "",
-    password: "",
+    email: step1.email || "",
+    password: step1.password || "",
   });
 
   const [touched, setTouched] = useState({
@@ -67,6 +75,19 @@ export const SignupStepOne = () => {
     setTouched((prev) => ({ ...prev, [id]: true }));
   };
 
+  const handleSubmit = () => {
+    if (isFormValid) {
+      // Сохраняем данные шага 1 в Redux
+      dispatch(
+        updateStep1({
+          email: formData.email,
+          password: formData.password,
+        }),
+      );
+      navigate("/registration/step2");
+    }
+  };
+
   return (
     <>
       <div className={styles.logo}>
@@ -82,16 +103,14 @@ export const SignupStepOne = () => {
       </div>
       <section className={styles.section}>
         <div className={styles.registerContainer}>
-          <Button variant="signup" leftIcon={<GoogleIcon />}>
-            Продолжить с Google
-          </Button>
-          <Button variant="signup" leftIcon={<AppleIcon />}>
-            Продолжить с Apple
-          </Button>
-
-          <Separator />
-
-          <form className={styles.form}>
+          <ExternalLogIn />
+          <form
+            className={styles.form}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
             <div className={styles.emailContainer}>
               <label htmlFor="email">Email</label>
               <Input
@@ -121,26 +140,19 @@ export const SignupStepOne = () => {
               )}
             </div>
 
-            <Button disabled={!isFormValid}>Далее</Button>
+            <Button onClick={handleSubmit} disabled={!isFormValid}>
+              Далее
+            </Button>
           </form>
         </div>
-        <div className={styles.welcomeContainer}>
-          <img
-            className={styles.lightBulb}
-            src={lightBulb}
-            alt="Картинка с нарисованной лампочкой"
-            width="300"
-            height="300"
-            loading="lazy"
-          />
-          <div className={styles.descriptionContainer}>
-            <h3 className={styles.title}>Добро пожаловать в SkillSwap!</h3>
-            <p className={styles.description}>
-              Присоединяйтесь к SkillSwap и обменивайтесь знаниями и навыками с
-              другими людьми
-            </p>
-          </div>
-        </div>
+        <WelcomeSection
+          src={lightBulb}
+          alt={"Картинка с нарисованной лампочкой"}
+          title={"Добро пожаловать в SkillSwap!"}
+          description={
+            "Присоединяйтесь к SkillSwap и обменивайтесь знаниями и навыками с другими людьми"
+          }
+        />
       </section>
     </>
   );

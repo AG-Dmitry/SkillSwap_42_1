@@ -1,39 +1,21 @@
-import { Routes, Route } from "react-router-dom";
-import App from "./App";
-import ProtectedRoute from "./ProtectedRoute";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { ProtectedRoute } from "./ProtectedRoute";
 import { MainPage } from "@pages/MainPage/MainPage";
 import { SignupStepOne } from "@pages/signup/ui/SignupStepOne/SignupStepOne";
 import { SignupStepThree } from "@pages/signup/ui/SignupStepThree/SignupStepThree";
 import { SignupStepTwo } from "@pages/signup/ui/SignupStepTwo/SignupStepTwo";
 import { Login } from "@/pages/Login/Login";
 import UserPage from "@/pages/UserPage/UserPage";
-
-//основные страницы приложения - заглушки
-//после создания pages отсюда надо будет удалять
-
-// function Login() {
-//   return (
-//     <section>
-//       <h2>Вход</h2>
-//       <p>Форма входа в аккаунт</p>
-//     </section>
-//   );
-// }
+import { Layout } from "@/widgets/Layout/Layout";
+import { ErrorPage } from "@/pages/ErrorPage/ErrorPage";
+import { ProfilePage } from "@/pages/ProfilePage/ProfilePage";
+import { Favorites } from "@/pages/Favorites/Favorites";
 
 function CreateOffer() {
   return (
     <section>
       <h2>Предложить обмен</h2>
       <p>Форма создания нового предложения обмена</p>
-    </section>
-  );
-}
-
-function Favorites() {
-  return (
-    <section>
-      <h2>Избранное</h2>
-      <p>Сохраненные предложения</p>
     </section>
   );
 }
@@ -47,73 +29,51 @@ function Profile() {
   );
 }
 
-function NotFound() {
-  return (
-    <section>
-      <h2>404 — Страница не найдена</h2>
-      <p>К сожалению, эта страница недоступна.</p>
-    </section>
-  );
-}
-
-function ServerError() {
-  return (
-    <section>
-      <h2>500 — Ошибка сервера</h2>
-      <p>На сервере произошла ошибка</p>
-    </section>
-  );
-}
-
-export default function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<App />}>
-        {/* домашняя страница */}
-        <Route index element={<MainPage />} />
-        {/* публичные роуты, нужно ли оборачивать их в PublicRoute? */}
-        <Route path="login" element={<Login />} />
-        <Route path="registration/step1" element={<SignupStepOne />} />
-        <Route path="registration/step2" element={<SignupStepTwo />} />
-        <Route path="registration/step3" element={<SignupStepThree />} />
-
-        {/* защищенные роуты */}
-        <Route
-          path="profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="favorites"
-          element={
-            <ProtectedRoute>
-              <Favorites />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="create-offer"
-          element={
-            <ProtectedRoute>
-              <CreateOffer />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="user/:userId"
-          element={
-            <ProtectedRoute>
-              <UserPage />
-            </ProtectedRoute>
-          }
-        />
-        {/* ошибки */}
-        <Route path="500" element={<ServerError />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
-  );
-}
+export const AppRoutes = () => (
+  <Routes>
+    <Route path="/" element={<Layout />}>
+      <Route index element={<MainPage />} />
+      <Route
+        path="profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="favorites"
+        element={
+          <ProtectedRoute>
+            <Favorites />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="create-offer"
+        element={
+          <ProtectedRoute>
+            <CreateOffer />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="user/:userId"
+        element={
+          <ProtectedRoute>
+            <UserPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="500" element={<ErrorPage statusCode="500" />} />
+      <Route path="*" element={<ErrorPage statusCode="404" />} />
+    </Route>
+    <Route path="login" element={<Login />} />
+    <Route path="registration">
+      <Route index element={<Navigate to="step1" replace />} />
+      <Route path="step1" element={<SignupStepOne />} />
+      <Route path="step2" element={<SignupStepTwo />} />
+      <Route path="step3" element={<SignupStepThree />} />
+    </Route>
+  </Routes>
+);

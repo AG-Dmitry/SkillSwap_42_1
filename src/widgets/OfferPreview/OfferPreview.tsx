@@ -7,6 +7,24 @@ import { ImagesCarousel } from "@widgets/ImagesCarousel/ImagesCarousel";
 import { Button } from "@shared/ui/Button/Button";
 import { EditIcon } from "@shared/ui/Icons/EditIcon";
 import type { TOfferProps } from "@widgets/OfferPreview/types";
+import React from "react";
+
+export const OfferPreview: React.FC<TOfferProps> = (props) => {
+  const {
+    variant = "userProfileOffer",
+    skillName = "",
+    categoryName = "",
+    subcategoryName = "",
+    description = "",
+    images = [],
+    onEdit,
+    onConfirm,
+    onExchange,
+    isEditable = false,
+  } = props;
+
+  const showEditButtons = variant === "modalOffer" || isEditable;
+  const isUserProfile = variant === "userProfileOffer";
 
 export const OfferPreview: React.FC<TOfferProps> = (props) => {
   const {

@@ -3,9 +3,11 @@ import error404 from "@images/png/error-404.png";
 import error500 from "@images/png/error-500.png";
 import styles from "./errorPage.module.scss";
 import type { errorPropsType } from "./errorPage.types";
+import { useNavigate } from "react-router-dom";
 
 export const ErrorPage = (props: errorPropsType) => {
   const { statusCode } = props;
+  const navigate = useNavigate();
 
   const errorImage = statusCode === "404" ? error404 : error500;
   const errorTitle =
@@ -27,14 +29,16 @@ export const ErrorPage = (props: errorPropsType) => {
         />
         <div className={styles.errorContainer}>
           <div className={styles.errorInfo}>
-            <h2 className={styles.errorTitle}>{errorTitle}</h2>
+            <h1 className={styles.errorTitle}>{errorTitle}</h1>
             <p className={styles.errorDescription}>{errorDescription}</p>
           </div>
           <div className={styles.errorButtons}>
             <Button variant="secondary" onClick={() => {}}>
               Сообщить об ошибке
             </Button>
-            <Button onClick={() => {}}>На главную</Button>
+            <Button onClick={() => navigate("/", { replace: true })}>
+              На главную
+            </Button>
           </div>
         </div>
       </div>
