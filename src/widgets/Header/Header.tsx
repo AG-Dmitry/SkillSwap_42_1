@@ -30,6 +30,7 @@ import {
   markAllNotificationsAsRead,
 } from "@entities/notification/model/slice";
 import { Arrow } from "@/shared/ui/Arrow/Arrow";
+import { LogOutSvg } from "./svg/LogoutSvg";
 
 export const Header = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -277,6 +278,7 @@ export const Header = () => {
                     }}
                   >
                     Выйти из аккаунта
+                    <LogOutSvg />
                   </li>
                 </ul>
               </DropDown>
