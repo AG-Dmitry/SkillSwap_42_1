@@ -99,6 +99,25 @@ export const SignupStepTwo = () => {
     isCitiesLoading,
   ]);
 
+  useEffect(() => {
+    const handleClickOutsideCity = (event: MouseEvent) => {
+      // Если открыт селектор города
+      if (openSelectorId === "city") {
+        // Проверяем, был ли клик вне самого селектора
+        const cityElement = document.getElementById("city-selector-container");
+        if (cityElement && !cityElement.contains(event.target as Node)) {
+          setOpenSelectorId(null);
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutsideCity);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideCity);
+    };
+  }, [openSelectorId]);
+
   const selectedCityName =
     location && citiesData.length > 0
       ? citiesData.find((city) => city.id.toString() === location)?.name || ""
@@ -181,18 +200,24 @@ export const SignupStepTwo = () => {
     setShowCalendar(false);
   };
 
-  const handleGenderChange = (option: string) => {
-    const genderValue = option === "Не указан" ? "" : option;
+  const handleGenderChange = (value: string | string[]) => {
+    const selectedValue = Array.isArray(value) ? value[0] || "" : value;
+    const genderValue = selectedValue === "Не указан" ? "" : selectedValue;
     dispatch(updateGender(genderValue));
   };
 
-  const handleCityChange = (option: string) => {
-    if (option === "Введите или выберите город" || option === "") {
+  const handleCityChange = (value: string | string[]) => {
+    const selectedValue = Array.isArray(value) ? value[0] || "" : value;
+
+    if (
+      selectedValue === "Введите или выберите город" ||
+      selectedValue === ""
+    ) {
       dispatch(updateStep2({ location: "" }));
       return;
     }
 
-    const selectedCity = citiesData.find((city) => city.name === option);
+    const selectedCity = citiesData.find((city) => city.name === selectedValue);
     const cityId = selectedCity ? selectedCity.id.toString() : "";
 
     dispatch(updateStep2({ location: cityId }));
@@ -206,8 +231,8 @@ export const SignupStepTwo = () => {
         return;
       }
 
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Размер файла не должен превышать 5MB");
+      if (file.size > 2 * 1024 * 1024) {
+        alert("Размер файла не должен превышать 2MB");
         return;
       }
 
@@ -407,6 +432,7 @@ export const SignupStepTwo = () => {
                           <Calendar
                             value={selectedDate}
                             onChange={handleDateOfBirthChange}
+                            placeholder="дд.мм.гггг"
                           />
                         </div>
                       </div>
@@ -432,6 +458,7 @@ export const SignupStepTwo = () => {
                         selectionOptions={["Не указан", "Мужской", "Женский"]}
                         selectorType={"radio"}
                         onChange={handleGenderChange}
+                        value={gender}
                       />
                     </div>
                   </>
@@ -440,7 +467,10 @@ export const SignupStepTwo = () => {
             </div>
 
             {/* Город */}
-            <div className={clsx(styles.container)}>
+            <div
+              className={clsx(styles.container)}
+              id="city-selector-container"
+            >
               {isLoading ? (
                 <SkeletonField type="select" count={1} />
               ) : (
@@ -448,7 +478,6 @@ export const SignupStepTwo = () => {
                   <label>Город</label>
                   <div className={styles.selectorWrapper}>
                     <Selector
-                      key={`city-${selectedCityName || "empty"}`}
                       id="city"
                       isOpen={openSelectorId === "city"}
                       onToggle={handleToggle}
@@ -458,6 +487,7 @@ export const SignupStepTwo = () => {
                       selectorType={"radio"}
                       enableSearch={true}
                       onChange={handleCityChange}
+                      value={selectedCityName}
                     />
                   </div>
                 </>
