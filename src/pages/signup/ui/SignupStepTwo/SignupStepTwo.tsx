@@ -42,6 +42,9 @@ import { CategorySelector } from "@pages/signup/ui/SignupStepThree/CategorySelec
 import { SkeletonField } from "@pages/signup/ui/SignupStepThree/SkeletonField";
 import { WelcomeSection } from "@shared/ui/WelcomeSection/WelcomeSection";
 import { ErrorMessage } from "@shared/ui/ErrorMessage/ErrorMessage";
+import { userSchema } from "@/shared/lib/zod/schemas/userSchema";
+import type { User } from "@/shared/lib/zod/types";
+import { z } from "zod";
 
 export const SignupStepTwo = () => {
   const dispatch = useAppDispatch();
@@ -74,7 +77,73 @@ export const SignupStepTwo = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     dateOfBirth ? new Date(dateOfBirth) : null,
   );
-  const [showCalendar, setShowCalendar] = useState(false);
+
+  // Состояние для валидации
+  const [formData, setFormData] = useState<User>({
+    name: "",
+    dateOfBirth: null,
+    sex: "",
+    city: "",
+    category: [],
+    subcategory: [],
+    avatar: "",
+  });
+
+  const [touched, setTouched] = useState({
+    name: false,
+    sex: false,
+    dateOfBirth: false,
+    city: false,
+    category: false,
+    subcategory: false,
+    avatar: false,
+  });
+
+  const [errors, setErrors] = useState<Partial<Record<keyof User, string>>>({});
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  // Инициализация формы данными из Redux
+  useEffect(() => {
+    setFormData({
+      name: firstName || "",
+      sex: gender || "",
+      dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+      city: location || "",
+      category: learnCategories || [],
+      subcategory: learnSubcategories || [],
+      avatar: avatar || "",
+    });
+  }, [
+    firstName,
+    location,
+    gender,
+    dateOfBirth,
+    avatar,
+    learnCategories,
+    learnSubcategories,
+  ]);
+
+  // Валидация формы при изменении данных
+  useEffect(() => {
+    const result = userSchema.safeParse(formData);
+
+    if (result.success) {
+      setErrors({});
+      setIsFormValid(true);
+    } else {
+      const newErrors: Partial<Record<keyof User, string>> = {};
+
+      result.error.issues.forEach((issue: z.ZodIssue) => {
+        const field = issue.path[0] as keyof User;
+        if (field && touched[field]) {
+          newErrors[field] = issue.message;
+        }
+      });
+
+      setErrors(newErrors);
+      setIsFormValid(false);
+    }
+  }, [formData, touched]);
 
   useEffect(() => {
     if (dateOfBirth) {
@@ -124,10 +193,6 @@ export const SignupStepTwo = () => {
       : "";
 
   const handleToggle = (id: string) => {
-    if (id === "date" && showCalendar) {
-      setShowCalendar(false);
-      return;
-    }
     setOpenSelectorId((prev) => (prev === id ? null : id));
   };
 
@@ -140,31 +205,17 @@ export const SignupStepTwo = () => {
       ) {
         setOpenSelectorId(null);
       }
-
-      if (
-        showCalendar &&
-        selectorsRef.current &&
-        !selectorsRef.current.contains(event.target as Node)
-      ) {
-        setShowCalendar(false);
-      }
     };
 
     const handleScroll = () => {
       if (openSelectorId) {
         setOpenSelectorId(null);
       }
-      if (showCalendar) {
-        setShowCalendar(false);
-      }
     };
 
     const handleResize = () => {
       if (openSelectorId) {
         setOpenSelectorId(null);
-      }
-      if (showCalendar) {
-        setShowCalendar(false);
       }
     };
 
@@ -177,32 +228,37 @@ export const SignupStepTwo = () => {
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [openSelectorId, showCalendar]);
+  }, [openSelectorId]);
 
-  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    setFormData((prev) => ({ ...prev, name: value }));
+    setTouched((prev) => ({ ...prev, name: true }));
     dispatch(updateFirstName(value));
   };
 
   const handleDateOfBirthChange = (value: Date | null) => {
     setSelectedDate(value);
 
+    setFormData((prev) => ({ ...prev, dateOfBirth: value }));
+    setTouched((prev) => ({ ...prev, dateOfBirth: true }));
+
+    let formattedDate = "";
     if (value) {
       const year = value.getFullYear();
       const month = String(value.getMonth() + 1).padStart(2, "0");
       const day = String(value.getDate()).padStart(2, "0");
-      const formattedDate = `${year}-${month}-${day}`;
-      dispatch(updateDateOfBirth(formattedDate));
-    } else {
-      dispatch(updateDateOfBirth(""));
+      formattedDate = `${year}-${month}-${day}`;
     }
-
-    setShowCalendar(false);
+    dispatch(updateDateOfBirth(formattedDate));
   };
 
   const handleGenderChange = (value: string | string[]) => {
     const selectedValue = Array.isArray(value) ? value[0] || "" : value;
     const genderValue = selectedValue === "Не указан" ? "" : selectedValue;
+
+    setFormData((prev) => ({ ...prev, sex: genderValue }));
+    setTouched((prev) => ({ ...prev, sex: true }));
     dispatch(updateGender(genderValue));
   };
 
@@ -213,6 +269,8 @@ export const SignupStepTwo = () => {
       selectedValue === "Введите или выберите город" ||
       selectedValue === ""
     ) {
+      setFormData((prev) => ({ ...prev, city: "" }));
+      setTouched((prev) => ({ ...prev, city: true }));
       dispatch(updateStep2({ location: "" }));
       return;
     }
@@ -220,6 +278,8 @@ export const SignupStepTwo = () => {
     const selectedCity = citiesData.find((city) => city.name === selectedValue);
     const cityId = selectedCity ? selectedCity.id.toString() : "";
 
+    setFormData((prev) => ({ ...prev, city: cityId }));
+    setTouched((prev) => ({ ...prev, city: true }));
     dispatch(updateStep2({ location: cityId }));
   };
 
@@ -242,6 +302,8 @@ export const SignupStepTwo = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
+        setFormData((prev) => ({ ...prev, avatar: base64String }));
+        setTouched((prev) => ({ ...prev, avatar: true }));
         dispatch(updateAvatar(base64String));
       };
       reader.onerror = () => {
@@ -257,11 +319,12 @@ export const SignupStepTwo = () => {
 
   const handleRemoveAvatar = (e: React.MouseEvent) => {
     e.stopPropagation();
+    setFormData((prev) => ({ ...prev, avatar: "" }));
+    setTouched((prev) => ({ ...prev, avatar: true }));
     dispatch(clearAvatar());
   };
 
   const handleCategoryChange = (selectedIds: string[]) => {
-    // Убеждаемся, что сохраняются именно ID, а не названия
     const validIds = selectedIds.filter((id) => {
       const isValid = categoriesData.some((cat) => cat.id.toString() === id);
       if (!isValid) {
@@ -269,11 +332,13 @@ export const SignupStepTwo = () => {
       }
       return isValid;
     });
+
+    setFormData((prev) => ({ ...prev, category: validIds }));
+    setTouched((prev) => ({ ...prev, category: true }));
     dispatch(setLearnCategories(validIds));
   };
 
   const handleSubcategoryChange = (selectedIds: string[]) => {
-    // Убеждаемся, что сохраняются именно ID подкатегорий, а не названия
     const filteredSubs = getFilteredSubcategories();
     const validIds = selectedIds.filter((id) => {
       const isValid = filteredSubs.some((sub) => sub.id.toString() === id);
@@ -282,6 +347,9 @@ export const SignupStepTwo = () => {
       }
       return isValid;
     });
+
+    setFormData((prev) => ({ ...prev, subcategory: validIds }));
+    setTouched((prev) => ({ ...prev, subcategory: true }));
     dispatch(setLearnSubcategories(validIds));
   };
 
@@ -292,23 +360,35 @@ export const SignupStepTwo = () => {
     );
   };
 
-  const handleContinue = async () => {
-    if (!firstName.trim()) {
-      alert("Пожалуйста, введите имя");
-      return;
-    }
+  const handleContinue = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
 
-    if (learnCategories.length === 0) {
-      alert(
-        "Пожалуйста, выберите хотя бы одну категорию навыка, которому хотите научиться",
-      );
-      return;
-    }
+    const allTouched = {
+      name: true,
+      sex: true,
+      dateOfBirth: true,
+      city: true,
+      category: true,
+      subcategory: true,
+      avatar: true,
+    };
+    setTouched(allTouched);
 
-    if (learnSubcategories.length === 0) {
-      alert(
-        "Пожалуйста, выберите хотя бы одну подкатегорию навыка, которому хотите научиться",
-      );
+    // Проверяем валидность всей формы
+    const validationResult = userSchema.safeParse(formData);
+
+    if (!validationResult.success) {
+      // Собираем все ошибки
+      const validationErrors: Partial<Record<keyof User, string>> = {};
+
+      validationResult.error.issues.forEach((issue: z.ZodIssue) => {
+        const field = issue.path[0] as keyof User;
+        if (field) {
+          validationErrors[field] = issue.message;
+        }
+      });
+
+      setErrors(validationErrors);
       return;
     }
 
@@ -400,21 +480,36 @@ export const SignupStepTwo = () => {
             />
           </div>
 
-          <form ref={selectorsRef} className={clsx(styles.form)}>
+          {errors.avatar && touched.avatar && (
+            <div className={clsx(styles.container)}>
+              <span className={styles.errorText}>{errors.avatar}</span>
+            </div>
+          )}
+
+          <form
+            ref={selectorsRef}
+            className={clsx(styles.form)}
+            onSubmit={handleContinue}
+          >
             {/* Имя */}
             <div className={clsx(styles.nameContainer, styles.container)}>
-              <label htmlFor="firstName">Имя</label>
+              <label htmlFor="name">Имя</label>
               {isLoading ? (
                 <SkeletonField type="input" count={1} />
               ) : (
-                <Input
-                  type="text"
-                  id="firstName"
-                  placeholder="Введите ваше имя"
-                  value={firstName}
-                  onChange={handleFirstNameChange}
-                  required
-                />
+                <>
+                  <Input
+                    type="text"
+                    id="name"
+                    placeholder="Введите ваше имя"
+                    value={formData.name}
+                    onChange={handleNameChange}
+                    required
+                  />
+                  {errors.name && touched.name && (
+                    <span className={styles.errorText}>{errors.name}</span>
+                  )}
+                </>
               )}
             </div>
 
@@ -435,6 +530,11 @@ export const SignupStepTwo = () => {
                             placeholder="дд.мм.гггг"
                           />
                         </div>
+                        {errors.dateOfBirth && touched.dateOfBirth && (
+                          <span className={styles.errorText}>
+                            {errors.dateOfBirth}
+                          </span>
+                        )}
                       </div>
                     )}
                   </>
@@ -461,6 +561,9 @@ export const SignupStepTwo = () => {
                         value={gender}
                       />
                     </div>
+                    {errors.sex && touched.sex && (
+                      <span className={styles.errorText}>{errors.sex}</span>
+                    )}
                   </>
                 )}
               </div>
@@ -490,6 +593,9 @@ export const SignupStepTwo = () => {
                       value={selectedCityName}
                     />
                   </div>
+                  {errors.city && touched.city && (
+                    <span className={styles.errorText}>{errors.city}</span>
+                  )}
                 </>
               )}
             </div>
@@ -506,12 +612,15 @@ export const SignupStepTwo = () => {
                       id: cat.id.toString(),
                       name: cat.name,
                     }))}
-                    selectedIds={learnCategories}
+                    selectedIds={formData.category}
                     onChange={handleCategoryChange}
                     placeholder="Выберите категорию"
                     disabled={false}
                     isLoading={isLoading}
                   />
+                  {errors.category && touched.category && (
+                    <span className={styles.errorText}>{errors.category}</span>
+                  )}
                 </div>
               )}
             </div>
@@ -528,12 +637,17 @@ export const SignupStepTwo = () => {
                       id: sub.id.toString(),
                       name: sub.name,
                     }))}
-                    selectedIds={learnSubcategories}
+                    selectedIds={formData.subcategory}
                     onChange={handleSubcategoryChange}
                     placeholder="Выберите подкатегорию"
                     disabled={learnCategories.length === 0}
                     isLoading={isLoading}
                   />
+                  {errors.subcategory && touched.subcategory && (
+                    <span className={styles.errorText}>
+                      {errors.subcategory}
+                    </span>
+                  )}
                 </div>
               )}
             </div>
@@ -546,10 +660,15 @@ export const SignupStepTwo = () => {
                 variant="secondary"
                 onClick={handleBack}
                 disabled={isLoading}
+                type="button"
               >
                 Назад
               </Button>
-              <Button onClick={handleContinue} disabled={isLoading}>
+              <Button
+                onClick={handleContinue}
+                disabled={isLoading}
+                type="submit"
+              >
                 {isLoading ? "Загрузка..." : "Продолжить"}
               </Button>
             </div>
