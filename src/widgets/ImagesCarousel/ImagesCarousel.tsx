@@ -126,6 +126,25 @@ export const ImagesCarousel: React.FC<ImagesCarouselProps> = ({
     return `Изображение ${imageNumber} из ${totalImages}. ${getImageAlt(index)}. Для просмотра нажмите Enter или пробел.`;
   };
 
+  // Функция для проверки Base64 изображений
+  const isValidBase64 = (str: string): boolean => {
+    if (!str.startsWith("data:image")) return false;
+    try {
+      // Проверяем формат Base64
+      const base64Data = str.split(",")[1];
+      if (!base64Data) return false;
+
+      // Проверяем длину (минимальная длина для валидного изображения)
+      if (base64Data.length < 100) return false;
+
+      // Попробуем декодировать
+      atob(base64Data);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   // Функция для обработки ошибок загрузки изображений
   const handleImageError = (
     index: number,
