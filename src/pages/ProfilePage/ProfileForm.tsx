@@ -38,8 +38,6 @@ export const ProfileForm = () => {
     confirmPassword: "",
   });
 
-  const editingColor = "#e3e6ddff";
-
   // Загружаем города при монтировании
   useEffect(() => {
     if (cities.length === 0) {
@@ -276,7 +274,7 @@ export const ProfileForm = () => {
                       readOnly={!editing.email}
                       style={
                         editing.email
-                          ? { backgroundColor: editingColor }
+                          ? { backgroundColor: "var(--color-editing-color)" }
                           : undefined
                       }
                     />
@@ -310,7 +308,7 @@ export const ProfileForm = () => {
                       readOnly={!editing.name}
                       style={
                         editing.name
-                          ? { backgroundColor: editingColor }
+                          ? { backgroundColor: "var(--color-editing-color)" }
                           : undefined
                       }
                     />
@@ -403,7 +401,7 @@ export const ProfileForm = () => {
                       readOnly={!editing.about}
                       style={
                         editing.about
-                          ? { backgroundColor: editingColor }
+                          ? { backgroundColor: "var(--color-editing-color)" }
                           : undefined
                       }
                     />
