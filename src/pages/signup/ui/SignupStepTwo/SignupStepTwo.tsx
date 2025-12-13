@@ -32,6 +32,7 @@ import {
   registerUserAfterStep2,
   selectIsRegistering,
   selectRegisterError,
+  selectIsSubmitting,
 } from "@features/signup/model/slice";
 import { setAvatarFile } from "@features/signup/model/slice";
 import {
@@ -46,6 +47,7 @@ import { ErrorMessage } from "@shared/ui/ErrorMessage/ErrorMessage";
 import { userSchema } from "@/shared/lib/zod/schemas/userSchema";
 import type { User } from "@/shared/lib/zod/types";
 import { z } from "zod";
+import { Loader } from "@/shared/ui/Loader/Loader";
 
 export const SignupStepTwo = () => {
   const dispatch = useAppDispatch();
@@ -60,6 +62,7 @@ export const SignupStepTwo = () => {
   const learnSubcategories = useAppSelector(selectLearnSubcategories);
   const isRegistering = useAppSelector(selectIsRegistering);
   const registerError = useAppSelector(selectRegisterError);
+  const isSubmitting = useAppSelector(selectIsSubmitting);
 
   const {
     categories: categoriesData,
@@ -414,6 +417,7 @@ export const SignupStepTwo = () => {
 
   return (
     <div className={clsx(styles.pageWrapper)}>
+      {isSubmitting && <Loader />}
       <div className={clsx(formStyles.logo)}>
         <Logo />
       </div>

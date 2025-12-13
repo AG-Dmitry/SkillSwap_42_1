@@ -1,5 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@app/store/hooks";
-import { updateStep1, selectSignup } from "@features/signup/model/slice";
+import {
+  updateStep1,
+  selectSignup,
+  selectIsSubmitting,
+} from "@features/signup/model/slice";
 import { useNavigate } from "react-router-dom";
 import styles from "./signupStepOne.module.scss";
 import formStyles from "@shared/ui/Form/form.module.scss";
@@ -15,10 +19,13 @@ import type { SignupStep1Data } from "@shared/lib/zod/types";
 import { signupStep1Schema } from "@shared/lib/zod/schemas/userAuthSchema";
 import { ExternalLogIn } from "@/widgets/ExternalLogIn/ExternalLogIn";
 import { WelcomeSection } from "@shared/ui/WelcomeSection/WelcomeSection.tsx";
+import { Loader } from "@/shared/ui/Loader/Loader";
 
 export const SignupStepOne = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const isSubmitting = useAppSelector(selectIsSubmitting);
+
   // Получаем сохраненные данные из Redux
   const { step1 } = useAppSelector(selectSignup);
 
@@ -91,6 +98,7 @@ export const SignupStepOne = () => {
 
   return (
     <div className={styles.pageWrapper}>
+      {isSubmitting && <Loader />}
       <div className={formStyles.logo}>
         <Logo />
         <div className={formStyles.backButtonContainer}>

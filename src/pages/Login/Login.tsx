@@ -13,6 +13,7 @@ import { signupStep1Schema } from "@shared/lib/zod/schemas/userAuthSchema";
 import styles from "./login.module.scss";
 import formStyles from "@shared/ui/Form/form.module.scss";
 import { ExternalLogIn } from "@/widgets/ExternalLogIn/ExternalLogIn";
+import { Loader } from "@/shared/ui/Loader/Loader";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -104,6 +105,7 @@ export const Login = () => {
 
   return (
     <div className={styles.pageWrapper}>
+      {isLoading && <Loader />}
       <div className={formStyles.logo}>
         <Logo />
         <div className={formStyles.backButtonContainer}>

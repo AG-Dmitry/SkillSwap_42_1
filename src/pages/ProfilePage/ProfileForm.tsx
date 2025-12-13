@@ -1,12 +1,12 @@
 import { Input } from "@/shared/ui/Input/Input";
 import { Button } from "@/shared/ui/Button/Button";
 import { Calendar } from "@shared/ui/Calendar/Calendar";
-import editIcon from "@images/icons/edit.svg?url";
 import editPhotoIcon from "@images/icons/edit-photo.svg";
 import styles from "./profilePage.module.scss";
 import { useAppDispatch, useAppSelector } from "@app/store/hooks";
 import {
   changePassword,
+  selectIsLoading,
   selectUser,
   updateCurrentUser,
 } from "@/features/auth/model/slice";
@@ -29,6 +29,7 @@ export const ProfileForm = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const { cities } = useAppSelector(selectCities);
+  const isRequestLoading = useAppSelector(selectIsLoading);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -257,6 +258,7 @@ export const ProfileForm = () => {
   return (
     <>
       <section className={styles.content}>
+        {isRequestLoading && <Loader />}
         <div className={styles.profileBackground}>
           <div className={styles.grid}>
             <div className={styles.fields}>
@@ -460,6 +462,7 @@ export const ProfileForm = () => {
           descriptionId="password-modal-description"
         >
           <div className={styles.passwordModal}>
+            {isRequestLoading && <Loader />}
             <h2 id="password-modal-title">Изменить пароль</h2>
             <form onSubmit={handlePasswordChange}>
               <div className={styles.field}>

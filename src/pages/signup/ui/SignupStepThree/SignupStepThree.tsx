@@ -16,6 +16,7 @@ import {
   selectTeachCategories,
   selectTeachSubcategories,
   createSkills,
+  selectIsSubmitting,
 } from "@features/signup/model/slice";
 import { ModalUI } from "@shared/ui/Modal/Modal";
 import galleryAddIcon from "@images/icons/gallery-add.svg";
@@ -33,6 +34,7 @@ import { OfferPreview } from "@widgets/OfferPreview/OfferPreview";
 import { CategorySelector } from "./CategorySelector";
 import { WelcomeSection } from "@shared/ui/WelcomeSection/WelcomeSection";
 import type z from "zod";
+import { Loader } from "@/shared/ui/Loader/Loader";
 
 interface ImageFile {
   id: string;
@@ -47,6 +49,7 @@ export const SignupStepThree = () => {
 
   const teachCategories = useAppSelector(selectTeachCategories);
   const teachSubcategories = useAppSelector(selectTeachSubcategories);
+  const isSubmitting = useAppSelector(selectIsSubmitting);
 
   const { step3 } = useAppSelector((state) => state.signup);
   const skillName = step3?.skillName || "";
@@ -405,6 +408,7 @@ export const SignupStepThree = () => {
 
   return (
     <div className={styles.pageWrapper}>
+      {isSubmitting && <Loader />}
       <div className={styles.header}>
         <div className={styles.logo}>
           <Logo />
@@ -633,6 +637,7 @@ export const SignupStepThree = () => {
       {isOfferModalOpen && (
         <ModalUI onClose={() => setIsOfferModalOpen(false)}>
           <div className={styles.modalPreviewContainer}>
+            {isSubmitting && <Loader />}
             <OfferPreview
               variant="modalOffer"
               skillName={formData.title}
@@ -653,6 +658,7 @@ export const SignupStepThree = () => {
       {isSuccessModalOpen && (
         <ModalUI onClose={handleCloseSuccessModal}>
           <div className={styles.successModalContainer}>
+            {isSubmitting && <Loader />}
             <div className={styles.successModalTitle}>
               Предложение успешно создано!
             </div>
