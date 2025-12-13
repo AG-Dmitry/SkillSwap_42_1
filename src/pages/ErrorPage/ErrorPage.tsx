@@ -1,15 +1,18 @@
 import { Button } from "@shared/ui/Button/Button";
-import error404 from "@images/png/error-404.png";
-import error500 from "@images/png/error-500.png";
 import styles from "./errorPage.module.scss";
 import type { errorPropsType } from "./errorPage.types";
 import { useNavigate } from "react-router-dom";
+
+import error404Light from "@images/png/light/error-404.png";
+import error500Light from "@images/png/light/error-500.png";
+import error404Dark from "@images/png/dark/error-404.png";
+import error500Dark from "@images/png/dark/error-500.png";
 
 export const ErrorPage = (props: errorPropsType) => {
   const { statusCode } = props;
   const navigate = useNavigate();
 
-  const errorImage = statusCode === "404" ? error404 : error500;
+  // const errorImage = statusCode === "404" ? error404Light : error500Light;
   const errorTitle =
     statusCode === "404"
       ? "Страница не найдена"
@@ -21,12 +24,12 @@ export const ErrorPage = (props: errorPropsType) => {
 
   return (
     <div className={styles.errorWrapper}>
-      <div className={styles.errorPage}>
-        <img
-          src={errorImage}
-          alt={statusCode === "404" ? "ошибка 404" : "ошибка 500"}
+      <div className={styles.errorPage} data-error={statusCode}>
+        <div
           className={styles.errorImage}
-        />
+          role="img"
+          aria-label={statusCode === "404" ? "ошибка 404" : "ошибка 500"}
+        ></div>
         <div className={styles.errorContainer}>
           <div className={styles.errorInfo}>
             <h1 className={styles.errorTitle}>{errorTitle}</h1>

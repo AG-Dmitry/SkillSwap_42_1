@@ -4,16 +4,23 @@ import type { IWelcomeSectionProps } from "@shared/ui/WelcomeSection/types";
 
 export const WelcomeSection = (props: IWelcomeSectionProps) => {
   const { src, alt, width = "300", height = "300", title, description } = props;
+
+  //получаем имя файла из src для data-атрибута
+  const getImageName = (src: string) => {
+    const parts = src.split("/");
+    return parts[parts.length - 1];
+  };
+
   return (
     <section className={formStyles.welcomeContainer}>
-      <img
+      <div
         className={styles.lightBulb}
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        loading={"lazy"}
+        style={{ width: `${width}px`, height: `${height}px` }}
+        role="img"
+        aria-label={alt}
+        data-image-file={getImageName(src)}
       />
+
       <div className={formStyles.descriptionContainer}>
         <h3 className={styles.welcomeTitle}>{title}</h3>
         <p className={styles.welcomeDescription}>{description}</p>

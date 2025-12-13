@@ -6,13 +6,15 @@ import { Button } from "@shared/ui/Button/Button";
 import { Input } from "@shared/ui/Input/Input";
 import { Logo } from "@shared/ui/Logo/Logo";
 import { ArrowLeftIcon } from "@shared/ui/Icons/ArrowLeftIcon";
-import lightBulb from "@images/png/light-bulb.png";
 import type { z } from "zod";
 import type { SignupStep1Data } from "@shared/lib/zod/types";
 import { signupStep1Schema } from "@shared/lib/zod/schemas/userAuthSchema";
 import styles from "./login.module.scss";
 import formStyles from "@shared/ui/Form/form.module.scss";
 import { ExternalLogIn } from "@/widgets/ExternalLogIn/ExternalLogIn";
+
+import lightBulbLight from "@images/png/light/light-bulb.png";
+import lightBulbDark from "@images/png/dark/light-bulb.png";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -179,7 +181,7 @@ export const Login = () => {
         <div className={formStyles.welcomeContainer}>
           <img
             className={styles.lightBulb}
-            src={lightBulb}
+            src={lightBulbLight}
             alt="Картинка с нарисованной лампочкой"
             width="300"
             height="300"

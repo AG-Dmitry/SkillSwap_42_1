@@ -19,7 +19,7 @@ import {
 } from "@features/signup/model/slice";
 import { ModalUI } from "@shared/ui/Modal/Modal";
 import galleryAddIcon from "@images/icons/gallery-add.svg";
-import schoolBoard from "@images/webp/school-board.webp";
+import schoolBoard from "@images/png/light/school-board.png";
 
 import {
   fetchCategories,
