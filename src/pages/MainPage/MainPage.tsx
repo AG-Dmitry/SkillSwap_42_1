@@ -6,6 +6,7 @@ import { UserCardsSection } from "@widgets/UserCardsSection/UserCardsSection";
 import type { TFilterState } from "@features/filter-users/types";
 import { useAppSelector } from "@app/store/hooks";
 import { selectCategoryData } from "@entities/category/model/slice";
+import { Loader } from "@/shared/ui/Loader/Loader";
 
 export const MainPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,6 +19,7 @@ export const MainPage = () => {
   });
 
   const { subcategories } = useAppSelector(selectCategoryData);
+  const { isLoading } = useAppSelector(selectCategoryData);
 
   // Обрабатываем поисковый запрос из URL
   useEffect(() => {
@@ -43,6 +45,7 @@ export const MainPage = () => {
 
   return (
     <div className={styles.main}>
+      {isLoading && <Loader />}
       <aside className={styles.filterContainer}>
         <Filter
           filters={filters}

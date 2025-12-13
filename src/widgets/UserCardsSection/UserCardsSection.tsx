@@ -7,7 +7,6 @@ import { fetchUsersData, selectUsersData } from "@entities/user/model/slice";
 import { selectCategoryData } from "@entities/category/model/slice";
 import { selectCities, fetchCities } from "@entities/city/model/slice";
 import { fetchSkillsData, selectSkillsData } from "@entities/skill/model/slice";
-import { selectIsAuthenticated } from "@features/auth/model/slice";
 import { useFilteredUsers } from "@features/filter-users/model/useFilteredUsers";
 import type { TFilterState } from "@features/filter-users/types";
 import { ActiveFilters } from "@widgets/ActiveFilters/ActiveFilters";
