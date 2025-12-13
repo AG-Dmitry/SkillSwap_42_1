@@ -10,7 +10,22 @@
     .errorImage {
       inline-size: 460px;
       block-size: 304px;
-      object-fit: cover;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    // Для 404 ошибки
+    &[data-error="404"] {
+      .errorImage {
+        // Светлая тема (по умолчанию)
+        background-image: url("@images/png/light/error-404.png");
+
+        // Темная тема
+        [data-theme="dark"] & {
+          background-image: url("@images/png/dark/error-404.png");
+        }
+      }
     }
 
     .errorContainer {

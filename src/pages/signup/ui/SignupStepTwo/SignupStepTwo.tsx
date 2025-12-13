@@ -6,7 +6,7 @@ import formStyles from "@shared/ui/Form/form.module.scss";
 import { Button } from "@shared/ui/Button/Button";
 import { Input } from "@shared/ui/Input/Input";
 import { Logo } from "@shared/ui/Logo/Logo";
-import userInfo from "@images/png/user-info.png";
+import userInfo from "@images/png/light/user-info.png";
 import userCircle from "@shared/assets/images/icons/user-circle.svg";
 import add from "@images/icons/add2.svg";
 import { SignupSteps } from "@shared/ui/SignupSteps/SignupSteps";

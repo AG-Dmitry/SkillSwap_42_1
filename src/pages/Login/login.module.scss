@@ -47,6 +47,11 @@
   inline-size: 300px;
   object-fit: cover;
   margin-block-end: 40px;
+  content: url("@images/png/light/light-bulb.png");
+
+  [data-theme="dark"] & {
+    content: url("@images/png/dark/light-bulb.png");
+  }
 }
 
 .welcomeTitle {
