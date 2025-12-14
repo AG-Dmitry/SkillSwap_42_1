@@ -34,7 +34,7 @@ export const SidebarMenu = () => {
           </Link>
 
           <Link
-            to="/my-skills"
+            to="/skills"
             className={isSkills ? styles.menuItemActive : styles.menuItem}
           >
             <IdeaLK />
