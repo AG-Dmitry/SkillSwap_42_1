@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styles from "./profilePage.module.scss";
 
 import {
@@ -16,6 +16,7 @@ export const SidebarMenu = () => {
   const location = useLocation();
   const isFavorites = location.pathname === "/favorites";
   const isProfile = location.pathname === "/profile";
+  const isSkills = location.pathname === "/skills";
 
   return (
     <aside>
@@ -31,11 +32,13 @@ export const SidebarMenu = () => {
             Мои обмены
           </a>
 
-          {/* TODO: куда ссылка "Мои навыки" */}
-          <a href="/#0" className={styles.menuItem}>
+          <NavLink
+            to="/skills"
+            className={isSkills ? styles.menuItemActive : styles.menuItem}
+          >
             <IdeaLK />
             Мои навыки
-          </a>
+          </NavLink>
 
           <a
             href="/favorites"

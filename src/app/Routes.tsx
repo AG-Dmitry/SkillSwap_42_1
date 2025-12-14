@@ -10,6 +10,8 @@ import { Layout } from "@/widgets/Layout/Layout";
 import { ErrorPage } from "@/pages/ErrorPage/ErrorPage";
 import { ProfilePage } from "@/pages/ProfilePage/ProfilePage";
 import { FavoritesPage } from "@/pages/FavoritesPage/FavoritesPage";
+import { SkillEditPage } from "@/pages/SkillEdit/skillEditPage";
+import { MySkillsPage } from "@/pages/MySkills/mySkillsPage";
 
 function CreateOffer() {
   return (
@@ -29,6 +31,22 @@ export const AppRoutes = () => (
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="skills"
+        element={
+          <ProtectedRoute>
+            <MySkillsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="profile/skills/edit/:skillId"
+        element={
+          <ProtectedRoute>
+            <SkillEditPage />
           </ProtectedRoute>
         }
       />
