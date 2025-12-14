@@ -41,7 +41,7 @@ export const UserCardsSection = ({
   // Состояния для отслеживания, сколько элементов показывать (по умолчанию 3)
   const [popularCount, setPopularCount] = useState(3);
   const [newCount, setNewCount] = useState(3);
-  const [recommendationsCount, setRecommendationsCount] = useState(3);
+  const [recommendationsCount, setRecommendationsCount] = useState(21);
   const [isInfinityScrollActivated, setIsInfinityScrollActivated] = useState({
     popular: false,
     new: false,
@@ -108,7 +108,7 @@ export const UserCardsSection = ({
       triggerArray: allPopularUsers,
       isSectionActive: isInfinityScrollActivated,
       scrollSection: "popular",
-      nextNumber: 3,
+      nextNumber: 21,
       setCountState: setPopularCount,
       setSectionActive: setIsInfinityScrollActivated,
       sentinelRef: popularSentinelRef,
@@ -120,7 +120,7 @@ export const UserCardsSection = ({
       triggerArray: allNewUsers,
       isSectionActive: isInfinityScrollActivated,
       scrollSection: "new",
-      nextNumber: 3,
+      nextNumber: 21,
       setCountState: setNewCount,
       setSectionActive: setIsInfinityScrollActivated,
       sentinelRef: newSentinelRef,
@@ -129,7 +129,7 @@ export const UserCardsSection = ({
   // Бесконечный скролл для рекомендаций
   useInfinityScroll({
     triggerArray: users,
-    nextNumber: 6,
+    nextNumber: 21,
     setCountState: setRecommendationsCount,
     sentinelRef: recommendationsSentinelRef,
     isWithoutToggle: true,
