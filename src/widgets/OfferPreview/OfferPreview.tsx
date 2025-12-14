@@ -75,6 +75,12 @@ export const OfferPreview = (props: TOfferProps) => {
                 </div>
               )}
 
+              {variant === "mySkills" && (
+                <Button rightIcon={<EditIcon />} onClick={onEdit}>
+                  {"Редактировать"}
+                </Button>
+              )}
+
               {variant === "userProfileOffer" && (
                 <Button onClick={onExchange} disabled={isExchangeProposed}>
                   {exchangeStatus === "accepted"

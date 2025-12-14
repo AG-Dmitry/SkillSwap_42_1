@@ -16,6 +16,7 @@ export const SidebarMenu = () => {
   const location = useLocation();
   const isFavorites = location.pathname === "/favorites";
   const isProfile = location.pathname === "/profile";
+  const isSkills = location.pathname === "/skills";
   const isExchanges = location.pathname === "/exchanges";
   const isRequests = location.pathname === "/requests";
 
@@ -24,6 +25,7 @@ export const SidebarMenu = () => {
       <div className={styles.sidebarBackground}>
         <nav className={styles.menu} role="navigation">
           {/* TODO: заменить на реальные пути когда будут готовы компоненты */}
+          <Link to="/requests" className={styles.menuItem}>
           <Link
             to="/requests"
             className={isRequests ? styles.menuItemActive : styles.menuItem}
@@ -32,6 +34,7 @@ export const SidebarMenu = () => {
             Заявки
           </Link>
 
+          <Link to="/exchanges" className={styles.menuItem}>
           <Link
             to="/exchanges"
             className={isExchanges ? styles.menuItemActive : styles.menuItem}
@@ -40,6 +43,10 @@ export const SidebarMenu = () => {
             Мои обмены
           </Link>
 
+          <Link
+            to="/skills"
+            className={isSkills ? styles.menuItemActive : styles.menuItem}
+          >
           <Link to="/my-skills" className={styles.menuItem}>
             <IdeaLK />
             Мои навыки
