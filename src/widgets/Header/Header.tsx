@@ -41,7 +41,6 @@ interface HeaderProps {
 
 export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
   const [searchValue, setSearchValue] = useState("");
-  //меняем состояние шапки
   const user = useAppSelector(selectUser);
   const isAuth = Boolean(user);
   const dispatch = useAppDispatch();
@@ -53,19 +52,15 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const searchRef = useRef<HTMLDivElement>(null);
-  // const { subcategories } = useAppSelector(selectCategoryData);
   const { toggle } = useTheme();
 
-  // Получаем уведомления из Redux
   const notifications = useAppSelector(selectNotifications);
   const notificationsCount = useAppSelector(selectUnreadNotificationsCount);
 
-  // Загружаем уведомления при открытии панели (если авторизован)
   useEffect(() => {
     if (isAuth && isNotificationsOpen) {
       dispatch(fetchNotifications());
 
-      // Обновляем уведомления каждые 10 секунд, пока панель открыта
       const interval = setInterval(() => {
         dispatch(fetchNotifications());
       }, 10000);
@@ -74,23 +69,19 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
     }
   }, [isAuth, isNotificationsOpen, dispatch]);
 
-  // Обработчик, который передаем в панель
   const handleMarkAllRead = async () => {
     await dispatch(markAllNotificationsAsRead());
   };
 
-  // Синхронизируем значение поиска с URL параметром
   useEffect(() => {
     const queryParam = searchParams.get("q");
     if (queryParam) {
       setSearchValue(queryParam);
     } else {
-      // Очищаем строку поиска, если параметр q удален из URL
       setSearchValue("");
     }
   }, [searchParams]);
 
-  // Фильтруем подкатегории по поисковому запросу
   const suggestions = useMemo(() => {
     if (!searchValue.trim()) return [];
     const searchLower = searchValue.toLowerCase();
@@ -99,7 +90,6 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
     );
   }, [searchValue, subcategories]);
 
-  // Закрываем подсказки при клике вне компонента
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -179,7 +169,6 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
                 <DropDownListCategory
                   subcategories={subcategories}
                   onSubcategoryClick={(subcategoryId) => {
-                    //устанавливаем фильтр только по выбранной подкатегории
                     onFiltersChange({
                       purpose: "",
                       skills: [subcategoryId],
@@ -187,10 +176,8 @@ export const Header = ({ onFiltersChange, subcategories }: HeaderProps) => {
                       cityAll: [],
                     });
 
-                    //закрываем дропдаун
                     setShowCategory(false);
 
-                    //обновляем url
                     const subcategory = subcategories.find(
                       (sub) => sub.id === subcategoryId,
                     );

@@ -2,14 +2,12 @@
 //  dateOfBirth - Дата рождения (объект Date)
 //  Возвращает возраст в отформатированном виде, например: "33 года"
 export const calculateAge = (dateOfBirth: Date): string => {
-  // Проверяем валидность даты
   if (!dateOfBirth || isNaN(dateOfBirth.getTime())) {
     return "Дата не указана";
   }
 
   const today = new Date();
 
-  // Проверяем, что дата рождения не в будущем
   if (dateOfBirth > today) {
     return "Пользователь еще не родился";
   }
@@ -17,7 +15,6 @@ export const calculateAge = (dateOfBirth: Date): string => {
   let age = today.getFullYear() - dateOfBirth.getFullYear();
   const monthDiff = today.getMonth() - dateOfBirth.getMonth();
 
-  // Если день рождения еще не наступил в текущем году, уменьшаем возраст на 1
   if (
     monthDiff < 0 ||
     (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())
@@ -25,7 +22,6 @@ export const calculateAge = (dateOfBirth: Date): string => {
     age--;
   }
 
-  // Склонение лет
   const lastDigit = age % 10;
   const lastTwoDigits = age % 100;
 
@@ -47,20 +43,17 @@ export const calculateAge = (dateOfBirth: Date): string => {
 //  Возвращает Объект Date или null, если строка невалидна
 
 export const parseDateString = (dateString: string): Date | null => {
-  // Парсим дату
   const date = new Date(dateString);
   if (!isNaN(date.getTime())) {
     return date;
   }
 
-  // Пробуем формат "DD/MM/YYYY"
   const parts = dateString.split("/");
   if (parts.length === 3) {
     const day = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10) - 1; // Месяцы в JS: 0-11
     const year = parseInt(parts[2], 10);
 
-    // Проверяем валидность чисел
     if (
       !isNaN(day) &&
       !isNaN(month) &&
@@ -73,7 +66,6 @@ export const parseDateString = (dateString: string): Date | null => {
       year <= new Date().getFullYear()
     ) {
       const parsedDate = new Date(year, month, day);
-      // Проверяем, что дата не изменилась из-за некорректных значений (например, 31 февраля)
       if (
         parsedDate.getDate() === day &&
         parsedDate.getMonth() === month &&

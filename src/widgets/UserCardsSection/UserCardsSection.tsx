@@ -38,7 +38,6 @@ export const UserCardsSection = ({
   const newSentinelRef = useRef<HTMLDivElement | null>(null);
   const recommendationsSentinelRef = useRef<HTMLDivElement | null>(null);
 
-  // Состояния для отслеживания, сколько элементов показывать (по умолчанию 3)
   const [popularCount, setPopularCount] = useState(3);
   const [newCount, setNewCount] = useState(3);
   const [recommendationsCount, setRecommendationsCount] = useState(21);
@@ -49,9 +48,7 @@ export const UserCardsSection = ({
 
   const [sortByDate, setSortByDate] = useState(false);
 
-  // Загрузка данных при монтировании компонента
   useEffect(() => {
-    // Загружаем данные только если они еще не загружены
     if (users.length === 0 && !usersLoading) {
       dispatch(fetchUsersData());
     }
@@ -70,7 +67,6 @@ export const UserCardsSection = ({
     cities.length,
   ]);
 
-  // Пользователи уже приходят с информацией о лайках из API
   const usersWithLikes = users;
 
   // Все популярные пользователи (по количеству лайков)
@@ -78,7 +74,6 @@ export const UserCardsSection = ({
     return [...usersWithLikes].sort((a, b) => b.likesCount - a.likesCount);
   }, [usersWithLikes]);
 
-  // Популярные пользователи для отображения
   const popularUsers = useMemo(() => {
     return allPopularUsers.slice(0, popularCount);
   }, [allPopularUsers, popularCount]);
@@ -92,12 +87,10 @@ export const UserCardsSection = ({
     );
   }, [users]);
 
-  // Новые пользователи для отображения
   const newUsers = useMemo(() => {
     return allNewUsers.slice(0, newCount);
   }, [allNewUsers, newCount]);
 
-  // Рекомендуемые пользователи для отображения
   const recommendedUsers = useMemo(() => {
     return [...users].slice(0, recommendationsCount);
   }, [users, recommendationsCount]);

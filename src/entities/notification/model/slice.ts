@@ -7,7 +7,6 @@ import type { INotification } from "../types";
 import type { RootState } from "@app/store/store";
 import { api } from "@shared/api/api";
 
-// Типы для состояния
 type NotificationsState = {
   notifications: INotification[];
   toast: INotification | null; // Текущее тост-уведомление
@@ -15,7 +14,6 @@ type NotificationsState = {
   error: string | null;
 };
 
-// Начальное состояние
 const initialState: NotificationsState = {
   notifications: [],
   toast: null,
@@ -23,7 +21,6 @@ const initialState: NotificationsState = {
   error: null,
 };
 
-// Асинхронный thunk для загрузки всех уведомлений
 export const fetchNotifications = createAsyncThunk(
   "notifications/fetchAll",
   async (_, { rejectWithValue }) => {
@@ -38,7 +35,6 @@ export const fetchNotifications = createAsyncThunk(
   },
 );
 
-// Асинхронный thunk для загрузки непрочитанных уведомлений
 export const fetchUnreadNotifications = createAsyncThunk(
   "notifications/fetchUnread",
   async (_, { rejectWithValue }) => {
@@ -55,7 +51,6 @@ export const fetchUnreadNotifications = createAsyncThunk(
   },
 );
 
-// Асинхронный thunk для загрузки тост-уведомления
 export const fetchToastNotification = createAsyncThunk(
   "notifications/fetchToast",
   async (_, { rejectWithValue }) => {
@@ -72,7 +67,6 @@ export const fetchToastNotification = createAsyncThunk(
   },
 );
 
-// Асинхронный thunk для получения уведомления по ID
 export const fetchNotificationById = createAsyncThunk(
   "notifications/fetchById",
   async (id: string, { rejectWithValue }) => {
@@ -87,7 +81,6 @@ export const fetchNotificationById = createAsyncThunk(
   },
 );
 
-// Асинхронный thunk для отметки уведомления как прочитанного
 export const markNotificationAsRead = createAsyncThunk(
   "notifications/markAsRead",
   async (id: string, { rejectWithValue }) => {
@@ -104,7 +97,6 @@ export const markNotificationAsRead = createAsyncThunk(
   },
 );
 
-// Асинхронный thunk для отметки всех уведомлений как прочитанных
 export const markAllNotificationsAsRead = createAsyncThunk(
   "notifications/markAllAsRead",
   async (_, { rejectWithValue }) => {
@@ -121,7 +113,6 @@ export const markAllNotificationsAsRead = createAsyncThunk(
   },
 );
 
-// Асинхронный thunk для удаления уведомления
 export const deleteNotification = createAsyncThunk(
   "notifications/delete",
   async (id: string, { rejectWithValue }) => {
@@ -136,7 +127,6 @@ export const deleteNotification = createAsyncThunk(
   },
 );
 
-// Асинхронный thunk для удаления всех уведомлений
 export const deleteAllNotifications = createAsyncThunk(
   "notifications/deleteAll",
   async (_, { rejectWithValue }) => {
@@ -153,7 +143,6 @@ export const deleteAllNotifications = createAsyncThunk(
   },
 );
 
-// Slice
 const notificationsSlice = createSlice({
   name: "notifications",
   initialState,
@@ -281,7 +270,6 @@ const notificationsSlice = createSlice({
           if (index !== -1) {
             state.notifications[index] = notification;
           }
-          // Если это тост, обновляем его
           if (state.toast?.id === notification.id) {
             state.toast = notification;
           }

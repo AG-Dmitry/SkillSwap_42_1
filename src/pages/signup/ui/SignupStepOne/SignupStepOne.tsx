@@ -27,16 +27,13 @@ export const SignupStepOne = () => {
   const dispatch = useAppDispatch();
   const isSubmitting = useAppSelector(selectIsSubmitting);
 
-  // Получаем сохраненные данные из Redux
   const { step1 } = useAppSelector(selectSignup);
 
-  // Инициализируем форму данными из Redux
   const [formData, setFormData] = useState<SignupStep1Data>({
     email: step1.email || "",
     password: step1.password || "",
   });
 
-  // Если данные уже есть (возврат на шаг 1), помечаем поля как touched
   const [touched, setTouched] = useState({
     email: !!(step1.email && step1.email.length > 0),
     password: !!(step1.password && step1.password.length > 0),
@@ -55,7 +52,6 @@ export const SignupStepOne = () => {
   // Debounce email для проверки на сервере
   const debouncedEmail = useDebounce(formData.email, 500);
 
-  // Проверка email на сервере
   useEffect(() => {
     if (
       debouncedEmail &&
@@ -78,7 +74,6 @@ export const SignupStepOne = () => {
     }
   }, [debouncedEmail, touched.email]);
 
-  // При монтировании, если email уже заполнен, запускаем проверку
   useEffect(() => {
     if (
       formData.email &&
@@ -98,35 +93,29 @@ export const SignupStepOne = () => {
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Только при монтировании компонента
+  }, []);
 
-  // Валидация при каждом изменении формы
   useEffect(() => {
     const result = signupStep1Schema.safeParse(formData);
     const newErrors: { email?: string; password?: string } = {};
 
-    // Шаг 1: Проверяем формат email
     if (touched.email) {
       const emailIssue = result.error?.issues.find(
         (issue) => issue.path[0] === "email",
       );
       if (emailIssue) {
-        // Формат невалиден - показываем ошибку формата
         newErrors.email = emailIssue.message;
       } else if (emailAvailability === false) {
-        // Шаг 2: Формат валиден, но email занят
         newErrors.email = "Email уже занят";
       }
       // Если emailAvailability === null - значит проверка идет, не показываем ошибку
       // Если emailAvailability === true - email свободен, ошибки нет
     }
 
-    // Шаг 3: Проверяем пароль ТОЛЬКО если email полностью валиден (формат + свободен)
     if (touched.password) {
       const emailIssue = result.error?.issues.find(
         (issue) => issue.path[0] === "email",
       );
-      // Пароль проверяем только если email валиден по формату И свободен
       const isEmailFullyValid = !emailIssue && emailAvailability === true;
 
       if (isEmailFullyValid) {
@@ -141,7 +130,6 @@ export const SignupStepOne = () => {
 
     setErrors(newErrors);
 
-    // Форма валидна только если схема валидна и email доступен
     setIsFormValid(result.success && emailAvailability === true);
   }, [formData, touched, emailAvailability]);
 
@@ -154,7 +142,6 @@ export const SignupStepOne = () => {
 
     setTouched((prev) => ({ ...prev, [id]: true }));
 
-    // Сбрасываем доступность email при изменении, чтобы не показывать старый результат
     if (id === "email") {
       setEmailAvailability(null);
     }
@@ -162,7 +149,6 @@ export const SignupStepOne = () => {
 
   const handleSubmit = () => {
     if (isFormValid) {
-      // Сохраняем данные шага 1 в Redux
       dispatch(
         updateStep1({
           email: formData.email,
@@ -213,7 +199,6 @@ export const SignupStepOne = () => {
 
             <div className={formStyles.passwordContainer}>
               <label htmlFor="password">Пароль</label>
-              {/* // TODO: в компоненте инпута нужно сделать кнопку "показать пароль" */}
               <Input
                 type="password"
                 id="password"

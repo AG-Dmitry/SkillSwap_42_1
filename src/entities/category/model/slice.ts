@@ -7,7 +7,6 @@ import type { TCategory, TSubcategory } from "../types";
 import type { RootState } from "@app/store/store";
 import { api } from "@shared/api/api";
 
-// Типы для состояния
 type CategoryDataState = {
   categories: TCategory[];
   subcategories: TSubcategory[];
@@ -15,7 +14,6 @@ type CategoryDataState = {
   error: string | null;
 };
 
-// Начальное состояние
 const initialState: CategoryDataState = {
   categories: [],
   subcategories: [],
@@ -23,7 +21,6 @@ const initialState: CategoryDataState = {
   error: null,
 };
 
-// Асинхронный thunk для загрузки категорий и подкатегорий
 export const fetchCategories = createAsyncThunk(
   "categoryData/fetchAll",
   async (_, { rejectWithValue }) => {
@@ -45,7 +42,6 @@ export const fetchCategories = createAsyncThunk(
   },
 );
 
-// Slice
 const categoryDataSlice = createSlice({
   name: "categoryData",
   initialState,

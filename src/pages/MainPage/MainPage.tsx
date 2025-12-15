@@ -19,7 +19,6 @@ export const MainPage = () => {
 
   const { subcategories, isLoading } = useAppSelector(selectCategoryData);
 
-  // Обрабатываем поисковый запрос из URL
   useEffect(() => {
     const searchQuery = searchParams.get("q");
     if (searchQuery) {

@@ -15,22 +15,17 @@ export const App = () => {
   const isAuth = Boolean(user);
   const hasToken = !!getCookie("accessToken");
 
-  // При монтировании приложения проверяем наличие токена
-  // Если токен есть, но пользователь не загружен, загружаем его
   useEffect(() => {
     if (hasToken && !user && !isLoading) {
       dispatch(fetchUser());
     }
   }, [dispatch, user, hasToken, isLoading]);
 
-  // Загружаем уведомления и тосты при авторизации
   useEffect(() => {
     if (isAuth) {
-      // Первая загрузка сразу
       dispatch(fetchNotifications());
       dispatch(fetchToastNotification());
 
-      // Периодическая проверка тостов каждую минуту
       const toastInterval = setInterval(() => {
         dispatch(fetchToastNotification());
       }, 60 * 1000);
@@ -47,10 +42,8 @@ export const App = () => {
     }
   }, [isAuth, dispatch]);
 
-  // Если есть токен, но пользователь еще не загружен, ждем
-  // Это предотвращает редиректы во время загрузки пользователя
   if (hasToken && !user) {
-    return null; // или можно показать лоадер
+    return null;
   }
 
   return (

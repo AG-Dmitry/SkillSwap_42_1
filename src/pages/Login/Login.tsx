@@ -40,7 +40,6 @@ export const Login = () => {
 
   const [isFormValid, setIsFormValid] = useState(false);
 
-  // Валидация при каждом изменении формы
   useEffect(() => {
     const result = signupStep1Schema.safeParse(formData);
 
@@ -66,7 +65,6 @@ export const Login = () => {
     }
   }, [formData, touched]);
 
-  // Очистка ошибок при размонтировании
   useEffect(() => {
     return () => {
       dispatch(clearError());
@@ -95,14 +93,11 @@ export const Login = () => {
     try {
       await dispatch(login(formData)).unwrap();
 
-      // Редирект на страницу, с которой пришли, или на главную
       const from =
         (location.state as { from?: { pathname: string } })?.from?.pathname ||
         "/";
       navigate(from, { replace: true });
-    } catch (error) {
-      // Ошибка уже сохранена в state через extraReducers
-    }
+    } catch (error) {}
   };
 
   return (

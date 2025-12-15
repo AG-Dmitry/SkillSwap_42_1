@@ -59,14 +59,12 @@ export const Selector: FC<TSelectorProps> = memo(
       }
     };
 
-    // Очистка строки поиска
     const clearSearch = (e: React.MouseEvent) => {
       e.stopPropagation();
       setSearchValue("");
       setSelectedOptions([]);
     };
 
-    // Показ знака очистки строки поиска
     const showClear = enableSearch && searchValue.length > 0 && isOpen;
 
     // Фильтрация списка при включённом поиске

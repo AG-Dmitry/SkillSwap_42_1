@@ -24,7 +24,6 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Загрузка текущего пользователя
 export const fetchUser = createAsyncThunk(
   "auth/fetchUser",
   async (_, { rejectWithValue }) => {
@@ -39,7 +38,6 @@ export const fetchUser = createAsyncThunk(
   },
 );
 
-// Вход
 export const login = createAsyncThunk(
   "auth/login",
   async (credentials: LoginRequest, { rejectWithValue }) => {
@@ -56,7 +54,6 @@ export const login = createAsyncThunk(
   },
 );
 
-// Регистрация
 export const register = createAsyncThunk(
   "auth/register",
   async (data: RegisterRequest, { rejectWithValue }) => {
@@ -73,7 +70,6 @@ export const register = createAsyncThunk(
   },
 );
 
-// Выход
 export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
@@ -86,7 +82,6 @@ export const logout = createAsyncThunk(
       localStorage.removeItem("refreshToken");
       return null;
     } catch (error) {
-      // Даже если запрос не удался, очищаем хранилище
       removeCookie("accessToken");
       localStorage.removeItem("refreshToken");
       return rejectWithValue(
@@ -96,7 +91,6 @@ export const logout = createAsyncThunk(
   },
 );
 
-// Обновление данных текущего пользователя
 export const updateCurrentUser = createAsyncThunk(
   "auth/updateCurrentUser",
   async (data: UpdateUserRequest | FormData, { rejectWithValue }) => {
@@ -111,7 +105,6 @@ export const updateCurrentUser = createAsyncThunk(
   },
 );
 
-// Изменение пароля
 export const changePassword = createAsyncThunk(
   "auth/changePassword",
   async (data: ChangePasswordRequest, { rejectWithValue }) => {

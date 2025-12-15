@@ -24,14 +24,11 @@
 
   inline-size: 100%;
 
-  // max-inline-size: 1020px;
-  // min-block-size: 444px;
   background: vars.$color-card;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgb(0 0 0 / 4%);
   padding: 40px;
 
-  // box-sizing: border-box;
   block-size: 100%;
 
   @media (width <= 1200px) {

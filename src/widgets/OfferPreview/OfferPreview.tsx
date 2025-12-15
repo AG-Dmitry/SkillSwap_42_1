@@ -7,7 +7,6 @@ import { Button } from "@shared/ui/Button/Button";
 import { EditIcon } from "@shared/ui/Icons/EditIcon";
 import type { TOfferProps } from "@widgets/OfferPreview/types";
 
-/*эта карточка меняется в зависимости от variant*/
 export const OfferPreview = (props: TOfferProps) => {
   const {
     variant = "userProfileOffer",
@@ -25,7 +24,6 @@ export const OfferPreview = (props: TOfferProps) => {
     exchangeStatus,
   } = props;
 
-  //EMPTY STATE
   if (variant === "userProfileOffer" && isEmpty) {
     return (
       <div className={stylesModal.wrapper}>
