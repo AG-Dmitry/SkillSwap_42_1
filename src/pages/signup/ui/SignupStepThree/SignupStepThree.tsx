@@ -59,8 +59,6 @@ export const SignupStepThree = () => {
 
   const { step3 } = signupState;
 
-  // Проверка, что шаги 1 и 2 пройдены (только для незалогиненных)
-  // Если пользователь залогинен - шаг 3 доступен без проверок
   if (!isAuthenticated) {
     // Если нет данных шага 1, редиректим на шаг 1
     if (!signupState.step1.email || !signupState.step1.password) {
@@ -129,7 +127,6 @@ export const SignupStepThree = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragAreaRef = useRef<HTMLDivElement>(null);
 
-  // Инициализация формы данными из Redux
   useEffect(() => {
     setFormData({
       title: skillName || "",
@@ -364,7 +361,6 @@ export const SignupStepThree = () => {
   const handleContinue = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
 
-    // Помечаем все поля как "затронутые" для показа всех ошибок
     const allTouched = {
       title: true,
       description: true,
@@ -374,11 +370,9 @@ export const SignupStepThree = () => {
     };
     setTouched(allTouched);
 
-    // Проверяем валидность всей формы
     const validationResult = signupStep3Schema.safeParse(formData);
 
     if (!validationResult.success) {
-      // Собираем все ошибки
       const validationErrors: Partial<Record<keyof SignupStep3Data, string>> =
         {};
 
@@ -398,7 +392,6 @@ export const SignupStepThree = () => {
 
   const handleConfirmOffer = async () => {
     try {
-      // Сохраняем данные в Redux перед отправкой
       dispatch(
         updateStep3({
           skillName: formData.title,
@@ -407,10 +400,8 @@ export const SignupStepThree = () => {
         }),
       );
 
-      // Отправляем данные на сервер через API
       await dispatch(createSkills()).unwrap();
 
-      // Если успешно, показываем модальное окно успеха
       setIsOfferModalOpen(false);
       setIsSuccessModalOpen(true);
 

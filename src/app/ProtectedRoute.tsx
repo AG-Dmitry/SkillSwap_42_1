@@ -20,16 +20,11 @@ export const ProtectedRoute = ({
   const hasToken = !!getCookie("accessToken");
   const location = useLocation();
 
-  // Если требуется авторизация (по умолчанию)
   if (requireAuth) {
-    // Если нет токена или пользователя, редиректим на логин
-    // Проверка загрузки пользователя уже происходит в App.tsx
     if (!hasToken || !user) {
       return <Navigate to="/login" state={{ from: location }} replace />;
     }
   } else {
-    // Если требуется отсутствие авторизации (для логина/регистрации)
-    // Если пользователь залогинен, редиректим на главную
     if (hasToken && user) {
       return <Navigate to="/" replace />;
     }

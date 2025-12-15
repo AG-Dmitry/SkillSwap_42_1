@@ -162,7 +162,6 @@ export const Filter = ({
       gender: "",
       cityAll: [],
     });
-    // Очищаем параметр q из URL
     if (onClearSearchQuery) {
       onClearSearchQuery();
     }

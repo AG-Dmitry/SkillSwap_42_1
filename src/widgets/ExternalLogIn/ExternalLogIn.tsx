@@ -4,8 +4,6 @@ import { Separator } from "@/shared/ui/Separator/Separator";
 import { AppleIcon } from "@shared/ui/Icons/AppleIcon";
 import { GoogleIcon } from "@shared/ui/Icons/GoogleIcon";
 
-// Данный компонент отображает опции для стороннего логина
-
 export const ExternalLogIn: FC = () => {
   return (
     <>

@@ -35,10 +35,7 @@
 
 .cardsGrid {
   display: grid;
-  grid-template-columns: repeat(
-    3,
-    1fr
-  ); //возможно тут надо 1, 1fr, но пока думаю еще
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   inline-size: 100%;
 }

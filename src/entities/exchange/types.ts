@@ -1,5 +1,3 @@
-// Типы для обменов навыками
-
 export type ExchangeStatus =
   | "pending"
   | "accepted"

@@ -13,7 +13,6 @@ export const Toast = () => {
 
   useEffect(() => {
     if (toast) {
-      // Автоматически скрываем тост через 5 секунд
       const timer = setTimeout(() => {
         dispatch(clearToast());
       }, 5000);

@@ -5,7 +5,6 @@ import type { IWelcomeSectionProps } from "@shared/ui/WelcomeSection/types";
 export const WelcomeSection = (props: IWelcomeSectionProps) => {
   const { src, alt, width = "300", height = "300", title, description } = props;
 
-  //получаем имя файла из src для data-атрибута
   const getImageName = (src: string) => {
     const parts = src.split("/");
     return parts[parts.length - 1];

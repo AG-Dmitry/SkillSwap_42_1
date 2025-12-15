@@ -20,7 +20,6 @@ export const Requests = () => {
       setIsLoading(true);
       setError(null);
       try {
-        // Получаем все активные обмены со статусом accepted (и входящие, и исходящие)
         const data = await api.getUserExchanges(authUser.id, {
           status: "accepted",
           direction: "all",
@@ -37,17 +36,14 @@ export const Requests = () => {
     loadRequests();
   }, [authUser?.id]);
 
-  // Пользователи, которые отправили нам заявки (все входящие)
   const usersWithRequests = useMemo(() => {
     if (!authUser?.id) return [];
 
     return requests
       .map((req) => {
-        // В заявках fromUser - это тот, кто отправил заявку
         const fromUser = req.fromUser;
         if (!fromUser) return null;
 
-        // Формируем описание заявки
         const fromSkillName = req.fromSkill?.name || "Навык";
         const toSkillName = req.toSkill?.name || "Навык";
         const offerTitle = `${fromSkillName} ↔ ${toSkillName}`;
@@ -91,13 +87,11 @@ export const Requests = () => {
 
     try {
       if (currentStatus === "accepted") {
-        // Завершаем обмен - меняем статус на completed
         const updatedExchange = await api.updateExchangeStatus(
           parseInt(exchangeId, 10),
           "completed",
         );
 
-        // Удаляем из списка (завершенные обмены не показываются в "Заявки")
         setRequests((prev) =>
           prev.filter((req) => req.id !== updatedExchange.id),
         );

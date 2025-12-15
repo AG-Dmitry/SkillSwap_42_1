@@ -7,21 +7,18 @@ import type { TCity } from "../types";
 import type { RootState } from "@app/store/store";
 import { api } from "@shared/api/api";
 
-// Типы для состояния
 type CitiesState = {
   cities: TCity[];
   isLoading: boolean;
   error: string | null;
 };
 
-// Начальное состояние
 const initialState: CitiesState = {
   cities: [],
   isLoading: false,
   error: null,
 };
 
-// Асинхронный thunk для загрузки городов
 export const fetchCities = createAsyncThunk(
   "cities/fetchAll",
   async (_, { rejectWithValue }) => {
@@ -38,7 +35,6 @@ export const fetchCities = createAsyncThunk(
   },
 );
 
-// Slice
 const citiesSlice = createSlice({
   name: "cities",
   initialState,

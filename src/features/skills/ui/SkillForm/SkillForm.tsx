@@ -85,7 +85,6 @@ export const SkillForm = () => {
       setIsLoading(true);
       try {
         const skill = await api.getSkill(parseInt(skillId, 10));
-        // Устанавливаем базовые данные
         setFormData((prev) => ({
           ...prev,
           title: skill.name || "",
@@ -96,7 +95,6 @@ export const SkillForm = () => {
           images: skill.images || [],
         }));
 
-        // Инициализируем изображения (существующие, без файлов)
         if (skill.images && Array.isArray(skill.images)) {
           const imageFiles = skill.images.map((img, index) => ({
             id: `image-${index}-${Date.now()}`,
@@ -301,11 +299,9 @@ export const SkillForm = () => {
     };
     setTouched(allTouched);
 
-    // Проверяем валидность всей формы через Zod
     const validationResult = signupStep3Schema.safeParse(formData);
 
     if (!validationResult.success) {
-      // Собираем все ошибки
       const validationErrors: Partial<Record<keyof SignupStep3Data, string>> =
         {};
 
@@ -327,11 +323,9 @@ export const SkillForm = () => {
     try {
       setIsSubmitting(true);
 
-      // Преобразуем данные формы для отправки на сервер
       const subcategoryId = parseInt(formData.subcategory[0], 10);
 
       if (isEditMode && skillId) {
-        // Редактирование существующего навыка
         await api.updateSkill(parseInt(skillId, 10), {
           name: formData.title,
           description: formData.description,
@@ -340,7 +334,6 @@ export const SkillForm = () => {
           images: formData.images,
         });
 
-        // Загружаем новые изображения, если они есть
         const newImageFiles = localImages
           .filter((img) => img.file) // Только новые изображения с файлами
           .map((img) => img.file!)
@@ -350,7 +343,6 @@ export const SkillForm = () => {
           await api.uploadSkillImages(parseInt(skillId, 10), newImageFiles);
         }
       } else {
-        // Создание нового навыка
         const newSkill = await api.createSkill({
           name: formData.title,
           description: formData.description,

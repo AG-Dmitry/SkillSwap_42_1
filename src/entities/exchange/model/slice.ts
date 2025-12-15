@@ -15,7 +15,6 @@ const initialState: ExchangeState = {
   error: null,
 };
 
-// Создание запроса на обмен
 export const createExchange = createAsyncThunk<
   Exchange,
   CreateExchangeRequest,
@@ -31,7 +30,6 @@ export const createExchange = createAsyncThunk<
   }
 });
 
-// Получение статуса запроса на обмен
 export const getExchangeStatus = createAsyncThunk<
   { status: string; message: string; updatedAt: string },
   number,
@@ -47,7 +45,6 @@ export const getExchangeStatus = createAsyncThunk<
   }
 });
 
-// Получение полной информации об обмене
 export const getExchange = createAsyncThunk<
   Exchange,
   number,

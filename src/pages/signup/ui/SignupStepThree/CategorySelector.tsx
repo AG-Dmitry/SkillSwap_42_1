@@ -26,7 +26,6 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Обработчик клика вне компонента
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -37,7 +36,6 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
       }
     };
 
-    // Обработчик нажатия клавиши Escape
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsOpen(false);

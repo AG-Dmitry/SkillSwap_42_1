@@ -1,5 +1,4 @@
-// Города
 export type TCity = {
-  id: number; // уникальный идентификатор города
-  name: string; // название города (например, «Москва»)
+  id: number;
+  name: string;
 };

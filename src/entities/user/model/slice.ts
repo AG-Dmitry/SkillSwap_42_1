@@ -17,21 +17,18 @@ type UserInState = Omit<
   lastLoginDatetime: string;
 };
 
-// Типы для состояния
 type UsersDataState = {
   users: UserInState[];
   isLoading: boolean;
   error: string | null;
 };
 
-// Начальное состояние
 const initialState: UsersDataState = {
   users: [],
   isLoading: false,
   error: null,
 };
 
-// Асинхронный thunk для загрузки данных пользователей
 export const fetchUsersData = createAsyncThunk(
   "usersData/fetchAll",
   async (_, { rejectWithValue }) => {
@@ -48,7 +45,6 @@ export const fetchUsersData = createAsyncThunk(
   },
 );
 
-// Асинхронный thunk для обновления одного пользователя
 export const updateUserInState = createAsyncThunk(
   "usersData/updateUser",
   async (userId: number, { rejectWithValue }) => {
@@ -63,7 +59,6 @@ export const updateUserInState = createAsyncThunk(
   },
 );
 
-// Slice
 const usersDataSlice = createSlice({
   name: "usersData",
   initialState,
@@ -94,12 +89,9 @@ const usersDataSlice = createSlice({
       })
       .addCase(fetchUsersData.fulfilled, (state, action) => {
         state.isLoading = false;
-        // Сохраняем пользователей с датами как строками (API возвращает строки)
-        // Селектор selectUsers преобразует их в Date объекты при чтении
         state.users = action.payload.users.map(
           (user): UserInState => ({
             ...user,
-            // Убеждаемся, что даты сохраняются как строки, а не Date объекты
             dateOfBirth:
               typeof user.dateOfBirth === "string"
                 ? user.dateOfBirth
@@ -124,8 +116,6 @@ const usersDataSlice = createSlice({
         const updatedUser = action.payload;
         const index = state.users.findIndex((u) => u.id === updatedUser.id);
         if (index !== -1) {
-          // Обновляем пользователя в массиве, сохраняя даты как строки (не Date объекты)
-          // Селектор selectUsers преобразует их в Date объекты при чтении
           state.users[index] = {
             ...updatedUser,
             dateOfBirth:

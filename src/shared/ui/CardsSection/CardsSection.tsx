@@ -31,10 +31,8 @@ export const CardsSection: React.FC<CardsSectionProps> = ({
   headerContent,
   sentinelRef,
 }) => {
-  // Обработчик для кнопки ViewAllButton
   const handleLoadMore = () => {
     if (viewAllProps?.onLoadMore) {
-      // Вычисляем следующее количество элементов
       const nextCount = Math.min(
         viewAllProps.currentCount + 3,
         viewAllProps.totalCount,

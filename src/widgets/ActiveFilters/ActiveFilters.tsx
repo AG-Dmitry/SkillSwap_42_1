@@ -17,7 +17,6 @@ export const ActiveFilters = ({
   cities,
   onFiltersChange,
 }: ActiveFiltersProps) => {
-  // Формируем список активных фильтров для отображения
   const activeFilterTags = useMemo(() => {
     const tags: Array<{
       id: string;
@@ -26,7 +25,6 @@ export const ActiveFilters = ({
       value: string | number;
     }> = [];
 
-    // Purpose фильтр
     if (filters.purpose !== "" && filters.purpose !== "Всё") {
       tags.push({
         id: `purpose-${filters.purpose}`,
@@ -36,7 +34,6 @@ export const ActiveFilters = ({
       });
     }
 
-    // Skills фильтры (подкатегории)
     filters.skills.forEach((subcategoryId) => {
       const subcategory = subcategories.find((sub) => sub.id === subcategoryId);
       if (subcategory) {
@@ -49,7 +46,6 @@ export const ActiveFilters = ({
       }
     });
 
-    // Gender фильтр
     if (filters.gender !== "" && filters.gender !== "Не имеет значения") {
       tags.push({
         id: `gender-${filters.gender}`,
@@ -59,7 +55,6 @@ export const ActiveFilters = ({
       });
     }
 
-    // CityAll фильтры
     filters.cityAll.forEach((cityId) => {
       const city = cities.find((c) => c.id === cityId);
       if (city) {
@@ -75,7 +70,6 @@ export const ActiveFilters = ({
     return tags;
   }, [filters, subcategories, cities]);
 
-  // Обработчик удаления фильтра
   const handleRemoveFilter = (type: string, value: string | number) => {
     const newFilters = { ...filters };
 

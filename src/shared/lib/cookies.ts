@@ -1,5 +1,3 @@
-// Утилиты для работы с cookies
-
 export const getCookie = (name: string): string | null => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);

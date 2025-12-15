@@ -77,12 +77,10 @@ export const MySkills = () => {
       );
   }, [userTeachSkills, categories, subcategories]);
 
-  // Функция для редактирования навыка
   const handleEditSkill = (skillId: string) => {
     navigate(`/profile/skills/edit/${skillId}`);
   };
 
-  // Функция для удаления навыка
   const handleDeleteSkill = async (skillId: number) => {
     if (!confirm("Вы уверены, что хотите удалить этот навык?")) {
       return;
@@ -90,7 +88,6 @@ export const MySkills = () => {
 
     try {
       await api.deleteSkill(skillId);
-      // Перезагружаем список навыков
       await dispatch(fetchSkillsData());
     } catch (error: any) {
       console.error("Ошибка при удалении навыка:", error);
