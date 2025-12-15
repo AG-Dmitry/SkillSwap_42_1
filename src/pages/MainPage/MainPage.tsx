@@ -44,11 +44,13 @@ export const MainPage = () => {
   return (
     <div className={styles.main}>
       <aside className={styles.filterContainer}>
-        <Filter
-          filters={filters}
-          onFiltersChange={setFilters}
-          onClearSearchQuery={clearSearchQuery}
-        />
+        <div className={styles.filterWrap}>
+          <Filter
+            filters={filters}
+            onFiltersChange={setFilters}
+            onClearSearchQuery={clearSearchQuery}
+          />
+        </div>
       </aside>
       <section className={styles.galleryContainer}>
         {isLoading && (
