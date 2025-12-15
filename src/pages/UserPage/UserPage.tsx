@@ -56,14 +56,11 @@ export const UserPage: React.FC = () => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const authUser = useAppSelector(selectAuthUser);
 
-  // Redux state для обменов
   const currentExchange = useAppSelector(selectCurrentExchange);
 
   const [userOffers, setUserOffers] = useState<UserOffer[]>([]);
 
-  // Загружаем все необходимые данные и проверяем существующие обмены
   useEffect(() => {
-    // Очищаем обмен при переходе на другого пользователя
     dispatch(clearExchange());
 
     const loadAllData = async () => {
@@ -75,7 +72,6 @@ export const UserPage: React.FC = () => {
           dispatch(fetchCategories()).unwrap(),
         ]);
 
-        // Проверяем существующие обмены между текущим пользователем и просматриваемым
         if (authUser && userId && isAuthenticated) {
           try {
             const exchanges = await api.getUserExchanges(authUser.id);
@@ -92,14 +88,11 @@ export const UserPage: React.FC = () => {
               (existingExchange.status === "pending" ||
                 existingExchange.status === "accepted")
             ) {
-              // Загружаем полную информацию об обмене
               await dispatch(getExchange(existingExchange.id)).unwrap();
-              // Проверяем тосты, если обмен уже подтвержден
               if (existingExchange.status === "accepted") {
                 await dispatch(fetchToastNotification()).unwrap();
               }
             } else {
-              // Если обмен не найден, очищаем текущий обмен
               dispatch(clearExchange());
             }
           } catch (error) {
@@ -114,7 +107,6 @@ export const UserPage: React.FC = () => {
     loadAllData();
   }, [dispatch, authUser, userId, isAuthenticated]);
 
-  // Загружаем предложения пользователя из localStorage
   useEffect(() => {
     if (userId) {
       try {
@@ -129,7 +121,6 @@ export const UserPage: React.FC = () => {
     }
   }, [userId]);
 
-  // Находим текущего пользователя
   const currentUser = useMemo(() => {
     const foundUser = users.find((u) => u.id.toString() === userId);
     if (!foundUser) return null;
@@ -141,7 +132,6 @@ export const UserPage: React.FC = () => {
     };
   }, [users, userId]);
 
-  // Получаем навыки пользователя типа "offer" (может научить)
   const userTeachSkills = useMemo(() => {
     if (!currentUser || !userId || skills.length === 0) return [];
     return skills.filter(
@@ -150,7 +140,6 @@ export const UserPage: React.FC = () => {
     );
   }, [currentUser, userId, skills]);
 
-  // Берем первый навык "offer" для отображения
   const currentSkill = useMemo(() => {
     if (userTeachSkills.length === 0) return null;
     // Сортируем по дате изменения (новые первыми) и берем первый
@@ -235,7 +224,6 @@ export const UserPage: React.FC = () => {
     navigate(-1);
   }, [navigate]);
 
-  // Получаем навык текущего авторизованного пользователя типа "offer"
   const currentUserSkill = useMemo(() => {
     if (!authUser || !skills.length) return null;
     const userSkills = skills.filter(
@@ -260,17 +248,12 @@ export const UserPage: React.FC = () => {
       // Если статус pending, проверяем тост через 12 секунд (бэкенд подтверждает через 10)
       const timeout = setTimeout(async () => {
         try {
-          // Проверяем статус обмена
           const updatedExchange = await api.getExchange(exchangeId);
           if (updatedExchange.status === "accepted") {
-            // Обновляем статус в Redux
             await dispatch(getExchange(exchangeId)).unwrap();
           }
-          // Проверяем тост
           await dispatch(fetchToastNotification()).unwrap();
-        } catch (error) {
-          // Игнорируем ошибки
-        }
+        } catch (error) {}
       }, 12000);
 
       return () => {
@@ -296,7 +279,6 @@ export const UserPage: React.FC = () => {
     }
 
     try {
-      // Создаем запрос на обмен
       await dispatch(
         createExchange({
           fromUserId: authUser.id,

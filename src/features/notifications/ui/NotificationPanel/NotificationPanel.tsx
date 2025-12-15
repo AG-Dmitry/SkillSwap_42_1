@@ -12,16 +12,13 @@ const NotificationPanel: React.FC<IReadProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  // Обработчик, который помечает все уведомления как прочитанные
   const handleMarkAllRead = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     onMarkAllRead?.(); // Вызывает колбек из шапки, чтобы убрать красную точку
   };
 
-  // Обработчик очистки просмотренных уведомлений
   const handleClearViewed = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    // Удаляем все прочитанные уведомления
     notifications
       .filter((n) => n.isRead)
       .forEach((n) => {
@@ -29,7 +26,6 @@ const NotificationPanel: React.FC<IReadProps> = ({
       });
   };
 
-  // Показываем все новые и все просмотренные уведомления
   const newSlice = notifications.filter((n) => !n.isRead);
   const viewedSlice = notifications.filter((n) => n.isRead);
 

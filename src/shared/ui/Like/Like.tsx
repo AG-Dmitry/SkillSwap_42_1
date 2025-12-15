@@ -28,7 +28,6 @@ export const Like = (props: ILikeProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Синхронизируем состояние с пропсами
   useEffect(() => {
     setLikeCount(currentLikeCount);
     setIsLiked(initialIsLiked);
@@ -66,7 +65,6 @@ export const Like = (props: ILikeProps) => {
     );
     props.onLikeToggle?.(newLikeCount);
 
-    // Создаем промис для текущего запроса
     const requestPromise = (async () => {
       setIsLoading(true);
       try {
@@ -76,11 +74,9 @@ export const Like = (props: ILikeProps) => {
           await dispatch(deleteLike(userId)).unwrap();
         }
 
-        // Обновляем только этого пользователя для синхронизации с сервером
         await dispatch(updateUserInState(userId));
       } catch (error) {
         console.error("Ошибка при изменении лайка:", error);
-        // Откатываем оптимистичное обновление при ошибке
         setIsLiked(!newIsLike);
         setLikeCount(likeCount);
         dispatch(

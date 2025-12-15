@@ -31,7 +31,6 @@ export const SimiliarProposals: React.FC<SimiliarProposalsProps> = ({
 
   const displayUsers = users.slice(0, maxUsers);
 
-  // Количество слайдов
   const slidesCount = Math.ceil(displayUsers.length / cardsPerSlide);
 
   const currentSlideUsers = displayUsers.slice(
@@ -39,7 +38,6 @@ export const SimiliarProposals: React.FC<SimiliarProposalsProps> = ({
     (currentSlide + 1) * cardsPerSlide,
   );
 
-  // Условие для пролистывания
   const canGoPrev = currentSlide > 0;
   const canGoNext = currentSlide < slidesCount - 1;
 
@@ -55,7 +53,6 @@ export const SimiliarProposals: React.FC<SimiliarProposalsProps> = ({
     }
   };
 
-  // Сброс слайда при изменении данных
   useEffect(() => {
     setCurrentSlide(0);
   }, [displayUsers.length]);

@@ -32,30 +32,24 @@ export const Card: React.FC<CardProps> = memo(
   }) => {
     const navigate = useNavigate();
 
-    // Получаем данные из Redux
     const { skills } = useAppSelector(selectSkillsData);
     const { subcategories } = useAppSelector(selectCategoryData);
 
-    // Получаем статус авторизации ТОЛЬКО из Redux
     const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
-    // Генерируем уникальный ID для заголовка, он нужен для aria-labelledby
     const titleId = useMemo(() => `card-title-${user.id}`, [user.id]);
 
     const handleDetailsClick = useCallback(() => {
       if (isLoading) return;
 
-      // Если передан кастомный обработчик, используем его
       if (onDetailsClick) {
         onDetailsClick();
         return;
       }
 
-      // Иначе - переход на страницу пользователя
       navigate(`/user/${user.id}`);
     }, [isLoading, navigate, user.id, onDetailsClick]);
 
-    // Мемоизированные навыки пользователя
     const { canTeachSkills, wantToLearnSkills } = useMemo(
       () => ({
         canTeachSkills: getUserSkillsByType(skills, user.id, "offer"),
@@ -64,7 +58,6 @@ export const Card: React.FC<CardProps> = memo(
       [skills, user.id],
     );
 
-    // Определяем количество показываемых навыков в зависимости от варианта
     const getVisibleSkillsCount = useCallback(() => {
       switch (variant) {
         case "profile":
@@ -76,14 +69,13 @@ export const Card: React.FC<CardProps> = memo(
       }
     }, [variant]);
 
-    // Функция для рендеринга тегов с логикой "+N" для секции "Может научить"
     const renderTeachTags = useCallback(() => {
       if (canTeachSkills.length === 0) {
         return (
           <div
             className={`${styles.tag} ${styles.default}`}
-            role="listitem" //это элемент списка для скринридеров
-            aria-label="Навыки не указаны" //описание для скринридеров, когда нет навыков
+            role="listitem"
+            aria-label="Навыки не указаны"
           >
             Навыки не указаны
           </div>
@@ -108,8 +100,8 @@ export const Card: React.FC<CardProps> = memo(
                 key={skill.id}
                 className={`${styles.tag} ${tagClassName}`}
                 title={skill.name}
-                role="listitem" //это элемент списка для скринридеров
-                aria-label={`Навык: ${skill.name}`} //описание навыка для скринридеров
+                role="listitem"
+                aria-label={`Навык: ${skill.name}`}
               >
                 {skill.name}
               </div>
@@ -119,8 +111,8 @@ export const Card: React.FC<CardProps> = memo(
           {hasAdditional && (
             <div
               className={`${styles.tag} ${styles.additional}`}
-              role="listitem" //это элемент списка для скринридеров
-              aria-label={`Ещё ${canTeachSkills.length - visibleCount} навыков`} //скринридер прочитает, что еще столько-то навыков
+              role="listitem"
+              aria-label={`Ещё ${canTeachSkills.length - visibleCount} навыков`}
             >
               +{canTeachSkills.length - visibleCount}
             </div>
@@ -129,14 +121,13 @@ export const Card: React.FC<CardProps> = memo(
       );
     }, [canTeachSkills, subcategories, getVisibleSkillsCount]);
 
-    // Функция для рендеринга тегов с логикой "+N" для секции "Хочет научиться"
     const renderLearnTags = useCallback(() => {
       if (wantToLearnSkills.length === 0) {
         return (
           <div
             className={`${styles.learnTag} ${styles.default}`}
-            role="listitem" //это элемент списка для скринридеров
-            aria-label="Навыки не указаны" //описане для скринридеров, когда навыки не указаны
+            role="listitem"
+            aria-label="Навыки не указаны"
           >
             Навыки не указаны
           </div>
@@ -161,8 +152,8 @@ export const Card: React.FC<CardProps> = memo(
                 key={skill.id}
                 className={`${styles.learnTag} ${tagClassName}`}
                 title={skill.name}
-                role="listitem" //это элемент списка для скринридеров
-                aria-label={`Навык: ${skill.name}`} //описане навыка для скринридеров
+                role="listitem"
+                aria-label={`Навык: ${skill.name}`}
               >
                 {skill.name}
               </div>
@@ -172,8 +163,8 @@ export const Card: React.FC<CardProps> = memo(
           {hasAdditional && (
             <div
               className={`${styles.learnTag} ${styles.additional}`}
-              role="listitem" //это элемент списка для скринридеров
-              aria-label={`Ещё ${wantToLearnSkills.length - visibleCount} навыков`} //скринридер прочитает, что еще столько-то навыков
+              role="listitem"
+              aria-label={`Ещё ${wantToLearnSkills.length - visibleCount} навыков`}
             >
               +{wantToLearnSkills.length - visibleCount}
             </div>
@@ -187,9 +178,9 @@ export const Card: React.FC<CardProps> = memo(
         className={`${styles.container} ${className} ${
           isLoading ? styles.loading : ""
         } ${styles[variant]}`}
-        aria-labelledby={titleId} // связываем карточку с заголовком для скринридера
-        aria-busy={isLoading} // состояние загрузки для скринридеров
-        aria-live={isLoading ? "polite" : "off"} // объявляем изменения при загрузке
+        aria-labelledby={titleId}
+        aria-busy={isLoading}
+        aria-live={isLoading ? "polite" : "off"}
       >
         {/* Заголовок карточки с аватаром и информацией о пользователе */}
         <div className={styles.header}>

@@ -1,10 +1,6 @@
 @use "/src/styles/variables" as *;
 
 .header {
-  //display: grid;
-  //grid-template-columns:
-  //  minmax(min-content, 414px) minmax(min-content, 648px)
-  //  minmax(min-content, 112px) minmax(min-content, 308px);
   display: flex;
   column-gap: 38px;
   align-items: center;

@@ -81,7 +81,6 @@ const getInitialState = (): SignupState => {
           parsed.avatar.startsWith("data:image")
         ) {
           try {
-            // Создаем File объект из base64
             const byteString = atob(parsed.avatar.split(",")[1]);
             const mimeString = parsed.avatar
               .split(",")[0]
@@ -97,7 +96,6 @@ const getInitialState = (): SignupState => {
             const blob = new Blob([ab], { type: mimeString });
             const file = new File([blob], "avatar.jpg", { type: mimeString });
 
-            // Сохраняем File объект в хранилище
             avatarFileStorage = file;
           } catch (error) {
             console.error(
@@ -157,7 +155,6 @@ const getInitialState = (): SignupState => {
 
 const initialState: SignupState = getInitialState();
 
-// Регистрация пользователя после второго шага
 export const registerUserAfterStep2 = createAsyncThunk<
   void,
   void,
@@ -232,7 +229,6 @@ export const createWantToLearnSkills = createAsyncThunk<
       const state = getState().signup;
       let categoryState = getState().categoryData;
 
-      // Если подкатегории не загружены, загружаем их
       if (categoryState.subcategories.length === 0) {
         await dispatch(fetchCategories()).unwrap();
         categoryState = getState().categoryData;
@@ -250,7 +246,6 @@ export const createWantToLearnSkills = createAsyncThunk<
               return null;
             }
 
-            // Находим подкатегорию по ID, чтобы получить её название
             const subcategory = categoryState.subcategories.find(
               (sub) => sub.id === subcategoryId,
             );
@@ -415,7 +410,6 @@ const signupSlice = createSlice({
     clearSignupData: (state) => {
       Object.assign(state, getInitialState());
       clearAvatarFile();
-      // Очищаем оба шага
       localStorage.removeItem("signupStep1Data");
       localStorage.removeItem("signupStep2Data");
     },

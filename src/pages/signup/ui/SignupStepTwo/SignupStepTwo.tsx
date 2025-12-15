@@ -115,7 +115,6 @@ export const SignupStepTwo = () => {
   const [errors, setErrors] = useState<Partial<Record<keyof User, string>>>({});
   const [isFormValid, setIsFormValid] = useState(false);
 
-  // Инициализация формы данными из Redux
   useEffect(() => {
     setFormData({
       name: firstName || "",
@@ -136,7 +135,6 @@ export const SignupStepTwo = () => {
     learnSubcategories,
   ]);
 
-  // Валидация формы при изменении данных
   useEffect(() => {
     const result = userSchema.safeParse(formData);
 
@@ -183,9 +181,7 @@ export const SignupStepTwo = () => {
 
   useEffect(() => {
     const handleClickOutsideCity = (event: MouseEvent) => {
-      // Если открыт селектор города
       if (openSelectorId === "city") {
-        // Проверяем, был ли клик вне самого селектора
         const cityElement = document.getElementById("city-selector-container");
         if (cityElement && !cityElement.contains(event.target as Node)) {
           setOpenSelectorId(null);
@@ -387,11 +383,9 @@ export const SignupStepTwo = () => {
     };
     setTouched(allTouched);
 
-    // Проверяем валидность всей формы
     const validationResult = userSchema.safeParse(formData);
 
     if (!validationResult.success) {
-      // Собираем все ошибки
       const validationErrors: Partial<Record<keyof User, string>> = {};
 
       validationResult.error.issues.forEach((issue: z.ZodIssue) => {

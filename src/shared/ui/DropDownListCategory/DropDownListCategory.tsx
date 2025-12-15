@@ -13,7 +13,6 @@ import homeAndComfortImg from "@images/png/Home-and-comfort.png";
 import DropDownListCategorySkeleton from "./DropDownListCategorySkeleton";
 import { useEffect } from "react";
 import { useAppDispatch } from "@/app/store/hooks";
-// import type { Subcategory } from "@/pages/signup/ui/SignupStepThree/types";
 
 import type { TSubcategory } from "@/entities/category/types";
 
@@ -36,7 +35,6 @@ export const DropDownListCategory = ({
     }
   }, [dispatch]);
 
-  //Простая функция заглушка, пока нет api с подтягиванием изображений. В дальнейшем нужно изображение будет тянуть прям из json
   const setImagesCategory = (categoriesId: number) => {
     switch (categoriesId) {
       case 1:

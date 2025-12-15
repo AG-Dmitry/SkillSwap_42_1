@@ -7,21 +7,18 @@ import type { TUserLikesInfo } from "../types";
 import type { RootState } from "@app/store/store";
 import { api } from "@shared/api/api";
 
-// Типы для состояния
 type LikesState = {
   usersLikesInfo: Record<number, TUserLikesInfo>; // Map userId -> likes info
   isLoading: boolean;
   error: string | null;
 };
 
-// Начальное состояние
 const initialState: LikesState = {
   usersLikesInfo: {},
   isLoading: false,
   error: null,
 };
 
-// Асинхронный thunk для загрузки информации о лайках пользователей
 export const fetchUsersLikesInfo = createAsyncThunk(
   "likes/fetchUsersInfo",
   async (userIds: number[], { rejectWithValue }) => {
@@ -38,7 +35,6 @@ export const fetchUsersLikesInfo = createAsyncThunk(
   },
 );
 
-// Создание лайка от текущего пользователя к другому пользователю
 export const createLike = createAsyncThunk(
   "likes/createLike",
   async (params: { toUserId: number }, { rejectWithValue }) => {
@@ -48,7 +44,6 @@ export const createLike = createAsyncThunk(
       });
       return params.toUserId;
     } catch (error) {
-      // Если лайк уже существует, не считаем это ошибкой
       const errorMessage =
         error instanceof Error ? error.message : "Ошибка создания лайка";
       if (
@@ -62,7 +57,6 @@ export const createLike = createAsyncThunk(
   },
 );
 
-// Удаление лайка
 export const deleteLike = createAsyncThunk(
   "likes/deleteLike",
   async (toUserId: number, { rejectWithValue }) => {
@@ -77,7 +71,6 @@ export const deleteLike = createAsyncThunk(
   },
 );
 
-// Загрузка информации о лайках одного пользователя
 export const fetchUserLikesInfo = createAsyncThunk(
   "likes/fetchUserInfo",
   async (userId: number, { rejectWithValue }) => {
@@ -94,7 +87,6 @@ export const fetchUserLikesInfo = createAsyncThunk(
   },
 );
 
-// Slice
 const likesSlice = createSlice({
   name: "likes",
   initialState,
@@ -111,7 +103,6 @@ const likesSlice = createSlice({
       })
       .addCase(fetchUsersLikesInfo.fulfilled, (state, action) => {
         state.isLoading = false;
-        // Обновляем информацию о лайках для каждого пользователя
         action.payload.forEach((info) => {
           state.usersLikesInfo[info.userId] = info;
         });

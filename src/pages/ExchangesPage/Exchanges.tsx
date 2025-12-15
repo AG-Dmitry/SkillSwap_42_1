@@ -20,8 +20,6 @@ export const Exchanges = () => {
       setIsLoading(true);
       setError(null);
       try {
-        // Получаем все завершенные обмены пользователя (и входящие, и исходящие)
-        // со статусом completed
         const data = await api.getUserExchanges(authUser.id, {
           status: "completed",
           direction: "all",
@@ -38,18 +36,15 @@ export const Exchanges = () => {
     loadExchanges();
   }, [authUser?.id]);
 
-  // Формируем список пользователей с завершенными обменами
   const usersWithExchanges = useMemo(() => {
     if (!authUser?.id) return [];
 
     return exchanges
       .map((ex) => {
-        // Определяем другого участника обмена
         const otherUser =
           ex.fromUserId === authUser.id ? ex.toUser : ex.fromUser;
         if (!otherUser) return null;
 
-        // Формируем описание обмена
         const fromSkillName = ex.fromSkill?.name || "Навык";
         const toSkillName = ex.toSkill?.name || "Навык";
         const offerTitle = `${fromSkillName} ↔ ${toSkillName}`;
@@ -98,7 +93,6 @@ export const Exchanges = () => {
     try {
       await api.deleteExchange(parseInt(exchangeId, 10));
 
-      // Удаляем из списка
       setExchanges((prev) =>
         prev.filter((ex) => ex.id.toString() !== exchangeId),
       );

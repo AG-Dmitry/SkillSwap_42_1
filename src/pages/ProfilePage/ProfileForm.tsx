@@ -38,7 +38,6 @@ export const ProfileForm = () => {
     confirmPassword: "",
   });
 
-  // Загружаем города при монтировании
   useEffect(() => {
     if (cities.length === 0) {
       dispatch(fetchCities());
@@ -49,7 +48,6 @@ export const ProfileForm = () => {
 
   if (!user) return <Loader />;
 
-  // Инициализация данных пользователя
   const [userData, setUserData] = useState({
     name: user?.name ?? "",
     email: user?.email ?? "",
@@ -91,12 +89,10 @@ export const ProfileForm = () => {
   const [openSelectorId, setOpenSelectorId] = useState<string | null>(null);
   const selectorsRef = useRef<HTMLFormElement | null>(null);
 
-  // Для закрытия выпадающего списка при открытии другого
   const handleToggle = (id: string) => {
     setOpenSelectorId((prev) => (prev === id ? null : id));
   };
 
-  // Закрытие выпадающих списков при клике вне
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -113,7 +109,6 @@ export const ProfileForm = () => {
     };
   }, [openSelectorId]);
 
-  // Изменение поля
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -123,7 +118,6 @@ export const ProfileForm = () => {
     }));
   };
 
-  // Изменение даты рождения
   const handleDateChange = (date: Date | null) => {
     setUserData((prevState) => ({
       ...prevState,
@@ -131,7 +125,6 @@ export const ProfileForm = () => {
     }));
   };
 
-  // Обработка выбора пола
   const handleGenderSelect = (gender: "M" | "F" | "") => {
     if (gender === "") return;
     setUserData((prevState) => ({
@@ -140,7 +133,6 @@ export const ProfileForm = () => {
     }));
   };
 
-  // Обработка выбора города
   const handleCitySelect = (cityId: number) => {
     setUserData((prevState) => ({
       ...prevState,
@@ -148,7 +140,6 @@ export const ProfileForm = () => {
     }));
   };
 
-  // Изменение аватара
   const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -161,7 +152,6 @@ export const ProfileForm = () => {
     }
   };
 
-  // Сохранение изменений
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -218,7 +208,6 @@ export const ProfileForm = () => {
     }
   };
 
-  // Активация функции редактирования поля
   const handleEditClick = (field: string) => {
     setEditing((prev) => ({
       ...prev,
@@ -226,7 +215,6 @@ export const ProfileForm = () => {
     }));
   };
 
-  // Обработка смены пароля
   const handlePasswordChange = async (e: SyntheticEvent) => {
     e.preventDefault();
 
@@ -333,7 +321,6 @@ export const ProfileForm = () => {
                     </div>
                   </div>
 
-                  {/* // TODO: поменять в выборе пола и города цвет текста */}
                   <div className={styles.field}>
                     <div
                       className={`${styles.genderWrapper} ${styles.commonWrapper}`}

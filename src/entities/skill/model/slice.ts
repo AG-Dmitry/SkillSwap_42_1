@@ -7,21 +7,18 @@ import type { TSkill } from "../types";
 import type { RootState } from "@app/store/store";
 import { api } from "@shared/api/api";
 
-// Типы для состояния
 type SkillsDataState = {
   skills: TSkill[];
   isLoading: boolean;
   error: string | null;
 };
 
-// Начальное состояние
 const initialState: SkillsDataState = {
   skills: [],
   isLoading: false,
   error: null,
 };
 
-// Асинхронный thunk для загрузки данных о навыках
 export const fetchSkillsData = createAsyncThunk(
   "skillsData/fetchAll",
   async (_, { rejectWithValue }) => {
@@ -46,7 +43,6 @@ export const fetchSkillsData = createAsyncThunk(
   },
 );
 
-// Slice
 const skillsDataSlice = createSlice({
   name: "skillsData",
   initialState,

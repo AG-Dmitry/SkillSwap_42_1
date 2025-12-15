@@ -41,12 +41,9 @@ export const defaultNotifications: INotification[] = [
 ];
 
 export const useNotifications = () => {
-  //делаем начальное состояние уведомления
-  //так же добавляем тестовые данные
   const [notifications, setNotifications] =
     useState<INotification[]>(defaultNotifications);
 
-  //разделяем уведомления: первые 2 - "Новые", остальное "Просмотренные"
   const newNotifications = notifications.filter((n) => !n.isRead);
   const viewedNotifications = notifications.filter((n) => n.isRead);
 

@@ -23,7 +23,6 @@ export const Favorites = () => {
   const { subcategories, isLoading: subcategoriesLoading } =
     useAppSelector(selectCategoryData);
 
-  // Загружаем данные при монтировании
   useEffect(() => {
     if (users.length === 0 && !isLoading) {
       dispatch(fetchUsersData());
@@ -49,7 +48,6 @@ export const Favorites = () => {
     subcategories.length,
   ]);
 
-  // Фильтруем только лайкнутых пользователей
   const likedUsers = useMemo(() => {
     return users.filter((user) => user.isLikedByCurrentUser === true);
   }, [users]);
@@ -65,8 +63,6 @@ export const Favorites = () => {
 
   // Обработчик клика на карточку (переход на детальную страницу)
   const handleDetailsClick = (user: UserWithLikes) => {
-    // TODO: Реализовать навигацию к детальной странице пользователя
-    // navigate(`/user/${user.id}`);
     console.log("User details clicked:", user);
   };
 

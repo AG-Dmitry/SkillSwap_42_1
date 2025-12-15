@@ -42,10 +42,8 @@ export const ViewAllButton = ({
     return null;
   }
 
-  // Определяем текст кнопки
   const buttonText = isExpanded ? "Свернуть" : children;
 
-  // Определяем disabled для disable поведения (когда показано все или больше начального)
   const isDisabled = behavior === "disable" && currentCount > initialCount;
 
   return (
