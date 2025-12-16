@@ -270,6 +270,13 @@ export const ProfileForm = () => {
                       className={styles.inputChildrenIcon}
                       onClick={() => handleEditClick("email")}
                       role="button"
+                      tabIndex={0}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          handleEditClick("email");
+                        }
+                      }}
                     >
                       <Edit />
                     </div>
@@ -304,6 +311,13 @@ export const ProfileForm = () => {
                       className={styles.inputChildrenIcon}
                       onClick={() => handleEditClick("name")}
                       role="button"
+                      tabIndex={0}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          handleEditClick("name");
+                        }
+                      }}
                     >
                       <Edit />
                     </div>
@@ -396,6 +410,13 @@ export const ProfileForm = () => {
                       className={styles.inputChildrenIcon}
                       onClick={() => handleEditClick("about")}
                       role="button"
+                      tabIndex={0}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          handleEditClick("about");
+                        }
+                      }}
                     >
                       <Edit />
                     </div>

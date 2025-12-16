@@ -85,6 +85,7 @@ export const DropDownListCategory = ({
                   >
                     <button
                       type="button"
+                      className={styles.subcategoriesTitleButton}
                       onClick={() => onSubcategoryClick?.(subcategory.id)}
                     >
                       {subcategory.name}
