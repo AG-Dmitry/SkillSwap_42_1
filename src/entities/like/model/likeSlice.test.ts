@@ -276,15 +276,13 @@ describe("likes slice", () => {
   });
 
   it("fetchUserLikesInfo thunk: success -> fulfilled(payload object)", async () => {
-    jest
-      .spyOn(api, "getUserLikesInfo")
-      .mockResolvedValueOnce(
-        makeInfo({
-          userId: 7,
-          likesCount: 3,
-          isLikedByCurrentUser: true,
-        }) as any,
-      );
+    jest.spyOn(api, "getUserLikesInfo").mockResolvedValueOnce(
+      makeInfo({
+        userId: 7,
+        likesCount: 3,
+        isLikedByCurrentUser: true,
+      }) as any,
+    );
 
     const dispatched: any[] = [];
     const dispatch = (action: any) => (dispatched.push(action), action);
