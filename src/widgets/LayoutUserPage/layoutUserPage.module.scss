@@ -1,6 +1,6 @@
 .layoutUserPage {
   max-inline-size: 1440px;
-  block-size: calc(1180px - 104px - 232px);
+  block-size: calc(1180px - 104px - 232px); //Общая высота минус хеддер и футер
   @include flex(row, center, center, 24px);
 }
 

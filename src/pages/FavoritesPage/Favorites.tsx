@@ -1,36 +1,35 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@app/store/hooks";
 import { fetchUsersData, selectUsersData } from "@entities/user/model/slice";
 import { fetchCities, selectCities } from "@entities/city/model/slice";
 import { Card } from "@shared/ui/Card/Card";
 import { CardSkeleton } from "@shared/ui/CardSkeleton/CardSkeleton";
 import styles from "./favorites.module.scss";
-import {
-  fetchSkillsData,
-  selectSkillsData,
-} from "@/entities/skill/model/slice";
-import {
-  fetchCategories,
-  selectCategoryData,
-} from "@/entities/category/model/slice";
+import { fetchSkillsData } from "@/entities/skill/model/slice";
+import { fetchCategories } from "@/entities/category/model/slice";
+import { selectAuth } from "@/features/auth/model/slice";
 
 export const Favorites = () => {
   const { users, isLoading } = useAppSelector(selectUsersData);
-  const { categories } = useAppSelector(selectCategoryData);
   const { cities } = useAppSelector(selectCities);
-  const { skills } = useAppSelector(selectSkillsData);
+  const { user } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
+  const hasLoadedRef = useRef(false);
 
   const likedUsers = useMemo(() => {
     return users.filter((user) => user.isLikedByCurrentUser === true);
   }, [users]);
 
   useEffect(() => {
-    if (users.length === 0) dispatch(fetchUsersData());
-    if (categories.length === 0) dispatch(fetchCategories());
-    if (cities.length === 0) dispatch(fetchCities());
-    if (skills.length === 0) dispatch(fetchSkillsData());
-  }, [dispatch, categories.length, cities.length, skills.length, users.length]);
+    if (hasLoadedRef.current || !user) return;
+    hasLoadedRef.current = true;
+    Promise.all([
+      dispatch(fetchUsersData()),
+      dispatch(fetchCategories()),
+      dispatch(fetchCities()),
+      dispatch(fetchSkillsData()),
+    ]);
+  }, [dispatch, user]);
 
   // Сортируем по дате регистрации (от новых к старым) как приближение даты добавления в избранное
   const sortedLikedUsers = useMemo(() => {
